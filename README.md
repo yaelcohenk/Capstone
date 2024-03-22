@@ -10,7 +10,6 @@
     Luego hacer lo mismo con cada uno de los 49 subgrupos, para que esto sea más preciso.
     Por último, hacerlo con cada uno de los 1800 productos individuales, revisar cuantas veces se ha vendido cada uno de ellos,
     si hay algunos que se dejaron de vender, cuando fue la última venta, ver si sacarlo si es que tiene pocos datos.
-    - Para encontrar la distribución para cada uno de los grupos, subgrupos y productos puedo intentar paralelizarlo si se demora mucho. Intentar con multiprocessing o ver si ya de antemano se paraleliza solo
     - Ver como segmentar a los clientes, agruparlos. Ver también si hay ciertos productos que se compran en específico.
     - Ver si la demanda por producto es intermitente o no. Hay distintos modelos de pronóstico.
     - Ver si hay estacionareidad, si es que para cierta época ciertos productos se venden más o menos, cosas así.
