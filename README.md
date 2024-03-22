@@ -4,7 +4,12 @@
 
     - Hacer filtración de datos. Ver si quizás hay datos con magnitues que no corresponden. Revisar los outliers, que hacer con ellos.
     - Para los pronósticos se podria en algún momento intentar programar una RNN.
-    - No olvidar el test estadístico. Ajustar los datos a una distribución y tener en cuenta su valor Chi-Cudadrado y el test de Kolmogorov-Smirnov. Lo que podría hacer es partir de lo más agregado a lo menos desagregado. Buscar tendencias para cada uno de los 3 grupos principales, encontrar una distribución para cada uno. Luego hacer lo mismo con cada uno de los 49 subgrupos, para que esto sea más preciso. Por último, hacerlo con cada uno de los 1800 productos individuales, revisar cuantas veces se ha vendido cada uno de ellos, si hay algunos que se dejaron de vender, cuando fue la última venta, ver si sacarlo si es que tiene pocos datos.
+    - No olvidar el test estadístico. Ajustar los datos a una distribución y tener en cuenta
+    su valor Chi-Cudadrado y el test de Kolmogorov-Smirnov. Lo que podría hacer es partir de lo más agregado a lo menos desagregado.
+    Buscar tendencias para cada uno de los 3 grupos principales, encontrar una distribución para cada uno.
+    Luego hacer lo mismo con cada uno de los 49 subgrupos, para que esto sea más preciso.
+    Por último, hacerlo con cada uno de los 1800 productos individuales, revisar cuantas veces se ha vendido cada uno de ellos,
+    si hay algunos que se dejaron de vender, cuando fue la última venta, ver si sacarlo si es que tiene pocos datos.
     - Para encontrar la distribución para cada uno de los grupos, subgrupos y productos puedo intentar paralelizarlo si se demora mucho. Intentar con multiprocessing o ver si ya de antemano se paraleliza solo
     - Ver como segmentar a los clientes, agruparlos. Ver también si hay ciertos productos que se compran en específico.
     - Ver si la demanda por producto es intermitente o no. Hay distintos modelos de pronóstico.
