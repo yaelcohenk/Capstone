@@ -44,7 +44,13 @@
     - Ver si hay estacionariedad en las demandas porque en dicho caso, tendríamos que realizar un análisis por estación. Ver si tener modelos por tramos
     - Como presentar la información después, es importante eso.
     - Encontrar la distribución de los datos, saber como distribuyen, que al final lo necesitamos como datos de entrada para el pronóstico
-    
+    - Ver la importancia de lo que aporta en ganancia cada producto. Ver si por período de tiempo, o del total
+    - Hacer un heatmap quizás del volumen de ventas y de las ganancias por cada producto, subcategoría y así. Ver la rentabilidad del producto
+    - Se podría hacer un leadtime como variable aleatoria
+    - Analizar harto, mientras más mejor
+    - Para validar modelo de pronóstico, 75% datos para entrenar y 25% validar
+    - Podría hacer el análisis del porcentaje de ganancias de cada uno de los 49 subgrupos de manera mensual y semanal. Es decir, para cada una de las semanas y para cada uno de los meses. Quizás podría
+    hacer lo mismo con los 3 grupos grandes, no sé si vale la pena hacerlo con cada uno de los productos
     
     
 ## Cosas dichas por el profe
