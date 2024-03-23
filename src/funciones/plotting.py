@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
-
+import seaborn as sns
 
 def graficar_seaborn(grafico_seaborn, xlabel="", ylabel="", title="", path=None, size_x=8, size_y=8):
     plt.figure(figsize=(size_x, size_y))
@@ -17,6 +17,20 @@ def graficar_seaborn(grafico_seaborn, xlabel="", ylabel="", title="", path=None,
 
 def concatenar(lista):
     return pd.concat(lista)
+
+def graficar_ganancias(data, x, y, xlabel, ylabel, title, path):
+    plt.figure(figsize=(8, 6))
+    barplot = sns.barplot(data=data, x=x, y=y)
+
+    # Rotar etiquetas del eje x
+    barplot.set_xticklabels(barplot.get_xticklabels(), rotation=90)
+
+    plt.title(title)
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    plt.savefig(path)
+    plt.close()
+
 
 
 # https://github.com/ageron/handson-ml2/blob/master/09_unsupervised_learning.ipynb
