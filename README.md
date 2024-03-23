@@ -71,13 +71,19 @@
 
 ## Librerías que pueden ser útiles
 
-    - [Darts](https://unit8co.github.io/darts/)
-    - [Prophet](https://facebook.github.io/prophet/docs/quick_start.html)
-    - [Orbit](https://orbit-ml.readthedocs.io/en/latest/)
-    - [tsfresh](https://tsfresh.readthedocs.io/en/latest/)
-    - [AutoTS](https://winedarksea.github.io/AutoTS/build/html/source/tutorial.html)
-    - [statsmodels](https://www.statsmodels.org/stable/index.html)
-    - [featuretools](https://www.featuretools.com/)
+[Darts](https://unit8co.github.io/darts/)
+
+[Prophet](https://facebook.github.io/prophet/docs/quick_start.html)
+
+[Orbit](https://orbit-ml.readthedocs.io/en/latest/)
+
+[tsfresh](https://tsfresh.readthedocs.io/en/latest/)
+
+[AutoTS](https://winedarksea.github.io/AutoTS/build/html/source/tutorial.html)
+
+[statsmodels](https://www.statsmodels.org/stable/index.html)
+
+[featuretools](https://www.featuretools.com/)
 
 
 
@@ -85,26 +91,47 @@
 
 Ver en Kaggle: Store Sales - Time Series Forecasting
 [Darts Forecasting Deep Learning & Global Models](https://www.kaggle.com/code/ferdinandberr/darts-forecasting-deep-learning-global-models)
+
 [Listen To Secrets in Your Data](https://www.kaggle.com/code/adnanshikh/listen-to-secrets-in-your-data)
+
 [Darts Ensemble Store Sales Forecasting](https://www.kaggle.com/code/kelde9/darts-ensemble-stores-sales-forecasting#Machine-Learning-Model)
+
 [Store Sales EDA, Prediction with TS](https://www.kaggle.com/code/kalilurrahman/store-sales-eda-prediction-with-ts)
+
 [Store Sales](https://www.kaggle.com/code/hardikgarg03/store-sales)
+
 [Exploring Time Series plots](https://www.kaggle.com/code/odins0n/exploring-time-series-plots-beginners-guide)
+
 [Stores Sales Analysis Time Series](https://www.kaggle.com/code/kashishrastogi/store-sales-analysis-time-serie)
+
 [Stores Sales TS Forecasting - A Comprehensive Guide](https://www.kaggle.com/code/ekrembayar/store-sales-ts-forecasting-a-comprehensive-guide#9.-ACF-&-PACF-for-each-family)
+
 [Customer Segmentation (K-Means) Analysis]()
+
 [Customer Segmentation: Clustering](https://www.kaggle.com/code/karnikakapoor/customer-segmentation-clustering#CLUSTERING)
+
 [Customer Segmentation](https://www.kaggle.com/code/fabiendaniel/customer-segmentation)
+
 [K-Means Clustering with Python](https://www.kaggle.com/code/prashant111/k-means-clustering-with-python)
+
 [The Ultimate Step-by-Step Guide to Data Mining with PCA and KMeans](https://drlee.io/the-ultimate-step-by-step-guide-to-data-mining-with-pca-and-kmeans-83a2bcfdba7d)
+
 [How could I find the indexes of data in each cluster after applying the PCA and a clustering method?](https://stackoverflow.com/questions/62626305/how-could-i-find-the-indexes-of-data-in-each-cluster-after-applying-the-pca-and)
+
 [Understanding clusters after applying PCA then K-Means](https://datascience.stackexchange.com/questions/93100/understanding-clusters-after-applying-pca-then-k-means)
+
 [Time Series in Python - Exponential Smoothing and Arima processes](https://towardsdatascience.com/time-series-in-python-exponential-smoothing-and-arima-processes-2c67f2a52788)
+
 [K-Means clustering for mixed numeric and categorical data](https://datascience.stackexchange.com/questions/22/k-means-clustering-for-mixed-numeric-and-categorical-data)
+
 [K-Means, kmodes, and k-prototype](https://medium.com/@reddyyashu20/k-means-kmodes-and-k-prototype-76537d84a669)
+
 [Unsupervised Learning using K-Prototype and DBScan](https://www.kaggle.com/code/rohanadagouda/unsupervised-learning-using-k-prototype-and-dbscan)
+
 [Customer Segmentation in Python: A Practical Approach](https://www.kdnuggets.com/customer-segmentation-in-python-a-practical-approach)
+
 [How to Build Customer Segmentation Models in Python](https://365datascience.com/tutorials/python-tutorials/build-customer-segmentation-models/)
+
 [How to Perform Customer Segmentation in Python - ML Tutorial](https://www.freecodecamp.org/news/customer-segmentation-python-machine-learning/)
 []()
 []()
