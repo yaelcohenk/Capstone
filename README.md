@@ -51,7 +51,7 @@
     - Para validar modelo de pronóstico, 75% datos para entrenar y 25% validar
     - Podría hacer el análisis del porcentaje de ganancias de cada uno de los 49 subgrupos de manera mensual y semanal. Es decir, para cada una de las semanas y para cada uno de los meses. Quizás podría
     hacer lo mismo con los 3 grupos grandes, no sé si vale la pena hacerlo con cada uno de los productos
-    
+    - Hacer un análisis del stock que tienen hoy en día en términos de proporciones
     
 ## Cosas dichas por el profe
 
