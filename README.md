@@ -134,5 +134,7 @@ Ver en Kaggle: Store Sales - Time Series Forecasting
 [How to Build Customer Segmentation Models in Python](https://365datascience.com/tutorials/python-tutorials/build-customer-segmentation-models/)
 
 [How to Perform Customer Segmentation in Python - ML Tutorial](https://www.freecodecamp.org/news/customer-segmentation-python-machine-learning/)
-[]()
+
+[Advanced Time Series Analysis](https://www.kaggle.com/code/bextuychiev/advanced-time-series-analysis-decomposition)
+
 []()
