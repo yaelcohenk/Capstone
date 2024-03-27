@@ -38,7 +38,7 @@ datos_conjuntos.to_excel(os.path.join(
     "datos", "datos_conjuntos.xlsx"), index=False)
 
 columnas_mantener = ["date", "quantity", "description_2",
-                     "group_description", "total (CLP)", "description"]
+                     "group_description", "total (CLP)", "description", "cost (CLP)"]
 
 database = datos_conjuntos[columnas_mantener]
 
@@ -109,7 +109,6 @@ for ano in lista_anos:
     fig.savefig(path)
 
     plt.close()
-    # plt.show()
 
 
 # Análisis de las ventas de cada uno de los tres grupos grandes de manera diaria
@@ -169,9 +168,11 @@ database_productos_semanal.to_excel(
 
 # Luego vemos las ganancias. De momento es histórico. De ahí verlo por mes y semana quizás
 
-ganancias_total_subcategoria = database.groupby(["description_2"]).sum().reset_index()
+ganancias_total_subcategoria = database.groupby(
+    ["description_2"]).sum().reset_index()
 ganancias = ganancias_total_subcategoria["total (CLP)"].sum()
-ganancias_total_subcategoria["porcentaje_ganancias"] = ganancias_total_subcategoria["total (CLP)"] / ganancias
+ganancias_total_subcategoria[
+    "porcentaje_ganancias"] = ganancias_total_subcategoria["total (CLP)"] / ganancias
 
 porcentajes = ganancias_total_subcategoria[[
     "description_2", "porcentaje_ganancias"]]
@@ -188,9 +189,11 @@ graficar_ganancias(porcentajes,
                    os.path.join("plots", "eda_conjunto", "ganancias_subgrupos.png"))
 
 
-ganancias_total_grupos = database.groupby(["group_description"]).sum().reset_index()
+ganancias_total_grupos = database.groupby(
+    ["group_description"]).sum().reset_index()
 ganancias_grupos = ganancias_total_grupos["total (CLP)"].sum()
-ganancias_total_grupos["porcentaje_ganancias"] = ganancias_total_grupos["total (CLP)"] / ganancias_grupos
+ganancias_total_grupos["porcentaje_ganancias"] = ganancias_total_grupos[
+    "total (CLP)"] / ganancias_grupos
 
 
 graficar_ganancias(ganancias_total_grupos,
@@ -202,14 +205,49 @@ graficar_ganancias(ganancias_total_grupos,
                    os.path.join("plots", "eda_conjunto", "ganancias_grupos.png"))
 
 
-ganancias_total_productos = database.groupby(["description"]).sum().reset_index()
+# columnas_a_sumar = ["quantity", "total (CLP)"]
+
+columnas_a_sumar = {"quantity": "sum",
+                    "total (CLP)": "sum", "cost (CLP)": "first", "group_description": "first"}
+
+logging.debug(database)
+# ganancias_total_productos = database.groupby(["description"])[columnas_a_sumar].sum().reset_index()
+ganancias_total_productos = database.groupby(
+    ["description"]).agg(columnas_a_sumar).reset_index()
 ganancias_productos = ganancias_total_productos["total (CLP)"].sum()
-ganancias_total_productos["porcentaje_ganancias"] = ganancias_total_productos["total (CLP)"] / ganancias_productos
-ganancias_total_productos.sort_values(by=["porcentaje_ganancias"], ascending=False, inplace=True)
+ganancias_total_productos["porcentaje_ganancias"] = ganancias_total_productos[
+    "total (CLP)"] / ganancias_productos
+ganancias_total_productos.sort_values(
+    by=["porcentaje_ganancias"], ascending=False, inplace=True)
 
 ganancias_total_productos["porcentaje_acumulado"] = ganancias_total_productos["porcentaje_ganancias"].cumsum()
 ganancias_total_productos = ganancias_total_productos.reset_index(drop=True)
 
 # Con esto se ve que hay 75 productos que en total representan el 80% de las ganancias históricas de la tienda de mascotas.
-# Aprox el 4% de los productos ofrecidos por la tienda, representan el 80% de las ganancias históricas. 
-logging.debug(ganancias_total_productos.head(75))
+# Aprox el 4% de los productos ofrecidos por la tienda, representan el 80% de las ganancias históricas.
+
+
+# logging.debug(database)
+# logging.debug(ganancias_total_productos.head(75))
+logging.debug(ganancias_total_productos)
+
+ganancias_total_productos["ingreso_marginal"] = ganancias_total_productos[
+    "total (CLP)"] - ganancias_total_productos["quantity"] * ganancias_total_productos["cost (CLP)"]
+
+logging.debug(ganancias_total_productos)
+# ganancias_total_productos.sort_values(by=["porcentaje_ganancias"], ascending=False, inplace=True)
+
+ganancias_marginales_totales = ganancias_total_productos["ingreso_marginal"].sum()
+ganancias_total_productos["porcentaje_ingreso_marginal"] = ganancias_total_productos["ingreso_marginal"] / ganancias_marginales_totales
+
+ganancias_total_productos.sort_values(by=["porcentaje_ingreso_marginal"], ascending=False, inplace=True)
+ganancias_total_productos["porcentaje_marginal_acumulado"] = ganancias_total_productos["porcentaje_ganancias"].cumsum()
+
+
+logging.debug(ganancias_total_productos)
+
+ganancias_total_productos.to_excel(os.path.join("datos", "ganancias_total_productos.xlsx"), index=False)
+
+
+
+
