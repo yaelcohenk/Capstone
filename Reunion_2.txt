@@ -3,11 +3,31 @@ De momento se tiene:
 - Gráfico de barras de cada uno de los items vendidos y la cantidad vendida
 de manera histórica.
 
+Comentario profe: Aprovechar de ordenar los datos de otra manera, como en orden creciente.
+Más fácil verlo.
+
 - La cantidad de compras hechas por los usuarios (hay pocos usuarios que han
-comprado en varias ocasiones)
+comprado en varias ocasiones).
+
+Comentario profe: No todos los clientes han sido clientes por el mismo tiempo.
+COnsiderar el tiempo que ha sido cliente. Normalizar los datos. Hacer ajuste
+para que comparación sea justa. Lo mismo con clientes y productos. Ver el
+espacio temporal 
 
 - Gráfico de la cantidad de ítems en cada uno de los tres grupos grandes.
 - Gráfico de la cantidad de ítems en cada uno de los subgrupos.
+
+* Buscar mejores gráficos para explicitar los datos. Evaluar
+como se ve sin escala de color.
+
+* Buscar los treemap
+
+* Se puede sacar el margen de los productos. Ver eso
+
+* Clasificar los productos según su patrón de demanda, analizando dimensiones
+con su coeficiente de variación. Average Demand Interval - buscar.
+
+Productos localizarlos en el plano, eventualmente ver productos distintos
 
 - Ventas anuales de cada uno de los grupos. También están las ventas mensuales 
 separadas por año de cada uno de los grupos grandes. ¿Cree que es buena idea quizás
@@ -27,6 +47,34 @@ específico.
 que 75 de los productos más vendidos, juntos, representan alrededor del 80% de las
 ventas históricas (en términos monetarios) de la tienda. Básicamente el 4% de lo ofrecido
 representa el 80% de lo ganado por la tienda.
+
+* Algoritmos de clusterización, definir buenas features. Buena medida de 
+distancia, esa se calcula respecto a algo. Como representar a los clientes,
+que atributos relevantes tienen, que gustaría considerar al momento de
+considerar.
+
+* Tratar de estandarizar por tiempo. Dividir compra total por años que lleva
+siendo cliente. Como homogeneizar las cosas. 
+Añadir dimensión temporal y de la vida del cliente. Antigüedad
+Intereasnte ver patrón de compra del cliente.
+Como caracterizar bien a los clientes. Para que clusterización de algo meaningful
+
+Reportar tiempo que se demoró en calcular y que máquina.
+Criterio.
+
+* Tratar de convertir esto en algo más tangible
+Evaluar en clusterización como la cantidad de productos distintos que compra
+cliente, correlación entre compras de productos.
+
+Cuando se presenten resultados de clusterizaciones, no sirve mucho llegar
+y presentar clusterización. Extraer alguna información relevante 
+de los clusters. Llevar del número a algo concreto para caracterizar
+estos grupos.
+
+* Interpretar bien que significa cada gráfico. No poner algo que no se entiende
+Mirar métodos como análisis de series de Fourier. Ver si autocorrelación (lag)
+entre las series de tiempo.
+
 
 
 - Segmentación de los clientes en cuatro grandes grupos. Falta estudiar
