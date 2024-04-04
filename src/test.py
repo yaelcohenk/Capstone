@@ -1,6 +1,6 @@
 import pandas as pd
 import os
-from statsmodels.graphics.tsaplots import plot_acf
+from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
 import matplotlib.pyplot as plt
 import sys
 

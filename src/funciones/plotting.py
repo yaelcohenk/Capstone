@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 import seaborn as sns
+import calplot
+
 
 def graficar_seaborn(grafico_seaborn, xlabel="", ylabel="", title="", path=None, size_x=8, size_y=8):
     plt.figure(figsize=(size_x, size_y))
@@ -18,6 +20,7 @@ def graficar_seaborn(grafico_seaborn, xlabel="", ylabel="", title="", path=None,
 def concatenar(lista):
     return pd.concat(lista)
 
+
 def graficar_ganancias(data, x, y, xlabel, ylabel, title, path):
     plt.figure(figsize=(8, 6))
     barplot = sns.barplot(data=data, x=x, y=y)
@@ -30,7 +33,6 @@ def graficar_ganancias(data, x, y, xlabel, ylabel, title, path):
     plt.ylabel(ylabel)
     plt.savefig(path)
     plt.close()
-
 
 
 # https://github.com/ageron/handson-ml2/blob/master/09_unsupervised_learning.ipynb
@@ -74,3 +76,33 @@ def plot_decision_boundaries(clusterer, X, resolution=1000, show_centroids=True,
         plt.ylabel("$x_2$", fontsize=14, rotation=0)
     else:
         plt.tick_params(labelleft=False)
+
+
+def graficar_heatmap_datos(ruta_datos,
+                           nombre_columna_fecha,
+                           agrupacion,
+                           tipo_dato,
+                           nombre_columna_cantidad,
+                           carpeta_guardar):
+
+    datos = pd.read_excel(ruta_datos)
+    datos = datos.set_index(nombre_columna_fecha)
+
+    descripciones = list(datos[agrupacion].unique())
+
+    for clasificacion in descripciones:
+        try:
+            datos_loop = datos[datos[agrupacion].isin([clasificacion])]
+            fig, ax = calplot.calplot(datos_loop[nombre_columna_cantidad],
+                                      cmap="coolwarm",
+                                      colorbar=True,
+                                      yearlabel_kws={'fontname': 'sans-serif'},
+                                      figsize=(10, 10))
+
+            fig.suptitle(
+                f"Heatmap de ventas diarias de {tipo_dato} {clasificacion}")
+            fig.savefig(os.path.join(carpeta_guardar,
+                        f"heatmap_diario_{clasificacion}.png"))
+            plt.close()
+        except Exception as e:
+            print(e)

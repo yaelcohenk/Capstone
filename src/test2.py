@@ -2,82 +2,30 @@ import pandas as pd
 import os
 import calplot
 import matplotlib.pyplot as plt
+from funciones.plotting import graficar_heatmap_datos
+import seaborn as sns
+# ventas_diarias = pd.read_excel(os.path.join("datos", "ventas_diarias_productos.xlsx"))
+# print(len(ventas_diarias["Descripción"].unique()))
+# fecha_venta_max = ventas_diarias.groupby("Descripción").agg({"Fecha": "max"}).reset_index()
+# filtro_objetos_venta = fecha_venta_max[fecha_venta_max["Fecha"] >= "2023-12-1"]
+# print(filtro_objetos_venta)
 
+porcentajes_acumulados = pd.read_excel(
+    os.path.join("datos", "ganancias_total_productos.xlsx"))
+porcentajes_acumulados["rango"] = range(1, len(porcentajes_acumulados) + 1)
+print(porcentajes_acumulados)
 
-def graficar_heatmap_datos(ruta_datos,
-                           nombre_columna_fecha,
-                           agrupacion,
-                           tipo_dato,
-                           nombre_columna_cantidad,
-                           carpeta_guardar):
+fig, ax = plt.subplots(figsize=(10, 10))
 
-    datos = pd.read_excel(ruta_datos)
-    datos = datos.set_index(nombre_columna_fecha)
+sns.lineplot(data=porcentajes_acumulados, x="rango",
+             y="porcentaje_marginal_acumulado")
 
-    descripciones = list(datos[agrupacion].unique())
+ax.set_ylabel("Porcentaje Ingreso Marginal Acumulado")
+ax.set_xlabel("Cantidad productos más vendidos (orden descendente)")
 
-    for clasificacion in descripciones:
-        try:
-            datos_loop = datos[datos[agrupacion].isin([clasificacion])]
-            fig, ax = calplot.calplot(datos_loop[nombre_columna_cantidad],
-                                      cmap="coolwarm",
-                                      colorbar=True,
-                                      yearlabel_kws={'fontname': 'sans-serif'},
-                                      figsize=(10, 10))
-
-            fig.suptitle(
-                f"Heatmap de ventas diarias de {tipo_dato} {clasificacion}")
-            fig.savefig(os.path.join(carpeta_guardar,
-                        f"heatmap_diario_{clasificacion}.png"))
-            plt.close()
-        except Exception as e:
-            print(e)
-
-
-if False:
-    graficar_heatmap_datos(os.path.join("datos", "ventas_diarias_subgrupos.xlsx"),
-                           "Fecha",
-                           "Subcategoría",
-                           "subgrupo",
-                           "Cantidad",
-                           os.path.join("plots", "heatmaps", "subgrupos_diario"))
-
-if False:
-    graficar_heatmap_datos(os.path.join("datos", "ventas_diarias_grupos.xlsx"),
-                       "Fecha",
-                       "Grupo",
-                       "grupo",
-                       "Ventas",
-                       os.path.join("plots", "heatmaps", "grupos_diario"))
-
-
-#Reemplazaar nombres con / , """ . 
-graficar_heatmap_datos(os.path.join("datos", "ventas_diarias_productos.xlsx"),
-                       "Fecha",
-                       "Descripción",
-                       "grupo",
-                       "Cantidad",
-                       os.path.join("plots", "heatmaps", "productos_diario"))
-
-# datos = pd.read_excel(os.path.join("datos", "ventas_diarias_subgrupos.xlsx"))
-# print(datos.info())
-# datos = datos.set_index("Fecha")
-
-
-# subcategorias = list(datos["Subcategoría"].unique())
-
-# print(type(datos["Subcategoría"].unique()))
-
-# for subcategoria in subcategorias:
-# datos_loop = datos[datos["Subcategoría"].isin([subcategoria])]
-# fig, ax = calplot.calplot(datos_loop["Cantidad"],
-#   cmap="coolwarm",
-#   colorbar=True,
-#   yearlabel_kws={'fontname': 'sans-serif'},
-#   figsize=(10, 10))
-#
-# fig.suptitle(f"Heatmap de ventas diarias del subgrupo {subcategoria}")
-# fig.savefig(os.path.join("plots", "heatmaps", "subgrupos_diario",
-# f"heatmap_diario_{subcategoria}.png"))
-# plt.close()
-# plt.show()
+ax.axvline(x=75, ymin=0, ymax=0.76, color='r', linestyle='--', label='80% del porcentaje marginal acumulado')
+ax.scatter(75, 0.8, color="red")
+ax.text(75, 0.015, '75', ha='center', color="red")
+ax.axhline(y=1, color='r', linestyle='--')
+plt.legend()
+plt.show()
