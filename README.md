@@ -6,12 +6,19 @@
 ## Papers
 
 [Deep Reinforcement Learning for inventory control: A roadmap](https://www.sciencedirect.com/science/article/pii/S0377221721006111)
+
 [Cooperative Multi-Agent Reinforcement Learning for Inventory Management](https://arxiv.org/abs/2304.08769)
+
 [Deep Reinforcement Learning for inventory optimization with non-stationary uncertain demand](https://www.sciencedirect.com/science/article/abs/pii/S0377221723007646)
+
 [Leadtime effects and policy improvement for stochastic inventory control with remanufacturing](https://www.sciencedirect.com/science/article/abs/pii/S0925527300001353)
+
 [Using the Deterministic EOQ Formula in Stochastic Inventory Control](https://www.jstor.org/stable/2634597)
+
 [Reinforcement Learning Approach for Multi-period Inventory with Stochastic Demand](https://link.springer.com/chapter/10.1007/978-3-031-08333-4_23)
+
 [Continuous inventory control with stochastic and non-stationary Markovian demand](https://www.sciencedirect.com/science/article/abs/pii/S0377221718302327)
+
 [Inventory Management with Stochastic Lead Times](https://pubsonline.informs.org/doi/abs/10.1287/moor.2014.0671)
 []()
 []()
