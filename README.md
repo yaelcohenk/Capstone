@@ -140,7 +140,66 @@ como atacarlo, que metodologías tenemos.
 
 ## Reunión profesor 16 abril
 
+- No podemos tener bola de cristal en el forecasting.
+- Separar datos en entrenamiento y testeo
+- Que productos consideramos
 
+
+- Caso base
+- Como proseguir
+- En que nos deberíamos fijar ahora
+- También podemos diseñar una política propia. Podemos cambiar una política
+- Tenemos ue hacer cuadrar la política con nuestro problema
+- Lo que no podemos hacer es asumir que el leadtime es cero
+- No es válido que nos olvidemos de una restricción o consideración intrínsica del problema. Ahí
+la política estaría definida frente a un problema diferente.
+- Si la demanda cambia, la política podría funcionar mal. Lo que no puedo hacer es hacer una compra
+y simular que el inventario me llegó al tiro.
+- Podríamos cada cierto tiempo recalibrar parámetros de política o no recalibrarla y quedarme con lo que hice hace
+6 meses.
+- Modelo de optimización se puede pensar como que se calcula política, input son datos y output son decisiones.
+Uno podría pensar que el modelo de optimización también sirve como una política. La política es como yo tomo
+decisiones con los datos que tengo en el momento. Política es super general, probabilidades, sin probabilidades
+podemos proponer políticas para resolver este problema.
+- Forecast probabilístico
+- XGBoost
+- Descartaría el profe los modelos neuronales. Agregarlo al informe. Modelo de regresión lineal múltiple.
+Le podemos meter feature engineering, para pasarsela a este modelo, podemos extraer muchas features que son relevantes
+que le pueden servir para entregar mejor predicción. Como por ejemplo, definir vector de features el día de la semana
+la semana del año, información sobre la tendencia, demanda acumulada, demanda del día anterior.
+Si tenemos productos que tienen patrones complejos e información que no nos dieron, la podemos identificar
+y pasarsela al modelo. Tomar modelos de pronóstico que ya identificamos, como baseline.
+- Paper de Sinthetos, de demanda intermitente. Como clasificar los productos por patrón de demanda. Mirar productos
+y separar productos por patrón de demanda. Explorar esto
+
+- Tratar de etiquetar productos que no se venden, tenerlo identificado y a partir de ahí uno puede
+sacar otras recomendaciones. Nosotros podemos definir nuestros criterios para determinar que productos están
+activos. Centrar en datos que le vamos a poder hacer pronóstico. Hacer un diagnóstico de que es lo que hay
+que hago, que stock tengo.
+
+- Tratar de agrupar a los clientes, ver como las políticas impactan a los distintos clientes. Sobre todo si tenemos
+clientes muy fieles y que queremos cuidar.
+
+- Podríamos tratar desde ya implementar algunas políticas. Definir, aterrizar cual va a ser nuestro caso base. Diagrama
+de como funciona nuestra política de caso base. Nuestra política, para tratar de definir como funciona todo.
+- Empezar a probar cosas, quizás algún subset de productos, tomar último año de observaciones. Simular políticas
+con proyecciones.
+
+- Buen punto de partida, tratar de evaluar nuestras políticas propuestas con demanda histórica. Que es lo que yo
+hubiera ejecutado, y que hubiera pasado. Ahora sería como replicar, ya que es determinístico. Ir registrando KPI,
+quiebres de stock y ver como nos fue con una política.
+
+- Tratar de ver lo antes posible, evaluar una política y ver indicadores de desempeño.
+- Ver la cota de inferior perfecta, es una cota de rendimiento de política considerando que tenemos
+toda la información futura. Si yo tuviera pronóstico perfecto, podríamos evaluar las políticas.
+Ver como el máximo jugo que le podemos sacar al producto.
+
+- Hartas cosas que podemos ver y profundizar. Hacer listado de cosas que podemos hacer, repartir pega y paralelizar.
+- KPI, cantidad de compras
+
+- Podríamos agregar el heatmap de las correlaciones. No es prioritario. Ponerle prioridad e interesante avanzar
+en modelos de pronóstico, tomarlos, implementarlos y evaluarlos. Como dividir los datos, como se evalúan los
+modelos, cuanto pronostican. Ver que quiero pronosticar. Tener ideas claras y ponerse a prototipar.
 
 ## Links útiles
 
@@ -213,6 +272,6 @@ Ver en Kaggle: Store Sales - Time Series Forecasting
 
 [https://datastud.dev/posts/python-seasonality-how-to](https://datastud.dev/posts/python-seasonality-how-to)
 
-[]()
+[How to cluster images based on visual similarity](https://towardsdatascience.com/how-to-cluster-images-based-on-visual-similarity-cd6e7209fe34)
 
 []()
