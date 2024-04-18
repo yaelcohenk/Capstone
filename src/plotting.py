@@ -18,3 +18,4 @@ fig.update_traces(textinfo="label+value")
 
 # fig.show()
 fig.write_image("imagen.svg")
+fig.write_image("imagen.png")

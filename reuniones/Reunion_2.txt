@@ -1,0 +1,134 @@
+De momento se tiene:
+
+- Gráfico de barras de cada uno de los items vendidos y la cantidad vendida
+de manera histórica.
+
+Comentario profe: Aprovechar de ordenar los datos de otra manera, como en orden creciente.
+Más fácil verlo.
+
+- La cantidad de compras hechas por los usuarios (hay pocos usuarios que han
+comprado en varias ocasiones).
+
+Comentario profe: No todos los clientes han sido clientes por el mismo tiempo.
+COnsiderar el tiempo que ha sido cliente. Normalizar los datos. Hacer ajuste
+para que comparación sea justa. Lo mismo con clientes y productos. Ver el
+espacio temporal 
+
+- Gráfico de la cantidad de ítems en cada uno de los tres grupos grandes.
+- Gráfico de la cantidad de ítems en cada uno de los subgrupos.
+
+* Buscar mejores gráficos para explicitar los datos. Evaluar
+como se ve sin escala de color.
+
+* Buscar los treemap
+
+* Se puede sacar el margen de los productos. Ver eso
+
+* Clasificar los productos según su patrón de demanda, analizando dimensiones
+con su coeficiente de variación. Average Demand Interval - buscar.
+
+Productos localizarlos en el plano, eventualmente ver productos distintos
+
+- Ventas anuales de cada uno de los grupos. También están las ventas mensuales 
+separadas por año de cada uno de los grupos grandes. ¿Cree que es buena idea quizás
+hacer esto mismo, pero de manera diaria/semanal? Como para tener una idea
+del volumen de venta de cada uno de los grupos en períodos de tiempo menos agregados.
+¿Deberíamos hacer lo mismo con los subgrupos y productos?
+
+- Gráfico del top 5 de los elementos más vendidos por año. ¿Cree que debamos hacer
+esto de manera diaria/semanal/mensual? Quizás para ver si es que hay un patrón
+o cierta dominancia de la venta de ciertos productos en un período de tiempo en
+específico.
+
+- Porcentaje de las ganancias históricas de cada uno de los subgrupos.
+- Porcentaje de las ganancias históricas de cada uno de los grupos
+
+- Las ventas totales de cada uno de los productos. Con esto se pudo determinar
+que 75 de los productos más vendidos, juntos, representan alrededor del 80% de las
+ventas históricas (en términos monetarios) de la tienda. Básicamente el 4% de lo ofrecido
+representa el 80% de lo ganado por la tienda.
+
+* Algoritmos de clusterización, definir buenas features. Buena medida de 
+distancia, esa se calcula respecto a algo. Como representar a los clientes,
+que atributos relevantes tienen, que gustaría considerar al momento de
+considerar.
+
+* Tratar de estandarizar por tiempo. Dividir compra total por años que lleva
+siendo cliente. Como homogeneizar las cosas. 
+Añadir dimensión temporal y de la vida del cliente. Antigüedad
+Intereasnte ver patrón de compra del cliente.
+Como caracterizar bien a los clientes. Para que clusterización de algo meaningful
+
+Reportar tiempo que se demoró en calcular y que máquina.
+Criterio.
+
+* Tratar de convertir esto en algo más tangible
+Evaluar en clusterización como la cantidad de productos distintos que compra
+cliente, correlación entre compras de productos.
+
+Cuando se presenten resultados de clusterizaciones, no sirve mucho llegar
+y presentar clusterización. Extraer alguna información relevante 
+de los clusters. Llevar del número a algo concreto para caracterizar
+estos grupos.
+
+* Interpretar bien que significa cada gráfico. No poner algo que no se entiende
+Mirar métodos como análisis de series de Fourier. Ver si autocorrelación (lag)
+entre las series de tiempo.
+
+
+
+- Segmentación de los clientes en cuatro grandes grupos. Falta estudiar
+todavía sus características grupales, como las ventas, que es lo que se vende más,
+cuanto representa cada grupo en términos de ganancia, cosas así.
+
+¿Sería buena idea hacer un análisis de la demanda diario/semanal/mensual?
+¿Que otra información relevante podríamos presentar sobre estos segmentos de clientes?
+
+- Categorizada la demanda por grupo/subgrupo/producto de manera mensual, semanal, diaria
+
+- Está hecho el seasonal decompose de los grupos de manera diaria y semanal
+- Está hecho el seasonal decomposde de los subgrupos de manera diaria. 
+
+¿Deberíamos hacer lo mismo producto a producto, y quizás presentar los gráficos
+más llamativos?
+
+Ideas:
+
+
+
+
+Preguntas:
+
+P1)
+Buscando, encontré que están estos 11 modelos clásicos de forecasting
+
+-  Autoregression (AR)
+-  Moving Average (MA)
+-  Autoregressive Moving Average (ARMA)
+-  Autoregressive Integrated Moving Average (ARIMA)
+-  Seasonal Autoregressive Integrated Moving Average (SARIMA)
+-  Seasonal Autoregressive Integrated Moving Average with Exogenous Regressors (SARIMAX)
+-  Vector Autoregression (VAR)
+-  Vector Autoregression Moving Average (VARMA)
+-  Vector Autoregression Moving Average with Exogenous Regressors (VARMAX)
+-  Simple Exponential Smoothing (SES)
+-  Holt Winter's Exponential Smoothing (HWES).
+
+¿Cree que es buena idea que lleguemos con estos modelos de pronósticos hechos
+para la presentación para cada uno de los productos/grupos/subgrupos, y presentar
+quizás algunos de los gráficos más representativos? Esto como para demostrar
+que el modelo elegido de forecasting funciona y es capaz de captar bien las tendencias
+y esas cosas.
+
+P2)
+Nos comentó que por ejemplo podríamos buscar productos que se hayan dejado de vender.
+¿Bajo que criterio podemos determinar que un producto ya no se vende?
+Yo pensaba quizás no sé, si un producto no se ha vendido en los últimos 6 meses,
+se considera como descontinuado o que la tienda ya no lo vende.
+
+
+P3)
+¿Que tipos de datos se pueden considerar como outliers? y que hacemos con ellos
+
+Recomendaciones profe:
+

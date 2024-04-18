@@ -15,8 +15,11 @@ datos = datos[cols]
 datos['Fecha'] = pd.to_numeric(pd.to_datetime(datos['Fecha']))
 
 # print(datos)
-plot_acf(datos["Cantidad"], lags=40)
+
+plotted = plot_acf(datos["Cantidad"], lags=40)
 plt.xlabel('Rezagos')
 plt.ylabel('Autocorrelación')
 plt.title('Función de Autocorrelación Muestral')
+plotted.savefig("ejemplo_autocorrelacion.png")
 plt.show()
+

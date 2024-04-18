@@ -2,10 +2,44 @@
 
 ## Cosas por hacer e ideas
 
+
+## Papers
+
+[Deep Reinforcement Learning for inventory control: A roadmap](https://www.sciencedirect.com/science/article/pii/S0377221721006111)
+[Cooperative Multi-Agent Reinforcement Learning for Inventory Management](https://arxiv.org/abs/2304.08769)
+[Deep Reinforcement Learning for inventory optimization with non-stationary uncertain demand](https://www.sciencedirect.com/science/article/abs/pii/S0377221723007646)
+[Leadtime effects and policy improvement for stochastic inventory control with remanufacturing](https://www.sciencedirect.com/science/article/abs/pii/S0925527300001353)
+[Using the Deterministic EOQ Formula in Stochastic Inventory Control](https://www.jstor.org/stable/2634597)
+[Reinforcement Learning Approach for Multi-period Inventory with Stochastic Demand](https://link.springer.com/chapter/10.1007/978-3-031-08333-4_23)
+[Continuous inventory control with stochastic and non-stationary Markovian demand](https://www.sciencedirect.com/science/article/abs/pii/S0377221718302327)
+[Inventory Management with Stochastic Lead Times](https://pubsonline.informs.org/doi/abs/10.1287/moor.2014.0671)
+[]()
+[]()
+[]()
+
+### Dicho por profesor en la reunión 2
+
+
+
 ### Análisis de datos
 
 - Hacer la filtración de datos. Ver si quizás hay datos con magnitudes muy distintas. Revisar los outliers y que hacer con ellos.
 - Ver si los datos tienen alguna pillería, como valores negativos o cosas así.
+- Ver como segmentar a los clientes, agruparlos. Ver también si hay ciertos productos que se compran en específico.
+- Ver si la demanda por producto es intermitente o no. Hay distintos modelos de pronóstico.
+- Ver si hay estacionareidad, si es que para cierta época ciertos productos se venden más o menos, cosas así.
+Por ejemplo, ver semanal/mensualmente la demanda de los medicamentos, ser capaz de que por ejemplo, quizás en junio
+se venden más respecto a todo el resto del año y de ahí desagregar por cada producto de medicamentos.
+- Podría hacer el análisis del porcentaje de ganancias de cada uno de los 49 subgrupos de manera mensual y semanal.
+ Es decir, para cada una de las semanas y para cada uno de los meses. Quizás podría hacer lo mismo con los 3 grupos grandes, no sé si vale la pena hacerlo con cada uno de los productos
+- Ver si hay estacionariedad en las demandas porque en dicho caso, tendríamos que realizar un análisis por estación. Ver si tener modelos por tramos
+- Graficar cosas desagregadas según distintos periodos de tiempo. Por tendencia mensual, semanal, diaria
+- Fijarse en la tendencia, la idea es hacer el modelo de pronóstico de eso x semana, mientras más preciso mejor. Hacerlo por día nomás. Por precisión, idealmente sería mejor hacerlo producto a producto.
+- Ver la importancia de lo que aporta en ganancia cada producto. Ver si por período de tiempo, o del total
+- Podría hacer una matriz de correlaciones de forma año-mes, para ver que productos se venden en conjunto unos con otros
+
+
+
 
 ### Modelos de pronóstico
 
@@ -24,51 +58,51 @@
 
 ### Validez estadística de los datos
 
+- No olvidar el test estadístico. Ajustar los datos a una distribución y tener en cuenta su valor 
+Chi-Cuadrado y el test de Kolmogorov-Smirnov. Luego se podría hacer lo mismo con cada uno de los 49
+subgrupos, para que esto sea más preciso. Hacerlo eventualmente con cada uno de los productos
 
 
 
-- No olvidar el test estadístico. Ajustar los datos a una distribución y tener en cuenta
-su valor Chi-Cudadrado y el test de Kolmogorov-Smirnov. Lo que podría hacer es partir de lo más agregado a lo menos desagregado.
-Buscar tendencias para cada uno de los 3 grupos principales, encontrar una distribución para cada uno.
-Luego hacer lo mismo con cada uno de los 49 subgrupos, para que esto sea más preciso.
-Por último, hacerlo con cada uno de los 1800 productos individuales, revisar cuantas veces se ha vendido cada uno de ellos,
-si hay algunos que se dejaron de vender, cuando fue la última venta, ver si sacarlo si es que tiene pocos datos.
-- Ver como segmentar a los clientes, agruparlos. Ver también si hay ciertos productos que se compran en específico.
-- Ver si la demanda por producto es intermitente o no. Hay distintos modelos de pronóstico.
-- Ver si hay estacionareidad, si es que para cierta época ciertos productos se venden más o menos, cosas así.
-Por ejemplo, ver semanal/mensualmente la demanda de los medicamentos, ser capaz de que por ejemplo, quizás en junio
-se venden más respecto a todo el resto del año y de ahí desagregar por cada producto de medicamentos.
-- Ver si puedo llegar con los modelos de pronósticos hechos, validados y con un modelo de optimización para la primera entrega.
-- Los KPI para la primera entrega van si o si, son las métricas de desempeño de la solución.
-Por ejemplo en los modelos de pronóstico nosotros tenemos métricas de error para ver que tan certero es el pronóstico, esos no son los KPI.
-Los KPI se asocian a la política de inventario, como una política es mejor que otra, bajo que criterios.
-- No es mala idea resolver el problema con OD, al menos en un sentido aproximado. Ver si podemos utilizar RL
-- Ver esto de los modelos ABC y Pareto
-- Graficar cosas desagregadas según distintos periodos de tiempo. Por tendencia mensual, semanal, diaria
-- La idea es agrupar los productos no tanto por temas de la cantidad demandada, sino por el tipo de demanda al que se enfrentan. Para poner ahí ahí los modelos de pronóstico
-- Una vez categorizados los productos lo que se puede hacer es buscar modelos de pronóstico por cada uno y ahí iterar para el que minimiza el error.
-- Fijarse en la tendencia, la idea es hacer el modelo de pronóstico de eso x semana, mientras más preciso mejor. Hacerlo por día nomás. Por precisión, idealmente sería mejor hacerlo producto a producto.
+
+### Resolución del problema
+
+
+### Tips
+
+- Una idea puede ser quizás agrupar los productos no tanto por temas de cantidad demandada, sino por el tipo
+de demanda al que se enfrentan. Esto para posteriormente elegir correctamente el modelo de pronóstico.
 - Categorizar la demanda, porque hay modelos que funcionan mejor que otros dependiendo del tipo de demanda.
+- Ver los modelos ABC y Pareto
+- Partir de lo más agregado a lo menos desagregado.
+- Revisar cada uno de los productos, revisar cuantas veces se ha vendido cada uno de ellos,
+si hay algunos que se dejaron de vender, cuando fue la última venta, ver si sacarlo si tiene pocos
+datos.
+- Se podría hacer un leadtime como variable aleatoria.
+- Para validar modelo de pronóstico, 75% datos para entrenar y 25% validar
+- Como presentar la información después, es importante eso.
 - Centrarse en como armar los modelos de pronóstico
-- Estudiar como funcionan los modelos de pronóstico, ya que al final esos son los inputs para el modelo,
-es lo primero que se necesita para poder simular después.
+- Los KPI para la primera entrega van si o si, son las métricas de desempeño de la solución.
+- No es mala idea resolver el problema con OD, al menos en un sentido aproximado. Ver si podemos utilizar RL
+- Los KPI se asocian a la política de inventario, como una política es mejor que otra, bajo que criterios.
+- Una vez categorizados los productos lo que se puede hacer es buscar modelos de pronóstico por cada uno y ahí iterar para el que minimiza el error.
+- Se podría minimizar una ponderación entre el MASE, el MES Y EL R2, para elegir.
+- Estudiar como funcionan los modelos de pronóstico, ya que al final esos son los inputs para el modelo, es lo primero que se necesita para poder simular después.
+
+
+
+
+- Ver si puedo llegar con los modelos de pronósticos hechos, validados y con un modelo de optimización para la primera entrega.
+Por ejemplo en los modelos de pronóstico nosotros tenemos métricas de error para ver que tan certero es el pronóstico, esos no son los KPI.
+
+
 
 Ir probando los modelos y ver cuales aplican más a cada tipo de demanda.
-- Se podría minimizar una ponderación entre el MASE, el MES Y EL R2, para elegir.
-- Una vez tenemos los modelos de pronóstico, tenemos harto
 - Pescar un producto de cada categoría para hacerlo representativo, y chantar todos los modelos en el gráfico y ver al ojo cuales se descartan si o si y cuales podrían ser útiles
-- Ver si hay estacionariedad en las demandas porque en dicho caso, tendríamos que realizar un análisis por estación. Ver si tener modelos por tramos
-- Como presentar la información después, es importante eso.
 - Encontrar la distribución de los datos, saber como distribuyen, que al final lo necesitamos como datos de entrada para el pronóstico
-- Ver la importancia de lo que aporta en ganancia cada producto. Ver si por período de tiempo, o del total
 - Hacer un heatmap quizás del volumen de ventas y de las ganancias por cada producto, subcategoría y así. Ver la rentabilidad del producto
 
-- Se podría hacer un leadtime como variable aleatoria
-
-- Analizar harto, mientras más mejor
-- Para validar modelo de pronóstico, 75% datos para entrenar y 25% validar
-- Podría hacer el análisis del porcentaje de ganancias de cada uno de los 49 subgrupos de manera mensual y semanal. Es decir, para cada una de las semanas y para cada uno de los meses. Quizás podría
-hacer lo mismo con los 3 grupos grandes, no sé si vale la pena hacerlo con cada uno de los productos
+- Podría hacer el análisis del porcentaje de ganancias de cada uno de los 49 subgrupos de manera mensual y semanal. Es decir, para cada una de las semanas y para cada uno de los meses. Quizás podría hacer lo mismo con los 3 grupos grandes, no sé si vale la pena hacerlo con cada uno de los productos
 - Hacer un análisis del stock que tienen hoy en día en términos de proporciones
     
 ## Cosas dichas por el profe
@@ -102,6 +136,9 @@ como atacarlo, que metodologías tenemos.
 [statsmodels](https://www.statsmodels.org/stable/index.html)
 
 [featuretools](https://www.featuretools.com/)
+
+
+## Reunión profesor 16 abril
 
 
 
@@ -154,5 +191,28 @@ Ver en Kaggle: Store Sales - Time Series Forecasting
 [How to Perform Customer Segmentation in Python - ML Tutorial](https://www.freecodecamp.org/news/customer-segmentation-python-machine-learning/)
 
 [Advanced Time Series Analysis](https://www.kaggle.com/code/bextuychiev/advanced-time-series-analysis-decomposition)
+
+[Fourier Tranform for Time Series]()
+
+[Demand Classification UK Retail](https://www.kaggle.com/code/danala26/demand-classification-uk-retail)
+
+[Autoregressive Moving Average ARMA(p,q) Models for Time Series Analysis](https://www.quantstart.com/articles/Autoregressive-Moving-Average-ARMA-p-q-Models-for-Time-Series-Analysis-Part-3/#:~:text=Choosing%20the%20Best%20ARMA(p,achieved%2C%20for%20particular%20values%20of%20.)
+
+
+[How does ACF & PACF identify the order of MA and AR terms?](https://stats.stackexchange.com/questions/281666/how-does-acf-pacf-identify-the-order-of-ma-and-ar-terms)
+
+[Choosing the best q and p from ACF and PACF plots in ARMA-type modeling](https://www.baeldung.com/cs/acf-pacf-plots-arma-modeling)
+
+[What are ACF and PACF Plots in Time Series Analysis?](https://ilyasbinsalih.medium.com/what-are-acf-and-pacf-plots-in-time-series-analysis-cb586b119c5d#:~:text=a%20time%20series.-,The%20ACF%20plot%20shows%20the%20correlation%20of%20a%20time%20series,%2C%20MA%2C%20and%20ARMA%20models.)
+
+[Identifying the numbers of AR or MA terms in an ARIMA model](https://people.duke.edu/~rnau/411arim3.htm#plots)
+
+[Autocorrelation and Time Series Methods](https://online.stat.psu.edu/stat462/node/188/)
+
+[Demand Classification](https://frepple.com/blog/demand-classification/)
+
+[https://datastud.dev/posts/python-seasonality-how-to](https://datastud.dev/posts/python-seasonality-how-to)
+
+[]()
 
 []()

@@ -4,6 +4,7 @@ import os
 import seaborn as sns
 import matplotlib.pyplot as plt
 import logging
+import sys
 
 from parametros import (PATH_STOCK_DATA,
                         PATH_SALES_DATA,
@@ -21,10 +22,12 @@ from funciones.plotting import graficar_seaborn, concatenar, graficar_ganancias
 logging.basicConfig(level=logging.DEBUG)
 plt.set_loglevel(level='warning')
 
-
+graficar = False
 datos_inventario = pd.read_csv(PATH_STOCK_DATA, sep=";")
-datos_inventario["group_description"].replace("medicamento", "medicamentos", inplace=True)
-datos_inventario["group_description"].replace("accesorio", "accesorios", inplace=True)
+datos_inventario["group_description"].replace(
+    "medicamento", "medicamentos", inplace=True)
+datos_inventario["group_description"].replace(
+    "accesorio", "accesorios", inplace=True)
 
 datos_venta = pd.read_csv(PATH_SALES_DATA, sep=";")
 datos_venta["date"] = pd.to_datetime(datos_venta.date, format='%Y-%m-%d')
@@ -32,7 +35,8 @@ datos_venta["date"] = pd.to_datetime(datos_venta.date, format='%Y-%m-%d')
 # Aquí juntamos ambos dataframes, ya que quiero tener las características de los ítems para lo que compró cada cliente
 datos_conjuntos = pd.merge(datos_venta, datos_inventario, on="item_id")
 
-datos_conjuntos.to_excel(os.path.join("datos", "datos_conjuntos.xlsx"), index=False)
+datos_conjuntos.to_excel(os.path.join(
+    "datos", "datos_conjuntos.xlsx"), index=False)
 
 columnas_mantener = ["date", "quantity", "description_2",
                      "group_description", "total (CLP)", "description", "cost (CLP)"]
@@ -44,7 +48,8 @@ logging.debug(database.info())
 database["ano"] = database["date"].dt.year
 database["mes"] = database["date"].dt.month
 
-db_grupos_ano = database.groupby(["ano", "group_description"]).size().reset_index(name='count')
+db_grupos_ano = database.groupby(
+    ["ano", "group_description"]).size().reset_index(name='count')
 
 
 grafico = sns.barplot(data=db_grupos_ano, x="ano",
@@ -53,16 +58,18 @@ plt.xlabel("Año")
 plt.ylabel("Tamaño ventas del grupo")
 plt.title("Tamaño ventas de cada grupo por año")
 
+if graficar:
+    graficar_seaborn(grafico,
+                     "Año",
+                     "Tamaño del grupo",
+                     "Tamaño ventas de cada grupo por año",
+                     PATH_VENTAS_ANUALES_GRUPO)
 
-graficar_seaborn(grafico,
-                 "Año",
-                 "Tamaño del grupo",
-                 "Tamaño ventas de cada grupo por año",
-                 PATH_VENTAS_ANUALES_GRUPO)
 
-
-database_subgrupos_anual = database.groupby(["ano", "description_2"]).size().reset_index(name='count')
-df_grouped_sorted = database_subgrupos_anual.sort_values(by=['ano', 'count'], ascending=[True, False])
+database_subgrupos_anual = database.groupby(
+    ["ano", "description_2"]).size().reset_index(name='count')
+df_grouped_sorted = database_subgrupos_anual.sort_values(
+    by=['ano', 'count'], ascending=[True, False])
 
 
 top_items_per_year = []
@@ -79,48 +86,63 @@ plt.title('Top 7 de elementos más vendidos por año')
 plt.xlabel('Año')
 plt.ylabel('Cantidad vendida')
 
-graficar_seaborn(grafico,
-                 path=PATH_SUBGRUPOS_MAS_VENDIDOS,
-                 size_x=10, size_y=6)
+if graficar:
+    graficar_seaborn(grafico,
+                     path=PATH_SUBGRUPOS_MAS_VENDIDOS,
+                     size_x=10, size_y=6)
 
 
 datos_agrupados = database.groupby(["ano", "mes", "group_description"]).size()
 datos_agrupados = datos_agrupados.reset_index(name='count')
 
 lista_anos = datos_agrupados["ano"].unique()
-for ano in lista_anos:
-    database_ano = datos_agrupados[datos_agrupados["ano"] == ano]
-    fig, ax = plt.subplots(figsize=(15, 7))
-    grafico = sns.barplot(
-        x=database_ano["mes"], y=database_ano["count"], hue=database_ano["group_description"], ax=ax)
-    plt.xlabel("Mes")
-    plt.ylabel("Ventas")
-    plt.title("Ventas por mes en cada año de los tres grandes grupos")
-    ax.legend(title=f"Año {ano}", bbox_to_anchor=(1, 1), loc="upper left")
+if graficar:
+    for ano in lista_anos:
+        database_ano = datos_agrupados[datos_agrupados["ano"] == ano]
+        fig, ax = plt.subplots(figsize=(15, 7))
+        grafico = sns.barplot(
+            x=database_ano["mes"], y=database_ano["count"], hue=database_ano["group_description"], ax=ax)
+        plt.xlabel("Mes")
+        plt.ylabel("Ventas")
+        plt.title("Ventas por mes en cada año de los tres grandes grupos")
+        ax.legend(title=f"Año {ano}", bbox_to_anchor=(1, 1), loc="upper left")
 
-    path = os.path.join("plots", "eda_conjunto", f"ventas_grupos_ano_{ano}")
-    fig = grafico.get_figure()
-    fig.savefig(path)
+        path = os.path.join("plots", "eda_conjunto",
+                            f"ventas_grupos_ano_{ano}")
+        fig = grafico.get_figure()
+        fig.savefig(path)
 
-    plt.close()
+        plt.close()
 
 
 # Análisis de las ventas de cada uno de los tres grupos grandes de manera diaria
 database_grupos_grandes_diario = database.groupby(
     ["group_description", "date"]).size().reset_index()
 database_grupos_grandes_diario.columns = ["Grupo", "Fecha", "Ventas"]
-database_grupos_grandes_diario.to_excel(PATH_VENTAS_DIARIAS_GRUPO_DATA, index=False)
+database_grupos_grandes_diario.to_excel(
+    PATH_VENTAS_DIARIAS_GRUPO_DATA, index=False)
 # Aquí guardar el plot quizás, si es que lo necesitamos. Traspasarlo del jupyter
 # Análisis ventas 49 subcategorías forma diaria
-database_subcategorias_diario = database.groupby(["description_2", "date"]).size().reset_index()
+database_subcategorias_diario = database.groupby(
+    ["description_2", "date"]).size().reset_index()
 database_subcategorias_diario.columns = ["Subcategoría", "Fecha", "Cantidad"]
-database_subcategorias_diario.to_excel(PATH_VENTAS_DIARIAS_SUBGRUPO_DATA, index=False)
+database_subcategorias_diario.to_excel(
+    PATH_VENTAS_DIARIAS_SUBGRUPO_DATA, index=False)
 # De ahí poner el código para guardar los plots. Traspasarlo del jupyter, dejarlo en una función
 # o algo así
 # Análisis ventas 1645 productos forma diaria
-database_productos_diario = database.groupby(["description", "date"]).size().reset_index()
-database_productos_diario.columns = ["Descripción", "Fecha", "Cantidad"]
-database_productos_diario.to_excel(PATH_VENTAS_DIARIAS_PRODUCTOS_DATA, index=False)
+# database_productos_diario = database.groupby(["description", "date"]).size().reset_index()
+
+database_productos_diario = database.groupby(["description", "date"]).agg({'quantity': 'sum', 'group_description': 'first'}).reset_index()
+
+# print(resultado)
+# print(database_productos_diario)
+# print(database)
+# sys.exit()
+database_productos_diario.columns = [
+    "Descripción", "Fecha", "Cantidad", "Grupo"]
+database_productos_diario.to_excel(
+    PATH_VENTAS_DIARIAS_PRODUCTOS_DATA, index=False)
 
 # Ahora viene el análisis semanal
 copy = database.rename(columns={"date": "fecha"})
@@ -152,41 +174,46 @@ database_productos_semanal = (copy.groupby(['description', pd.Grouper(key='fecha
                               .reset_index()
                               .sort_values('fecha'))
 
-database_productos_semanal.to_excel(PATH_VENTAS_SEMANALES_PRODUCTOS_DATA, index=False)
+database_productos_semanal.to_excel(
+    PATH_VENTAS_SEMANALES_PRODUCTOS_DATA, index=False)
 
 # Luego vemos las ganancias. De momento es histórico. De ahí verlo por mes y semana quizás
 
-ganancias_total_subcategoria = database.groupby(["description_2"]).sum().reset_index()
+ganancias_total_subcategoria = database.groupby(
+    ["description_2"]).sum().reset_index()
 ganancias = ganancias_total_subcategoria["total (CLP)"].sum()
-ganancias_total_subcategoria["porcentaje_ganancias"] = ganancias_total_subcategoria["total (CLP)"] / ganancias
+ganancias_total_subcategoria[
+    "porcentaje_ganancias"] = ganancias_total_subcategoria["total (CLP)"] / ganancias
 
-porcentajes = ganancias_total_subcategoria[["description_2", "porcentaje_ganancias"]]
+porcentajes = ganancias_total_subcategoria[[
+    "description_2", "porcentaje_ganancias"]]
 
 
 # Ordenar esto de ahí si es necesario
-
-graficar_ganancias(porcentajes,
-                   "description_2",
-                   "porcentaje_ganancias",
-                   "Categoría",
-                   "Porcentaje representativo ganancias",
-                   'Porcentajes de las ganancias de cada uno de los subgrupos de manera histórica',
-                   os.path.join("plots", "eda_conjunto", "ganancias_subgrupos.png"))
+if graficar:
+    graficar_ganancias(porcentajes,
+                       "description_2",
+                       "porcentaje_ganancias",
+                       "Categoría",
+                       "Porcentaje representativo ganancias",
+                       'Porcentajes de las ganancias de cada uno de los subgrupos de manera histórica',
+                       os.path.join("plots", "eda_conjunto", "ganancias_subgrupos.png"))
 
 
 ganancias_total_grupos = database.groupby(
     ["group_description"]).sum().reset_index()
 ganancias_grupos = ganancias_total_grupos["total (CLP)"].sum()
-ganancias_total_grupos["porcentaje_ganancias"] = ganancias_total_grupos["total (CLP)"] / ganancias_grupos
+ganancias_total_grupos["porcentaje_ganancias"] = ganancias_total_grupos[
+    "total (CLP)"] / ganancias_grupos
 
-
-graficar_ganancias(ganancias_total_grupos,
-                   "group_description",
-                   "porcentaje_ganancias",
-                   "Categoría",
-                   "Porcentaje representativo ganancias",
-                   "Porcentajes de las ganancias de cada uno de los grupos de manera histórica",
-                   os.path.join("plots", "eda_conjunto", "ganancias_grupos.png"))
+if graficar:
+    graficar_ganancias(ganancias_total_grupos,
+                       "group_description",
+                       "porcentaje_ganancias",
+                       "Categoría",
+                       "Porcentaje representativo ganancias",
+                       "Porcentajes de las ganancias de cada uno de los grupos de manera histórica",
+                       os.path.join("plots", "eda_conjunto", "ganancias_grupos.png"))
 
 
 # columnas_a_sumar = ["quantity", "total (CLP)"]
@@ -221,17 +248,17 @@ ganancias_total_productos["ingreso_marginal"] = ganancias_total_productos[
 logging.debug(ganancias_total_productos)
 # ganancias_total_productos.sort_values(by=["porcentaje_ganancias"], ascending=False, inplace=True)
 
-ganancias_marginales_totales = ganancias_total_productos["ingreso_marginal"].sum()
-ganancias_total_productos["porcentaje_ingreso_marginal"] = ganancias_total_productos["ingreso_marginal"] / ganancias_marginales_totales
+ganancias_marginales_totales = ganancias_total_productos["ingreso_marginal"].sum(
+)
+ganancias_total_productos["porcentaje_ingreso_marginal"] = ganancias_total_productos["ingreso_marginal"] / \
+    ganancias_marginales_totales
 
-ganancias_total_productos.sort_values(by=["porcentaje_ingreso_marginal"], ascending=False, inplace=True)
+ganancias_total_productos.sort_values(
+    by=["porcentaje_ingreso_marginal"], ascending=False, inplace=True)
 ganancias_total_productos["porcentaje_marginal_acumulado"] = ganancias_total_productos["porcentaje_ganancias"].cumsum()
 
 
 logging.debug(ganancias_total_productos)
 
-ganancias_total_productos.to_excel(os.path.join("datos", "ganancias_total_productos.xlsx"), index=False)
-
-
-
-
+ganancias_total_productos.to_excel(os.path.join(
+    "datos", "ganancias_total_productos.xlsx"), index=False)

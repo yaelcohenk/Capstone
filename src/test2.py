@@ -27,5 +27,8 @@ ax.axvline(x=75, ymin=0, ymax=0.76, color='r', linestyle='--', label='80% del po
 ax.scatter(75, 0.8, color="red")
 ax.text(75, 0.015, '75', ha='center', color="red")
 ax.axhline(y=1, color='r', linestyle='--')
+plt.title("Porcentaje del ingreso marginal acumulado de los productos más vendidos")
 plt.legend()
 plt.show()
+
+fig.savefig("grafico_pareto.png")
