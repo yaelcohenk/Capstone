@@ -132,15 +132,17 @@ database_subcategorias_diario.to_excel(
 # o algo así
 # Análisis ventas 1645 productos forma diaria
 # database_productos_diario = database.groupby(["description", "date"]).size().reset_index()
+# print(database)
 
-database_productos_diario = database.groupby(["description", "date"]).agg({'quantity': 'sum', 'group_description': 'first'}).reset_index()
+database_productos_diario = database.groupby(["description", "date"]).agg({'quantity': 'sum', 'group_description': 'first', 'description_2': 'first'}).reset_index()
 
+# sys.exit()
 # print(resultado)
 # print(database_productos_diario)
 # print(database)
 # sys.exit()
 database_productos_diario.columns = [
-    "Descripción", "Fecha", "Cantidad", "Grupo"]
+    "Descripción", "Fecha", "Cantidad", "Grupo", "Subgrupo"]
 database_productos_diario.to_excel(
     PATH_VENTAS_DIARIAS_PRODUCTOS_DATA, index=False)
 
