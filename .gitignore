@@ -3,3 +3,5 @@ src/__pycache__
 src/funciones/__pycache__
 src/datos/.ipynb_checkpoints
 .ipynb_checkpoints
+src/lightning_logs
+src/*.ckpt
