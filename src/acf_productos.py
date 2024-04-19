@@ -21,7 +21,7 @@ mas_30_vendidos = ventas_totales_prods.index.to_list()
 
 contador = 0
 
-# Hacer refactor de este código
+# Hacer refactor de este código. Pasar todo a una función y listo
 for producto in productos_vigentes:
     if producto in mas_30_vendidos:
         try:
