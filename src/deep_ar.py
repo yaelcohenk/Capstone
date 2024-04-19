@@ -95,7 +95,7 @@ train_dataloader = training.to_dataloader(train=True, batch_size=batch_size, num
 val_dataloader = validation.to_dataloader(train=False, batch_size=batch_size, num_workers=0)
 pl.seed_everything(42)
 
-trainer = pl.Trainer(accelerator="cpu", gradient_clip_val=1e-1)
+trainer = pl.Trainer(accelerator="gpu", gradient_clip_val=1e-1)
 net = DeepAR.from_dataset(
     training,
     learning_rate=3e-2,
@@ -108,20 +108,68 @@ net = DeepAR.from_dataset(
 
 
 
-res = Tuner(trainer).lr_find(
-    net,
-    train_dataloaders=train_dataloader,
-    val_dataloaders=val_dataloader,
-    min_lr=1e-5,
-    max_lr=1e0,
-    early_stop_threshold=400,
-)
+# res = Tuner(trainer).lr_find(
+    # net,
+    # train_dataloaders=train_dataloader,
+    # val_dataloaders=val_dataloader,
+    # min_lr=1e-5,
+    # max_lr=1e0,
+    # early_stop_threshold=400,
+# )
 
-print(f"suggested learning rate: {res.suggestion()}")
+# print(f"suggested learning rate: {res.suggestion()}")
 # fig = res.plot(show=True, suggest=True)
 # fig.show()
 # fig.close()
-net.hparams.learning_rate = res.suggestion()
+# net.hparams.learning_rate = res.suggestion()
+net.hparams.learning_rate = 3.54e-5
+
+early_stop_callback = EarlyStopping(monitor="val_loss", min_delta=1e-4, patience=10, verbose=False, mode="min")
+trainer = pl.Trainer(
+    max_epochs=30,
+    accelerator="gpu",
+    enable_model_summary=True,
+    gradient_clip_val=0.1,
+    callbacks=[early_stop_callback],
+    limit_train_batches=2,
+    enable_checkpointing=True,
+)
+
+
+net = DeepAR.from_dataset(
+    training,
+    learning_rate=1e-2,
+    log_interval=10,
+    log_val_interval=1,
+    hidden_size=30,
+    rnn_layers=2,
+    optimizer="Adam",
+    loss=MultivariateNormalDistributionLoss(rank=30),
+)
+
+trainer.fit(
+    net,
+    train_dataloaders=train_dataloader,
+    val_dataloaders=val_dataloader,
+)
+
+
+best_model_path = trainer.checkpoint_callback.best_model_path
+best_model = DeepAR.load_from_checkpoint(best_model_path)
+
+# best_model = net
+predictions = best_model.predict(val_dataloader, trainer_kwargs=dict(accelerator="gpu"), return_y=True)
+
+raw_predictions = net.predict(
+    val_dataloader, mode="raw", return_x=True, n_samples=100, trainer_kwargs=dict(accelerator="cpu")
+)
+
+
+series = validation.x_to_index(raw_predictions.x)["Descripción"]
+for idx in range(60):  # plot 10 examples
+    best_model.plot_prediction(raw_predictions.x, raw_predictions.output, idx=idx, add_loss_to_title=True)
+    plt.suptitle(f"Series: {series.iloc[idx]}")
+    plt.show()
 
 
 # print()

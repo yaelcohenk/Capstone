@@ -1,0 +1,1001 @@
+categorical_groups: {}
+cell_type: LSTM
+dropout: 0.1
+embedding_labels:
+  "Descripci\xF3n":
+    ' repti resercoir ': 0
+    acana freshwater fish - perro 2: 1
+    acana homestead harvest gato 1,8 kg: 2
+    acana pork & squash - perro 5,9: 3
+    acana wild atlantic - perro 11,4 kg: 4
+    "adaptil collar small\_hasta 10 kg\_ ": 5
+    advantage gatos  4-8: 6
+    advantix 4-10 kg: 7
+    advocate 1 x 0.4 ml: 8
+    afp chill out ice bandana, medium: 9
+    afp chill out ice bandana, small: 10
+    afp chill out mat de enfriamiento large: 11
+    afp chill out mat de enfriamiento medium: 12
+    afp chill out pista hielo: 13
+    afp classic felicy ardilla: 14
+    afp classic justin castor: 15
+    afp classic orel conejo: 16
+    afp dog sparkle cepillo dedo/pasta: 17
+    afp furry ball flufy rosa: 18
+    afp lamb cuddle tail wand cat: 19
+    afp lamb dog cuddle con nudos: 20
+    afp lamb triplets mice: 21
+    afp litte buddy blanky piggy: 22
+    afp mighty rex toro: 23
+    afp modern cat candy: 24
+    afp modern cat flash: 25
+    afp modern cat fluffy wand: 26
+    afp modern cat surf: 27
+    afp modern cat tinkly: 28
+    afp pups cuerda suave mini: 29
+    afp pups cuerda suave multitextura: 30
+    afp travel dog arnes seguridad l: 31
+    afp travel dog arnes seguridad m: 32
+    afp treat hider ardilla: 33
+    alfombrilla 30 unid: 34
+    alfombrilla de entrenamiento de cesped: 35
+    alimento loros granulado 1kg: 36
+    alimento pelletizado nature para cobayo 700 gr: 37
+    allercalm: 38
+    allermyul: 39
+    amity sp low grain chicken adult 4 kg: 40
+    amity sp low grain chicken puppy 14 kg: 41
+    amity sp low grain salmon adult 4 kg: 42
+    ampolleta repti glo 5.0 tropical 26 w: 43
+    apache cat collar: 44
+    apoquel 3,6 mg x 20 comprimidos: 45
+    apoquel 5,4 mg x 20 comprimidos: 46
+    arnes de paseo grande g.a: 47
+    arnes de paseo mediano g.a: 48
+    'arnes de seguridad para auto talla: m': 49
+    arnes nacional chico a. doctor: 50
+    arnes nacional extra grande a. doctor: 51
+    arnes talla l: 52
+    arnes y correa anti-tirones: 53
+    "arn\xE9s adjustable cat ": 54
+    artriofin 88 mg. x 10 comp.: 55
+    bandeja sanit. gato l / betta, c/marco: 56
+    bayticol collar 35cm: 57
+    baytril comp.50 un: 58
+    "ba\xF1o p/gato prima (cerrado)": 59
+    "ba\xF1o sanitario grande con cubierta gris": 60
+    bebedera con acero inoxidable para gato: 61
+    bebedero/comedero para ave: 62
+    "belcando b\xFAfalo de agua 400 gr": 63
+    bichon frise (my family): 64
+    big bone aluminum light blue (my family): 65
+    big bone aluminum purple (my family): 66
+    big bone golden brass (my family): 67
+    big hair kitty: 68
+    big heart aluminum blue (my family): 69
+    big heart aluminum light blue (my family): 70
+    big heart aluminum pink (my family): 71
+    big round aluminum black (my family): 72
+    big round aluminum blue (my family): 73
+    big round aluminum red (my family): 74
+    biopower: 75
+    biotivet plus 200 mg x 10 comp: 76
+    blast collar small: 77
+    blast h-harness medium: 78
+    blast leash small: 79
+    bliss adjustable air mesh harness large: 80
+    bliss adjustable air mesh harness medium: 81
+    blocks cat collar: 82
+    blocks leash large: 83
+    body cobre talla 0: 84
+    body cobre talla 1: 85
+    body cobre talla 2 ( 2 - 3 kg ): 86
+    body cobre talla 3 ( 3- 4,5 kg ): 87
+    body cobre talla 4 ( 4,5- 5,5 kg ): 88
+    body gato 0 rosado: 89
+    body gato 0 verde: 90
+    body gato 00 verde: 91
+    body perro 4 rosado: 92
+    bolso cabina negro: 93
+    bordeau adj. air mesh harness large: 94
+    botella 100 ml peq animales: 95
+    botella 1000 ml peq animales: 96
+    botella 250 ml peq animales: 97
+    botella de agua con contenedor de comida: 98
+    botella de paseo 1 un: 99
+    bowl 17 cm: 100
+    "bowl de pl\xE1stico": 101
+    bozal gato a.doctor: 102
+    bravecto 1.000 mg perro 20 a 40 kg: 103
+    bravecto 112,5mg perro 2 a 4,5 kg: 104
+    bravecto 250 mg perro 4,5 a 10kg: 105
+    bravecto 500 mg perro 10 a 20 kg: 106
+    bravecto gato 1.2 a 2.8 kg: 107
+    bravecto gatos 6.25 a 12.5 kg: 108
+    bravery alimento seco natural 7kg: 109
+    "bravery at\xFAn y vegetales alimento h\xFAmedo": 110
+    bravery chicken adult cat: 111
+    bravery chicken adult cat 2 kg: 112
+    bravery chicken adult cat 7 kg: 113
+    bravery chicken adult cat sterilized 2 kg: 114
+    bravery chicken adult large/medium breeds 12 kg: 115
+    bravery chicken mini adult small breeds 2 kg: 116
+    bravery chicken mini adult small breeds 7 kg: 117
+    bravery chicken puppy large/medium breeds 12 kg: 118
+    bravery iberian pork adult large/medium breeds 12 kg: 119
+    bravery iberian pork mini adult small breeds 2 kg: 120
+    bravery lamb adult large/medium b. 4 kg: 121
+    bravery lamb mini adult small breed 2 kg: 122
+    bravery light iberian pork adult l/m breeds 4 kg: 123
+    bravery light iberian pork mini adult small breeds 2 kg: 124
+    bravery light iberian pork mini adult small breeds 7 kg: 125
+    "bravery lomo de at\xFAn y zanahoria": 126
+    bravery salmon adult cat 7 kg: 127
+    bravery salmon adult cat sterilized 7 kg: 128
+    bravery salmon adult large/medium breed 12 kg: 129
+    bravery salmon adult large/medium breed 4 kg: 130
+    bravery salmon mini adult small breeds 2 kg: 131
+    bravery salmon mini puppy small breed 2 kg: 132
+    bravery salmon mini puppy small breed 7 kg: 133
+    bravery salmon puppy large/medium breed 4 kg: 134
+    brit care adult large breed l&r 12 kg: 135
+    brit care adult medium breed l&r 12 kg: 136
+    brit care adult small breed l&r 3 kg: 137
+    brit care adult small breed l&r 7,5 kg: 138
+    brit care adulto large salmon & potato 12 kg: 139
+    brit care cat fillets in gravy turkey & savory salmon 85 g: 140
+    brit care cat grain-free haircare healthy & shiny coat 2 kg: 141
+    brit care cat grain-free haircare healthy & shiny coat 7 kg: 142
+    brit care cat grain-free senior weight control 2 kg: 143
+    brit care cat grain-free senior weight control 7 kg: 144
+    brit care cat grain-free sterilized sensitive 7 kg: 145
+    brit care cat grain-free sterilized weight control 2 kg: 146
+    brit care cat kitten (crazy) 2 kg: 147
+    'brit care cat kitten fillets in gravy with tender turkey 85 ': 148
+    brit care cat kitten tuna fillets 70grs: 149
+    brit care cat sterilized tuna pate with shrimps 70grs: 150
+    brit care cat sterilized urinary 7kg: 151
+    brit care cat tuna with chicken and milk 70grs: 152
+    brit care dog show champion salmon 12 kg: 153
+    brit care duck endurance 12 kg: 154
+    brit care duck endurance 3 kg: 155
+    brit care gf adult salmon 1 kg: 156
+    brit care gf adult salmon 12 kg: 157
+    brit care gf adult salmon 3 kg: 158
+    brit care gf puppy salmon 1 kg: 159
+    brit care gf senior & light salmon 3 kg: 160
+    brit care puppy l&r  12 kg: 161
+    brit care puppy l&r 3 kg: 162
+    brit care weight loss rabbit 12 kg: 163
+    brit mono protein turkey & sweet potato 400 g: 164
+    brit mono protein turkey 400 g: 165
+    brit pate & meat puppy 400 g: 166
+    brit pate & meat salmon 400 gr: 167
+    brit pate & meat turkey 400 g: 168
+    broadline pipeta gato 2,5 a 7,5 kg: 169
+    cadena cordon 2 mm a.doctor: 170
+    cadena cordon 3 mm a.doctor: 171
+    calefactor aut. 100w - boyu: 172
+    calmedrag 30 comp.: 173
+    cama chiporro xl catapet: 174
+    cama chiporro xxl catapet: 175
+    cama cubo chica cata pet: 176
+    cama cubo grande cata pet: 177
+    cama para perro azumpets: 178
+    cama para perro negra zeedog: 179
+    'camon juguete perro pelota tenis c/ sonido 2 un ': 180
+    canine - feline a/d lata x 156 gms: 181
+    canine digestive care i/d lata 156grs: 182
+    canine i/d lata x low fat 370 grs: 183
+    "capa arn\xE8 talla 3 cata pets": 184
+    "capa arn\xE8 talla 4 cata pets": 185
+    "capa arn\xE8 talla5 cata pets": 186
+    capa impermeable azul: 187
+    capa polar c/chiporro t-s (1)  a. doctor: 188
+    capa polar chiporro t/0 cata pets: 189
+    capa polar chiporro t/2 cata pets: 190
+    capa polar chiporro t/4 cata pets: 191
+    capa polar chiporro t/5 cata pets: 192
+    capa polar chiporro t/7 cata pets: 193
+    casa igloo large: 194
+    casa igloo medium: 195
+    casa igloo small (hamster): 196
+    "cat love rasgu\xF0ador  rampa ": 197
+    "catapet cama chiporro chica n\xBA1": 198
+    "catapet cama chiporro gde. n\xBA3": 199
+    "catapet cama chiporro med. n\xBA2": 200
+    catit plat- tumbler-be: 201
+    "catit rasgu\xF0ador  moderno jungla": 202
+    catlove raton mecanico azul: 203
+    catnip crinkle&toss papers: 204
+    catnip spray hierba gatera: 205
+    "ca\xF1a con pompones": 206
+    cerenia comp. 24 mg.: 207
+    'chaqueta chiporro verde ': 208
+    chip animall tag: 209
+    chocolate labrador  (my family): 210
+    churu premio cremoso natural para perro: 211
+    ciprovet x 5 ml: 212
+    clever pet bowl acero inox colores: 213
+    clever pet bowl ondas: 214
+    clindabone: 215
+    coastal comfort soft arnes lima m: 216
+    coastal comfort soft arnes morado s: 217
+    coastal fashion collar black skulls: 218
+    coastal fashion collar blossoms: 219
+    coastal fashion collar fish: 220
+    coastal fashion collar hearts: 221
+    coastal glow in the dark collar fish: 222
+    coastal k9 explorer arnes acolchado zafiro s: 223
+    coastal k9 explorer trailla naranja 1,8 m: 224
+    coastal lazer brite collar galaxy xs: 225
+    coastal lazer brite collar lime skulls l: 226
+    coastal lazer brite collar lime skulls xs: 227
+    coastal lazer brite collar rainbow hearts l: 228
+    coastal lazer brite trailla bones m: 229
+    coastal lazer brite trailla lime skulls l 1.8m: 230
+    coastal lazer brite trailla rainbow hearts m 1.8m: 231
+    coastal lazer brite trailla skulls s: 232
+    coastal maslow  plato paw gris 1596 ml: 233
+    coastal maslow  plato paw gris 828 ml: 234
+    coastal maslow  plato paw rosado 1596 ml: 235
+    coastal maslow  plato pup azul 384 ml: 236
+    coastal maslow  plato pup verde 1596 ml: 237
+    coastal maslow plato cobre martillado 1182 ml: 238
+    coastal maslow plato cobre martillado 2188 ml: 239
+    coastal maslow plato dry ears gris 887 ml: 240
+    coastal new earth collar de soya menta xs: 241
+    coastal new earth trailla de soya indigo 1,8 m: 242
+    coastal new earth trailla de soya menta 1,8 m: 243
+    coastal sparkle collar broche metal  azul xs: 244
+    coastal sparkle trailla plata 1,8 m: 245
+    coastal style collar bones m: 246
+    coastal style collar brown paw l: 247
+    coastal style collar plaid m: 248
+    coastal style collar resolve xs: 249
+    coastal style collar teal purple diamonds m: 250
+    coastal style collar teal purple diamonds s: 251
+    coastal style trailla brown paw l 1,8 m: 252
+    coastal style trailla pink dots l 1,8 m: 253
+    coastal style trailla red bones m 1,8 m: 254
+    coastal style trailla teal purple diamonds m 1,8 m: 255
+    coastal sublime collar chevrons l: 256
+    coastal sublime collar cubes l: 257
+    coastal sublime collar pink l: 258
+    coastal sublime collar pink s/m: 259
+    coastal sublime collar pink xs: 260
+    coastal sublime collar purple s/m: 261
+    coastal sublime collar yellow s/m: 262
+    coastal sublime collar yellow xs: 263
+    coastal sublime trailla cubes/purple: 264
+    coastal sublime trailla flower pink/pink: 265
+    coche pet: 266
+    collar c/hueso grande a. doctor: 267
+    "collar cuero n\xBA 2 (g. araya)": 268
+    "collar cuero n\xBA 3 ( g. araya)": 269
+    "collar cuero n\xBA 4 (g. araya)": 270
+    "collar cuero n\xBA 5 (g. araya)": 271
+    collar expandible con hebilla negro: 272
+    collar gato brillantes a.doct.: 273
+    collar gato elasticado a.doctor: 274
+    "collar isabelino 10 cm n\xBA(1)": 275
+    "collar isabelino 12.5 cm n\xBA(2)": 276
+    "collar isabelino 15 cm n\xBA(3)": 277
+    "collar isabelino 40 cm n\xBA(7)": 278
+    columbia air mesh harness medium: 279
+    columbia cat collar: 280
+    "comedero acero inox. con enganche, 150 ml/\xF8 7 cm (aves)": 281
+    comedero interactivo multi feeder: 282
+    complete grain free ferret diet 2.5kg.: 283
+    contralac 20 x 16 comp.: 284
+    cordon amarre 16 mm (corto) a. doctor: 285
+    corner deterrent spring: 286
+    "corral peque\xF1os animales a.c": 287
+    correa trailla 2 mt g.a: 288
+    cuerda anudada tricolor s: 289
+    cuna india chica catapet: 290
+    cytopoint 10 mg iny 3-10 k: 291
+    daily stuff cama peluche: 292
+    daily stuff transportadora route 1: 293
+    daisy (my family): 294
+    "dermisolona 30 ml suspensi\xF3n": 295
+    desparasitante bravecto para gatos: 296
+    'dingo dental stick huesitos ': 297
+    'dipramida 0,5% 20 ml ': 298
+    dispensador alimento maya / m (700 gr.): 299
+    dispensador alimento maya l / (1500): 300
+    dispensador small: 301
+    do cinturon seguridad auto 25mmx55-87cm: 302
+    dog a dent cepillo: 303
+    "dog arn\xE9s negro": 304
+    dog bust-it elimina olor y manchas 710ml: 305
+    dogit alfombrilla educadora  medium 14un: 306
+    dogit bebedero gravedad 1 lt: 307
+    dogit cable enganche 4.5m mas estaca: 308
+    dogit cuerdas anudadas celeste "s": 309
+    dogit cuerdas anudadas rosada "s": 310
+    dogit cuerdas anudadas tricolor "l": 311
+    dogit dispensador bolsa fecas azul 2x20: 312
+    dogit estaca de enganche manilla roja: 313
+    "dogit pa\xF1ales desechables, m (7-16kg)": 314
+    dogti toallitas de limpieza ojos 70un: 315
+    doguivit adulto: 316
+    dogxtreme pupy pollo y arroz: 317
+    doximicin jarabe x 60 ml: 318
+    dreamwell cama donut gris-blanca: 319
+    dreamwell cama rectangular gris/blanco: 320
+    dreamwell cama redonda gris/blanco 56cm: 321
+    'drontal cat 2 comprimidos ': 322
+    drontal cat pote clinico x un: 323
+    'drontal cats  1 comprimido (pote 24 un) ': 324
+    drontal plus x 2 comprimidos saborizados: 325
+    "drontal puppy\_\_": 326
+    duo bowl black: 327
+    ehlifloxacino (enrofloxacino 50 mg.): 328
+    ehlifloxacino 150 ml x 10: 329
+    electrovet soluc oral 500ml: 330
+    endogard 30 15/30kilos x 2 tabletas: 331
+    english bulldog (my family): 332
+    eukanuba adulto large breed 15 kg: 333
+    eukanuba adulto medium 13.6 kg: 334
+    eukanuba puppy large breed 15 kg: 335
+    eukanuba puppy medium breed 15 kg: 336
+    eukanuba puppy small 7.5 kg: 337
+    'exo terra filtro int rept clear 150  ': 338
+    exo terra placa calefactora 25 w: 339
+    fancy feast mousse pez camaron 85 g: 340
+    fancy feast petits filets atun 85 g: 341
+    fancy feast tartare atun 85 g: 342
+    fel urinary chi pouch 85 gr: 343
+    'fiprokill spray x 250 ml ': 344
+    fish sticks: 345
+    florafix pet pasta probiotico 15 grs: 346
+    "front range arn\xE9s naranjo": 347
+    frontline 250 ml: 348
+    frontline pipeta perro 20-40kg: 349
+    frontline plus pipeta perro 10-20 kg.: 350
+    frontline plus pipeta perro 2-10 kg.: 351
+    furminator long hair deshedding tolls cat, sm: 352
+    furminator long hair deshedding tools for dog, sm: 353
+    galgovet: 354
+    gastrointestinal cat pouch 85 gr: 355
+    gel otico plus x 11.5 grs.: 356
+    go bowl black small: 357
+    go buggy: 358
+    gotham flyharness size 4: 359
+    gumi juguete hilo dental seda "mini": 360
+    gumi juguete mastica/limpia congelable-s: 361
+    habitat para hamster kleo vip: 362
+    habitrail classic kit: 363
+    habitrail kit mini: 364
+    habitrail ovo loft: 365
+    habitrail ovo mini: 366
+    habitrail ovo suite: 367
+    happy home educador sanitario 230 ml.: 368
+    happy home repelente para mascotas 1 lt.: 369
+    hartz chew n clean tuff bone dog toy - small: 370
+    hartz frisky frolic dog toy: 371
+    hartz jfc twirl & whirl cat toy: 372
+    hartz tiny dog jungle plush dog toy: 373
+    harvest stacks timothy/chamomile 1 kg: 374
+    hematon b12 jarabe 100ml: 375
+    hidrocortisona dosis: 376
+    hidrocortisona spray 76ml: 377
+    high range reptile thermometer: 378
+    honey cat collar: 379
+    honey collar extra small: 380
+    honey collar small: 381
+    honey leash large: 382
+    honey leash small: 383
+    hueso entretenido: 384
+    hueso masticable con textura: 385
+    i'm the king (my family): 386
+    itraskin susp. oral 120 ml: 387
+    "jaula aves med. dise\xF1os y colores": 388
+    "jaula aves peq. dise\xF1os": 389
+    jaula bella peq. animalles: 390
+    jaula cage cavie 60: 391
+    jaula cage cavie 80 grey: 392
+    jaula cage rabbit 100 grey: 393
+    jaula transporte pratiko metal 1: 394
+    jaula tubby pequenos animales: 395
+    jg air wand con juguete: 396
+    juguete limpieza dental ball: 397
+    juguete limpieza dental doble: 398
+    karsivan 50 mg: 399
+    kertesin 20 mg: 400
+    kitten instinctive 165grsx6un: 401
+    kong extreme dental con cuerda: 402
+    kong wobbler cat small: 403
+    koralen 20 mg (oral): 404
+    l. w.catita en percha , medium: 405
+    l.w. bebedero hermetico 100 ml: 406
+    l.w. comedero o bebedero gde 125 ml: 407
+    labyes tears: 408
+    lactadiet 7.5 gr sobre calostro: 409
+    laguna cat collar: 410
+    laguna collar medium: 411
+    laguna leash small: 412
+    le salon cepillo alisador goma large: 413
+    le salon cepillo goma c/mango curvo: 414
+    le salon eesentials cepillo de goma oval: 415
+    "le salon esse corta u\xF0a alicate l/dog": 416
+    "le salon esse. corta u\xF0a alicate s/cat": 417
+    le salon essential cepillo carda small: 418
+    le salon essentials cepillo combinado sm: 419
+    le salon essentials peine combinado smal: 420
+    le salon essentials peine desenredar: 421
+    le salon essentials rasqueta larga: 422
+    light blue glam paw (my family): 423
+    little jacs snack: 424
+    living world alimento seco cuy: 425
+    loft dog house: 426
+    lola h-harness medium: 427
+    lw bebedero vidrio  eco +  - 177 ml: 428
+    lw bebedero vidrio  eco +  - 355 ml: 429
+    lw carpa animales mediana: 430
+    lw nido de bambu, large: 431
+    'lw set arnes y correa peq animales  m ': 432
+    'lw set arnes y correa peq animales  s ': 433
+    "lw small animal corta u\xF1a": 434
+    lw transportadora peq. animales salmon/g: 435
+    mamadera  (kit)  115 ml: 436
+    mamadera  (kit) 59 ml.: 437
+    mamistop 100 gr. (gato): 438
+    mamistop 125 gr (perro): 439
+    manitol 500ml: 440
+    mastilac jeringa: 441
+    mebermic: 442
+    mebermic  x 1 comp.: 443
+    meloxivet 60 ml: 444
+    military big (my family): 445
+    milpro gatito x 2 comp 0.5 - 2 kg: 446
+    milpro gato x 2 comp + 2 kg: 447
+    mixantip plus 15 gr: 448
+    mm tirebiterii small 9.5 cm c/cuerda: 449
+    monge indoor chicken de 1,5 kg: 450
+    monge maxi p&j chicken 1x12 kg: 451
+    monge medium adult chicken de 3 kg: 452
+    monge medium p&j chicken de 3 kg: 453
+    monge mini adult chicken 7,5 kg: 454
+    monge mini adult chicken de 3 kg: 455
+    monge mini p&j chicken de 3 kg: 456
+    monge urinary  chicken de 1,5 kg: 457
+    moon (my family): 458
+    mother and babycat instinctive  145 gr: 459
+    nanormen perros-gatos 20ml pirantel 5%: 460
+    nath adulto maxi sabor pollo y arroz integral: 461
+    nath cat adulto esterilizado sabor pollo y arroz: 462
+    nath puppy maxi sabor pollo y arroz integral: 463
+    naxpet 10 mg.x 10 comp.: 464
+    naxpet 30 mg x 10 comp. raza gde.: 465
+    naxpet suspencion 0,4%  (oral): 466
+    neptra solucion otica: 467
+    nexgard 11,3mg 1 tab.masticable 2-4 k: 468
+    nexgard 136mg x 1 tab. masticable 25-50k: 469
+    nexgard 28,3mg x 1 tab. masticable 4-10k: 470
+    nexgard spectra 1 tabl.masticable 2,0 a 3,5 kg: 471
+    nexgard spectra x 1 tabl. mast.15,1 - 30 k: 472
+    "nexgard x 3 tab.\_ 2 a 4 k\_ ": 473
+    nf aqua plus anticloro 30 ml: 474
+    nm alfombrilla training 50 un: 475
+    nm jfc urine destroyer quart cat, 946 ml: 476
+    nm urinen destroyer perro - quart, 946 ml: 477
+    nt total grain-free small breed chicken & turkey dog food 2k: 478
+    nutram ideal solution support indoor cat food 1.13kg: 479
+    nutribound gato 150 ml: 480
+    nutribound perro 150 ml: 481
+    nutrience gr.free cat indoor 2,5kg: 482
+    nutrience orig cat adult 2,5kg: 483
+    oat hay 425 gr: 484
+    obt-td. adult s.bites - fish (2,27 kg): 485
+    obt-td. sen&wm s.bites - chicken (2,27 kg): 486
+    ocubiotic: 487
+    ocubiotic colirio: 488
+    oftal 50 ml.: 489
+    oftavet: 490
+    orange and white english cocker  (my family): 491
+    orchard grass hay 425gr: 492
+    orijen alimento natural seco para gato 5kg: 493
+    pack conejo animal care: 494
+    "pack hamster  animal care  n\xB01": 495
+    "pack hamster animal care n\xB02": 496
+    pack michi: 497
+    padlock (my family): 498
+    pala sanitaria (granulos) gris: 499
+    palace dog house: 500
+    par de protectores de patas para perro 2x: 501
+    paracan cachorro 15 ml: 502
+    parka impermeable talla 10: 503
+    parka premium perro: 504
+    parka premium perro con chiporro: 505
+    parka t/5 cata pets: 506
+    parka t/7 cata pets: 507
+    parka t/8 cata pets: 508
+    parker cat collar: 509
+    pawise arnes y cinturon de seguridad m: 510
+    pawise bola para golosinas gato: 511
+    pawise bolsas repuesto 8x20 colores: 512
+    pawise bozal tela l: 513
+    pawise collar azul ondas: 514
+    pawise fetch it  hipopotamo: 515
+    pawise fetch it elefante: 516
+    pawise fetch it mono: 517
+    pawise hollow pollito: 518
+    pawise holow hipopotamo: 519
+    pawise little monster naranja: 520
+    pawise mat de enfriamiento l 90x50 cm: 521
+    pawise mat de enfriamiento m 50x40 cm: 522
+    pawise meow life bola colores: 523
+    pawise mono con tirador: 524
+    pawise peluche unicornio con catnip: 525
+    "pawise rasgu\xF1ador": 526
+    pederol clortetraciclina2% 250ml (dosis): 527
+    pelota portagolosina azul medium: 528
+    pelota portagolosina azul small: 529
+    perfume sir dog lady 80 ml.: 530
+    perfume sir dog musk 80 ml.: 531
+    pet woow dispensador de alimento: 532
+    petever plus oral: 533
+    "pidle place mazuri (ba\xF1o perrito)": 534
+    pileran gotas: 535
+    pink big circle paw (my family): 536
+    pink led cat collar: 537
+    pink led collar small: 538
+    pink led leash small: 539
+    pishio auricular: 540
+    pixel collar small: 541
+    placa pet tags: 542
+    planet dog diamond plate ball silver "l": 543
+    planet dog lil snoop royal: 544
+    planet dog mazee verde: 545
+    planet dog planet ball azul/verde "l": 546
+    planet dog planet ball azul/verde "s": 547
+    planet dog snoop naranja: 548
+    plato antideslizante luna / s: 549
+    plato gato doble redondo: 550
+    poleron t/2 cata pets: 551
+    poleron t/3 cata pets: 552
+    "poler\xF3n con gorro rosado": 553
+    "poler\xF3n con gorro verde": 554
+    poo bolsas compostables 60 u: 555
+    poof! blue cloud chinchilla dust: 556
+    posatec: 557
+    power 1 p.  gato: 558
+    power 1 p. 11-20 kg: 559
+    power 1 p. 21-40 kg: 560
+    power gato de 4-8 kg: 561
+    power spray 100 ml: 562
+    power ultra  21 - 40 kg: 563
+    power ultra  41 - 60 kg: 564
+    power ultra 11 - 20  kg: 565
+    power ultra 5 - 10 kg: 566
+    previcox 227mgx10c0mp: 567
+    previcox 57 mg x  10 comp: 568
+    pro plan  perro  reduce calor. optilife 3 kilo: 569
+    pro plan active mind 7+ sml brd 3kg ar: 570
+    pro plan active mind small breed 7.5 kg: 571
+    pro plan adult cat 1kg ar: 572
+    pro plan adult cat 7,5kg ar: 573
+    pro plan adult large breed 15kg ar: 574
+    pro plan adult medium breed 3kg ar: 575
+    pro plan adult small breed 3kg ar: 576
+    pro plan adulto carne pouch 100 gr: 577
+    pro plan adulto optihealth r/m 15 kg: 578
+    pro plan alimento seco para adulto razas medianas 15 kg: 579
+    pro plan alimento seco para cachorro razas grandes 15 kg: 580
+    pro plan cat urinary 7,5 kg: 581
+    pro plan dog sensitive skin 3 kilo: 582
+    pro plan gatos adulto pollo pouch 85 gr: 583
+    pro plan gatos adulto salmon pouch 85: 584
+    pro plan kitten 1kg ar: 585
+    pro plan puppy large breed 15kg ar: 586
+    pro plan puppy medium breed 15kg ar: 587
+    pro plan puppy medium breed 1kg ar: 588
+    pro plan puppy medium breed 3kg ar: 589
+    pro plan puppy medium breed 7,5kg ar: 590
+    pro plan puppy optistart small breed 7.5 kg.: 591
+    pro plan reduce calorie sml brd 3kg ar: 592
+    pro plan reduced calorie m/l 3kg ar: 593
+    pro plan sensitive skin m/l 3kg ar: 594
+    pro plan sterilized cat 1kg ar: 595
+    profender cats spot-on pip. 2.5 a 5 kg.: 596
+    proplan adulto 7+active mind pollo pouch 100 gr: 597
+    proplan adulto cat alimento para gato: 598
+    proplan adulto latas: 599
+    proplan cat kitten opt 7.5kg: 600
+    proplan cat urinary 3 kgs.: 601
+    proplan puppy optis. large br. 15 kg.: 602
+    proplan puppy optistart complete 15 kg.: 603
+    proplan veterinarydiets cnne nc 6x2kg ar: 604
+    ps hairball solutions, 70 gr: 605
+    pure comfort blanco 8.2 lt: 606
+    puzzle tornado nivel 2: 607
+    puzzle twister nivel 3: 608
+    rabbit ear cleaning solution 4 oz: 609
+    "rasgu\xF1ador con guarida tigre": 610
+    ratones de piel 24 por caja tipo: 611
+    "rat\xF3n portagolosina rosado": 612
+    "rat\xF3n portagolosina violeta": 613
+    recarga enchufe feliway: 614
+    red big circle bone (my family): 615
+    renal chicken cat pouch 85 gr: 616
+    repelente exteriores perro/gato -500ml: 617
+    repelente interiores perros-300ml: 618
+    respig jarabe: 619
+    revolution gato 2.5-7.5 kg: 620
+    revolution perro 10-20 kg: 621
+    revolution perro/gato  0 - 2.5 kg: 622
+    'rimadyl 100 mg x 14 tabletas ': 623
+    'rimadyl 25 mg x 14 tabletas ': 624
+    rodillo quitapelos y pelusas: 625
+    ronaxan 100 mg  x 10 comp.: 626
+    rostrum otico x 15ml gotas: 627
+    rostrum susp. oral 20 ml: 628
+    royal alimento seco gato 7.5 kg: 629
+    royal can  vet cat  young female  s/o 3.5 kilo: 630
+    royal can  vet cat  young male s/o 3.5 kilo: 631
+    royal can fhn fit 32 7.5 kilo: 632
+    royal can poodle junior 33 2.5 kg.: 633
+    royal can. hepatic canine 1.5 kg.: 634
+    royal can. hepatic canine 10 kg.: 635
+    royal can. obesity feline 1.5 kg.: 636
+    royal can. renal rf feline 2 kg.: 637
+    royal can. shn mini adulto 1 kgr.: 638
+    royal canin  kitten 36, 1,5 kilo: 639
+    royal canin adulto maxi adult 15kg: 640
+    royal canin adulto mini adult 7,5kg: 641
+    "royal canin alimento h\xFAmedo perro adulto": 642
+    royal canin calorie control felino  165 gr lata: 643
+    royal canin feline urinary care 1.5 kg: 644
+    royal canin fhn indoor 7+ 1,5kilos: 645
+    royal canin fhn light -17%: 646
+    royal canin gastrointestinal feline 2 kg: 647
+    royal canin gastrointestinal lata 145grs: 648
+    royal canin hairball care 1.5 kg: 649
+    royal canin maxi adulto 15 kg: 650
+    royal canin maxi junior 15 kgr: 651
+    royal canin medium adulto pouch 140 gr: 652
+    royal canin mini adulto  8 kg fr: 653
+    royal canin mini adulto pouch 85 gr: 654
+    royal canin mini indoor adulto 2.5kg: 655
+    royal canin mini puppy  2 kg fr: 656
+    royal canin mini puppy  8 kg fr: 657
+    royal canin mini puppy pouch 85 gr: 658
+    royal canin renal adulto felino 1,5kg: 659
+    royal canin renal canine 1.5 kg: 660
+    royal canin renal support felino lata 145 gr: 661
+    royal canin sensible 1,5kg: 662
+    royal canin urinary s/o canine 1.5 kg.: 663
+    royal canin urinary s/o feline 1.5 kg.: 664
+    royal poodle  adulto 2,5 kilo: 665
+    royal recovery rs 165 grs. (lata): 666
+    salvaje adulto con pollo 15 kg: 667
+    sand adjustable air mesh harness large: 668
+    sand cat collar: 669
+    sand leash large: 670
+    sanitario gato con puerta y filtro/netta: 671
+    scalibor (collar antiparasitario): 672
+    seresto collar p/p hasta 8 kilos: 673
+    shampoo ehlinger (hipohalerg.) 250 ml.: 674
+    shampoo flt: 675
+    shampoo petever: 676
+    shampoo regepipel plus 150 ml: 677
+    shampoo traper espuma seca perro 170 cc: 678
+    sierra mountain 2 kg.: 679
+    siguimarina: 680
+    simparica 120 mg  x 1 tab. 40,1 -60 kg: 681
+    simparica 120 mg  x 3 tab. 40,1 -60 kg: 682
+    simparica 20 mg x 3 tab. 5,1 - 10 kg: 683
+    simparica 40 mg  x 1 tab. 10,1 - 20 k: 684
+    simparica 40 mg  x 3 tab. 10,1 - 20 k: 685
+    simparica 80 mg  x 1 tab. 20,1 - 40 kg: 686
+    simparica 80 mg  x 3 tab. 20,1 - 40 kg: 687
+    simparica antiparasitario 40 mg: 688
+    simparica antiparasitario 80 mg: 689
+    sinpul 30 % x 15 grs.: 690
+    small bird diet 1 kg: 691
+    small bone aluminum black (my family): 692
+    small bone aluminum pink (my family): 693
+    small heart aluminum blue (my family): 694
+    small heart aluminum purple (my family): 695
+    small round aluminum black (my family): 696
+    smart fun chaqueta outdoor c/arnes xl: 697
+    squeaky bounce ball large: 698
+    stomorgyl 2 x 10 comp: 699
+    sucravet: 700
+    superpet gato omega: 701
+    superpet perro adulto: 702
+    synulox 250 mg: 703
+    tears lagrimas artificiales 8 ml.: 704
+    timothy mat: 705
+    timothy tunel: 706
+    toallitas de limpieza aloe vera: 707
+    toallitas tea tree oil: 708
+    "torre \xE1rbol con casa gatos premium": 709
+    tramadol iny. dosis 0.5: 710
+    "transportadora r\xEDgida para perro chico": 711
+    transportin avior: 712
+    "tx  calzon celo protector l 50\u201359 cm, azul oscuro": 713
+    tx 2 pelotas yute catnip: 714
+    tx enganche cinturon seguridad standar: 715
+    "tx pato l\xE1tex perro toy , 14  cm.": 716
+    tx toallas para calzon celo 10 pz xs-s-m: 717
+    ultimate blue collar extra small: 718
+    ultimate blue h-harness small: 719
+    ultimate blue leash large: 720
+    ultimate blue leash small: 721
+    ultrafil perros y gatos 15 ml: 722
+    ursovet 60 ml: 723
+    "veraflox\_   15mg\_ x 7": 724
+    "veraflox\_  60 mg\_ x\_ 7": 725
+    vestido playero t-2: 726
+    viruta pino  800 gr: 727
+    vp mighty jr angry animals mad cow, 7.6x15.2x17.8 cm/ts7: 728
+    vp tuffy ocean creature whale 7.6x20.3x30.5 cm/ts8: 729
+    wanpy soft duck jerky stripos: 730
+    wicked flyharness size 4: 731
+    yorkshire pouch 12x85g: 732
+    yorkshire terrier adulto  2.5kilo: 733
+    zd army green adjustable air mesh harness large: 734
+    zd army green adjustable air mesh harness medium: 735
+    zd army green cat collar: 736
+    zd army green collar extra small: 737
+    zd army green collar medium: 738
+    zd army green collar small: 739
+    zd army green handsfree leash: 740
+    zd army green ruff leash small: 741
+    zd army green soft-walk harness large: 742
+    zd army green soft-walk harness medium: 743
+    zd artsy collar small: 744
+    zd artsy h-harness large: 745
+    zd artsy h-harness medium: 746
+    zd artsy h-harness small: 747
+    zd artsy leash large: 748
+    zd bordeau adjustable air mesh harness medium: 749
+    zd bordeau cat collar: 750
+    zd bordeau collar large: 751
+    zd bordeau ruff leash large: 752
+    zd candy cat collar: 753
+    zd ella adjustable air mesh harness large: 754
+    zd ella adjustable air mesh harness medium: 755
+    zd ella adjustable air mesh harness small: 756
+    zd honey ruff leash large: 757
+    zd mahalo adjustable air mesh harness large: 758
+    zd midnight adjustable air mesh harness small: 759
+    zd midnight cat collar: 760
+    zd midnight h-harness small: 761
+    zd midnight leash small: 762
+    zd neon coral adjustable air mesh harness extra small: 763
+    zd neon coral adjustable air mesh harness medium: 764
+    zd neon coral leash + harness set: 765
+    zd neon coral leash small: 766
+    zd neopro blue cat collar: 767
+    zd skull 2.0 cat collar: 768
+    zd skull 2.0 collar extra small: 769
+    zd skull 2.0 collar medium: 770
+    zd skull 2.0 h-harness large: 771
+    zd skull 2.0 leash large: 772
+    zd smash collar large: 773
+    zd smash collar medium: 774
+    zd smash h-harness medium: 775
+    zd smash leash large: 776
+    zd smash leash small: 777
+    zd volt adj. air mesh harness large: 778
+    zeecat phantom collar: 779
+    "zeedof arn\xE9s ajustable morado": 780
+    zeedog atlanta collar cat: 781
+    zeedog atlanta collar large: 782
+    zeedog atlanta h-harness medium: 783
+    zeedog atlanta h-harness small: 784
+    zeedog atlanta leash large: 785
+    zeedog blu: 786
+    zeedog brain freeze: 787
+    zeedog citrus bow-tie large: 788
+    zeedog cyclops: 789
+    zeedog ella collar cat: 790
+    zeedog ella collar large: 791
+    zeedog ella h-harness extra small: 792
+    zeedog ella h-harness large: 793
+    zeedog finger puppets: 794
+    zeedog gotham bow-tie large: 795
+    zeedog gotham cat collar: 796
+    zeedog gotham collar medium: 797
+    zeedog gotham collar small: 798
+    zeedog gotham h-harness large: 799
+    zeedog gotham leash small: 800
+    zeedog gotham ruff leash small: 801
+    zeedog honey adjustable air mesh harness small: 802
+    zeedog mahalo adjustable air mesh harness medium: 803
+    zeedog mahalo collar large: 804
+    zeedog mahalo h-harness medium: 805
+    zeedog mahalo h-harness small: 806
+    zeedog mahleb collar medium: 807
+    zeedog maze cat collar: 808
+    zeedog maze leash small: 809
+    zeedog mr. x: 810
+    zeedog nara leash large: 811
+    zeedog nara leash small: 812
+    zeedog neopro bubblegum cat collar: 813
+    zeedog neopro bubblegum collar large: 814
+    zeedog neopro bubblegum h-harness small: 815
+    zeedog neopro green h-harness large: 816
+    zeedog neopro green leash small: 817
+    zeedog neopro tangerine cat collar: 818
+    zeedog peppermint leash extra small: 819
+    zeedog phantom collar cat: 820
+    zeedog phantom h-harness extra small: 821
+    zeedog phantom h-harness medium: 822
+    zeedog phantom harness + leash set: 823
+    zeedog phantom leash large: 824
+    zeedog pipp: 825
+    zeedog poop bag dispenser black +1 roll: 826
+    zeedog poop bags refill box (w/4 rolls): 827
+    zeedog prisma collar small: 828
+    zeedog prisma h-harness extra small: 829
+    zeedog prisma h-harness small: 830
+    zeedog prisma leash extra small: 831
+    zeedog prisma leash large: 832
+    zeedog rob the microbe: 833
+    zeedog skull bow-tie large: 834
+    zeedog skull collar cat: 835
+    zeedog skull collar large: 836
+    zeedog skull h-harness extra small: 837
+    zeedog skull h-harness large: 838
+    zeedog skull h-harness medium: 839
+    zeedog skull leash large: 840
+    zeedog super banana: 841
+    zeedog tuff bowl black: 842
+    zeedog tuff bowl coral: 843
+    zeus arnes fig h l grafito: 844
+    zeus arnes fig.a  m  coral: 845
+    zeus arnes fig.a  s  fucsia: 846
+    zeus arnes fig.a  s  rojo: 847
+    zeus arnes fig.h  l  azuldenim: 848
+    'zeus bozal alpha  xl ': 849
+    'zeus bozal alpha  xs ': 850
+    zeus bozal alpha "s": 851
+    zeus collar ajustable  m  rojo: 852
+    zeus collar ajustable  s  rojo: 853
+    zeus collar ajustable  xl  rojo: 854
+    zeus collar ajustable "l" grafito: 855
+    zeus collar ajustable "xl" grafito: 856
+    zeus collar semifijo  m  rojo: 857
+    zeus collar semifijo "l" grafito: 858
+    zeus filtro fuente mini 3 unid: 859
+    zeus fuente mini 1,5 lt: 860
+    zeus nosh hueso duro sabor carne/queso m: 861
+    zeus nosh hueso duro sabor carne/queso s: 862
+    zeus nosh hueso duro sabor tocino l: 863
+    zeus nosh hueso duro sabor tocino m: 864
+    zeus nosh hueso duro sabor tocino s: 865
+    zeus nosh hueso flex cachorro sabor pollo m: 866
+    zeus trailla dobl asa  l  grafito 1,2m: 867
+    zeus trailla dobl asa  l  rojo 1,2m: 868
+    zeus trailla dobl asa  m  coral 1,2m: 869
+    zeus trailla dobl asa  m  grafito 1,2m: 870
+    zeus trailla dobl asa "m" rojo 1,2m: 871
+    zeus trailla dobl asa 1,8m  l  grafito: 872
+  Grupo:
+    accesorios: 0
+    alimento: 1
+    medicamentos: 2
+  Subgrupo:
+    acc acuarios: 0
+    acc. medicos: 1
+    adultos: 2
+    alfalfas: 3
+    alimento exoticos: 4
+    analgesico: 5
+    ant. ext.: 6
+    ant. interno: 7
+    antialergico: 8
+    antibiotico: 9
+    antimicotico: 10
+    antiparasitario: 11
+    antiparasitarios: 12
+    bebederos: 13
+    cachorro: 14
+    cachorros: 15
+    calefactores: 16
+    camas: 17
+    cardiaco: 18
+    comederos: 19
+    comportamiento: 20
+    digestivo: 21
+    enriquecimiento ambiental: 22
+    grooming: 23
+    higiene: 24
+    hogar-transporte: 25
+    humedo: 26
+    juguetes: 27
+    lata: 28
+    latas: 29
+    latas medicadas: 30
+    medicados: 31
+    medicamentos: 32
+    ocular: 33
+    oral: 34
+    otico: 35
+    paseo: 36
+    placas identificacion: 37
+    razas: 38
+    ropa: 39
+    senior: 40
+    snack: 41
+    suplemento: 42
+    suplementos: 43
+    urinario: 44
+    vitaminas: 45
+    weight control: 46
+embedding_paddings: []
+embedding_sizes:
+  "Descripci\xF3n": !!python/tuple
+  - 873
+  - 71
+  Grupo: !!python/tuple
+  - 3
+  - 3
+  Subgrupo: !!python/tuple
+  - 47
+  - 14
+hidden_size: 30
+learning_rate: 0.01
+log_gradient_flow: false
+log_interval: 10
+log_val_interval: 1
+monotone_constaints: {}
+n_plotting_samples: null
+n_validation_samples: null
+optimizer: Adam
+optimizer_params: null
+output_transformer: !!python/object:pytorch_forecasting.data.encoders.EncoderNormalizer
+  center: true
+  center_: !!python/object/apply:numpy.core.multiarray.scalar
+  - &id001 !!python/object/apply:numpy.dtype
+    args:
+    - f4
+    - false
+    - true
+    state: !!python/tuple
+    - 3
+    - <
+    - null
+    - null
+    - null
+    - -1
+    - -1
+    - 0
+  - !!binary |
+    MBMKPw==
+  max_length: null
+  method: standard
+  method_kwargs: {}
+  scale_: !!python/object/apply:numpy.core.multiarray.scalar
+  - *id001
+  - !!binary |
+    EZAtPw==
+  transformation: log
+reduce_on_plateau_min_lr: 1.0e-05
+reduce_on_plateau_patience: 1000
+reduce_on_plateau_reduction: 2.0
+rnn_layers: 2
+static_categoricals:
+- "Descripci\xF3n"
+- Grupo
+- Subgrupo
+static_reals: []
+target: Cantidad
+target_lags: {}
+time_varying_categoricals_decoder: []
+time_varying_categoricals_encoder: []
+time_varying_reals_decoder: []
+time_varying_reals_encoder:
+- Cantidad
+weight_decay: 0.0
+x_categoricals:
+- "Descripci\xF3n"
+- Grupo
+- Subgrupo
+x_reals:
+- Cantidad
