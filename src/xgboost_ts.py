@@ -5,11 +5,13 @@ import sys
 import xgboost as xgb
 import matplotlib.pyplot as plt
 import numpy as np
+import statsmodels.api as sm
 
 from xgboost import plot_importance, plot_tree
 
 from sklearn.metrics import mean_squared_error, mean_absolute_error, mean_absolute_percentage_error
 from sklearn.model_selection import train_test_split
+from scipy.fft import fft
 
 
 ventas_prod = pd.read_excel(os.path.join("datos", "ventas_diarias_productos_vigentes_no_outliers.xlsx")) 
@@ -33,11 +35,22 @@ def create_features(df, label=None):
     df['weekofyear'] = df['date'].dt.weekofyear
     
     X = df[['dayofweek','quarter','month','year',
-           'dayofyear','dayofmonth','weekofyear', "Cantidad", "diff_tiempo_venta"]]
+           'dayofyear','dayofmonth','weekofyear', "Cantidad", "diff_tiempo_venta",
+           "fourier_transform", "trend", "seasonal"]]
     if label:
         y = df[label]
         return X, y
     return X
+
+def apply_fourier_transform(data):
+    values = data["Cantidad"].values
+    fourier_transform = fft(values)
+    data["fourier_transform"] = np.abs(fourier_transform)
+
+    return data
+
+
+
 
 
 datos_forecasting.sort_index(inplace=True)
@@ -58,6 +71,33 @@ fechas = fechas["diff"].values
 datos_forecasting["diff_tiempo_venta"] = fechas
 
 
+# print(datos_forecasting)
+datos_forecasting = apply_fourier_transform(datos_forecasting)
+
+
+ventas = datos_forecasting["Cantidad"]
+decomposition = sm.tsa.seasonal_decompose(ventas, period=7) # Estamos en días
+
+trend = decomposition.trend.values
+seasonal = decomposition.seasonal.values
+
+datos_forecasting["trend"] = trend
+datos_forecasting["seasonal"] = seasonal
+
+
+# print(trend)
+
+
+# for i in trend:
+    # print(i)
+
+# print(seasonal)
+# print(datos_forecasting)
+# sys.exit()
+
+
+
+
 
 train, test = train_test_split(datos_forecasting, test_size = 0.25, random_state=42)
 train = create_features(train)
@@ -65,7 +105,8 @@ test = create_features(test)
 
 
 
-FEATURES = ['dayofyear', 'dayofweek', 'quarter', 'month', 'year', 'weekofyear', "diff_tiempo_venta"]
+FEATURES = ['dayofyear', 'dayofweek', 'quarter', 'month', 'year', 'weekofyear', "diff_tiempo_venta", "fourier_transform",
+            "trend", "seasonal"]
 TARGET = "Cantidad"
 
 X_train = train[FEATURES]
