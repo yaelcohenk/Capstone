@@ -4,6 +4,7 @@ import os
 import sys
 import xgboost as xgb
 import matplotlib.pyplot as plt
+import numpy as np
 
 from xgboost import plot_importance, plot_tree
 
@@ -39,19 +40,12 @@ def create_features(df, label=None):
     return X
 
 
-# datos = create_features(datos_forecasting)
-# print(datos)
 
-
-train, test = train_test_split(datos_forecasting, test_size = 0.2, random_state=42)
-
-
+train, test = train_test_split(datos_forecasting, test_size = 0.25, random_state=42)
 train = create_features(train)
-# print(train)
 test = create_features(test)
 
-# print(train)
-# sys.exit()
+
 
 FEATURES = ['dayofyear', 'dayofweek', 'quarter', 'month', 'year', 'weekofyear']
 TARGET = "Cantidad"
@@ -78,13 +72,7 @@ fi = pd.DataFrame(data=reg.feature_importances_,
 # plt.show()
 
 test["prediction"] = reg.predict(X_test)
-
-
-# print(X_train)
-
-# sys.exit()
-# print(test)
-
+y_pred = test["prediction"]
 
 test['Cantidad'].plot(style='b', figsize=(10, 5), label='Original')
 
