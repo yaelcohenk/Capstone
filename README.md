@@ -2,6 +2,14 @@
 
 ## Cosas por hacer e ideas
 
+## Flujo lógico de las cosas
+
+- Antes de analizar los datos y todo eso, tenemos que quitar todos los outliers. Posterior a haber
+quitado los outliers, podemos empezar a analizar. En ese caso, tenemos que correr todo el resto de nuevo.
+De los datos que nos interesan. En verdad esto de los outliers nos debería interesar solo para el forecasting.
+En verdad el resto de cosas no depende tanto de esto.
+
+
 
 ## Papers
 
@@ -143,6 +151,10 @@ como atacarlo, que metodologías tenemos.
 [statsmodels](https://www.statsmodels.org/stable/index.html)
 
 [featuretools](https://www.featuretools.com/)
+
+[GluonTS](https://ts.gluon.ai/stable/)
+
+[Pytorch-Forecasting](https://pytorch-forecasting.readthedocs.io/en/stable/)
 
 
 ## Reunión profesor 16 abril
