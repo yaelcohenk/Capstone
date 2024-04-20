@@ -1,66 +1,30 @@
 import pandas as pd
 import os
 import sys
-import statsmodels.api as sm
-import numpy as np
 
 
-from scipy.fft import fft
+from funciones.features import (create_features,
+                                apply_trend_and_seasonal,
+                                apply_fourier_transform,
+                                apply_day_selling_differences)
 
 
-def apply_fourier_transform(data):
-    values = data["Cantidad"].values
-    fourier_transform = fft(values)
-    data["fourier_transform"] = np.abs(fourier_transform)
+ventas_prod = pd.read_excel(os.path.join("datos", "ventas_diarias_productos_vigentes_no_outliers.xlsx"))
 
-    return data
+ventas_prod.drop("ISO", axis=1, inplace=True)
+productos_vigentes = ventas_prod["Descripción"].unique().tolist()
+ventas_prod.index = ventas_prod["Fecha"]
 
+lista_dataframes = list()
 
-def apply_trend_and_seasonal(data, period=7):
-    ventas = data["Cantidad"]
-    decomposition = sm.tsa.seasonal_decompose(ventas, period=period)
+for producto in productos_vigentes:
+    producto_ventas = ventas_prod[ventas_prod["Descripción"].isin([producto])]
 
-    trend = decomposition.trend.values
-    seasonal = decomposition.seasonal.values
+    datos_forecast = apply_day_selling_differences(producto_ventas)
+    datos_forecast = apply_fourier_transform(datos_forecast)
+    datos_forecast = apply_trend_and_seasonal(datos_forecast)
+    datos_forecast = create_features(datos_forecast)
+    lista_dataframes.append(datos_forecast)
 
-    data["trend"] = trend
-    data["seasonal"] = seasonal
-    
-    return data
-
-
-def apply_day_selling_differences(data):
-    data = data.sort_index()
-    fechas = data.inex.to_list()
-    fechas = pd.DataFrame(fechas, columns=["Fecha"])
-
-    fechas["diff"] = fechas["Fecha"].diff()
-    fechas["diff"].fillna(pd.Timedelta(seconds=0), inplace=True)
-
-    fechas["diff"] = fechas["diff"].dt.days.astype(int)
-
-    fechas = fechas["diff"].values
-
-    data["diff_tiempo_venta"] = fechas
-
-    return data
-
-
-def create_features(df):
-    """
-    Creates time series features from datetime index
-    """
-    df['date'] = df.index
-    df['dayofweek'] = df['date'].dt.dayofweek
-    df['quarter'] = df['date'].dt.quarter
-    df['month'] = df['date'].dt.month
-    df['year'] = df['date'].dt.year
-    df['dayofyear'] = df['date'].dt.dayofyear
-    df['dayofmonth'] = df['date'].dt.day
-    df['weekofyear'] = df['date'].dt.weekofyear
-    
-    X = df[['dayofweek','quarter','month','year',
-           'dayofyear','dayofmonth','weekofyear', "Cantidad", "diff_tiempo_venta",
-           "fourier_transform", "trend", "seasonal"]]
-
-    return X
+datos_final = pd.concat(lista_dataframes)
+datos_final.to_excel(os.path.join("datos", "ventas_diarias_prod_vigentes_no_outliers_w_features.xlsx"))
