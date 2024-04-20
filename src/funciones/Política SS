@@ -1,0 +1,14 @@
+def politica_ss(inventario_actual, s, S, cantidad_vendida, cantidad_reabastecer=0):
+   
+    inventario_actual -= cantidad_vendida
+    
+    if inventario_actual <= s:
+        necesidad_reabastecimiento = True
+        cantidad_reabastecer = S - inventario_actual
+        inventario_actual += cantidad_reabastecer
+    else:
+        necesidad_reabastecimiento = False
+        cantidad_reabastecer = 0
+    
+    return inventario_actual, necesidad_reabastecimiento, cantidad_reabastecer
+
