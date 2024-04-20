@@ -14,6 +14,8 @@ from sklearn.model_selection import train_test_split
 from scipy.fft import fft
 
 
+
+
 ventas_prod = pd.read_excel(os.path.join("datos", "ventas_diarias_productos_vigentes_no_outliers.xlsx")) 
 testeo = ventas_prod[ventas_prod["Descripción"].isin(["pro plan alimento seco para adulto razas medianas 15 kg"])]
 datos_forecasting = testeo[["Cantidad"]]
