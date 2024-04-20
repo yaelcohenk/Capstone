@@ -87,3 +87,8 @@ plt.legend()
 
 # Mostrar el gráfico
 plt.show()
+
+
+# Construir intervalos de confianza empírico. Entrenar un mismo modelo hartas veces, para posterior
+# mente tener todas las posibles estimaciones para un cierto día de esos entrenamientos y con eso
+# armar el intervalo de confianza
