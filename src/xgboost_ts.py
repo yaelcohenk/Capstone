@@ -33,11 +33,29 @@ def create_features(df, label=None):
     df['weekofyear'] = df['date'].dt.weekofyear
     
     X = df[['dayofweek','quarter','month','year',
-           'dayofyear','dayofmonth','weekofyear', "Cantidad"]]
+           'dayofyear','dayofmonth','weekofyear', "Cantidad", "diff_tiempo_venta"]]
     if label:
         y = df[label]
         return X, y
     return X
+
+
+datos_forecasting.sort_index(inplace=True)
+fechas = datos_forecasting.index.to_list()
+fechas = pd.DataFrame(fechas, columns=["Fecha"])
+
+fechas["diff"] = fechas["Fecha"].diff()
+fechas["diff"].fillna(pd.Timedelta(seconds=0), inplace=True)
+
+fechas["diff"] = fechas["diff"].dt.days.astype(int)
+# fechas["diff"] = fechas["diff"].days
+# fechas["Fecha"] = fechas["Fecha"].days
+# print(fechas.diff())
+# print(fechas)
+
+fechas = fechas["diff"].values
+
+datos_forecasting["diff_tiempo_venta"] = fechas
 
 
 
@@ -47,7 +65,7 @@ test = create_features(test)
 
 
 
-FEATURES = ['dayofyear', 'dayofweek', 'quarter', 'month', 'year', 'weekofyear']
+FEATURES = ['dayofyear', 'dayofweek', 'quarter', 'month', 'year', 'weekofyear', "diff_tiempo_venta"]
 TARGET = "Cantidad"
 
 X_train = train[FEATURES]
@@ -67,9 +85,10 @@ reg.fit(X_train, y_train,
 fi = pd.DataFrame(data=reg.feature_importances_,
              index=reg.feature_names_in_,
              columns=['importance'])
-# fi.sort_values('importance').plot(kind='barh', title='Feature Importance')
+fi.sort_values('importance').plot(kind='barh', title='Feature Importance')
 # plt.close()
-# plt.show()
+plt.show()
+plt.close()
 
 test["prediction"] = reg.predict(X_test)
 y_pred = test["prediction"]
