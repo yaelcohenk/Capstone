@@ -31,10 +31,14 @@ productos_unicos = ventas_productos["Descripción"].unique().tolist()
 
 contador = 0
 
+# Tengo que paralelizar esto
 for producto in productos_unicos:
     ventas_loop = ventas_productos[ventas_productos["Descripción"].isin([
                                                                         producto])]
 
+    
+
+    # Dividir mejor en train, validación y testing
     train, test = train_test_split(ventas_loop, test_size=0.25, random_state=42)
 
     FEATURES = ['dayofyear',
@@ -83,7 +87,7 @@ for producto in productos_unicos:
         plt.savefig(ruta)
     finally:
         plt.close()
-        
+
 sys.exit()
 
 
