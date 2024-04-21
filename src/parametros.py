@@ -18,3 +18,8 @@ PATH_VENTAS_DIARIAS_PRODUCTOS_DATA = os.path.join("datos", "ventas_diarias_produ
 PATH_VENTAS_SEMANALES_GRUPO_DATA = os.path.join("datos", "ventas_semanales_grupos.xlsx")
 PATH_VENTAS_SEMANALES_SUBGRUPO_DATA = os.path.join("datos", "ventas_semanales_subgrupos.xlsx")
 PATH_VENTAS_SEMANALES_PRODUCTOS_DATA = os.path.join("datos", "ventas_semanales_productos.xlsx")
+
+
+
+
+PATH_VENTAS_PRODUCTOS_VIGENTES_NO_OUTLIERS_W_FEATURES = os.path.join("datos", "ventas_diarias_prod_vigentes_no_outliers_w_features.xlsx")
