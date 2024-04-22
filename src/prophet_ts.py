@@ -4,7 +4,7 @@ import os
 import matplotlib.pyplot as plt
 
 
-ventas_prod = pd.read_excel(os.path.join("datos", "ventas_diarias_productos_vigentes_no_outliers.xlsx")) 
+ventas_prod = pd.read_excel(os.path.join("datos", "ventas_diarias_prod_vigentes_no_outliers_w_features.xlsx")) 
 testeo = ventas_prod[ventas_prod["Descripción"].isin(["pro plan alimento seco para adulto razas medianas 15 kg"])]
 datos_forecasting = testeo[["Fecha", "Cantidad"]]
 

@@ -21,8 +21,7 @@ from funciones.features import (create_features,
 from parametros import PATH_VENTAS_PRODUCTOS_VIGENTES_NO_OUTLIERS_W_FEATURES
 
 
-ventas_productos = pd.read_excel(
-    PATH_VENTAS_PRODUCTOS_VIGENTES_NO_OUTLIERS_W_FEATURES)
+ventas_productos = pd.read_excel(PATH_VENTAS_PRODUCTOS_VIGENTES_NO_OUTLIERS_W_FEATURES)
 ventas_productos.index = ventas_productos["Fecha"]
 ventas_productos.drop("Fecha", axis=1, inplace=True)
 # print(ventas_productos)
