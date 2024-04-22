@@ -83,11 +83,24 @@ X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.
 # model.add(keras.layers.Dropout(0.2))
 # model.add(keras.layers.Dense(1))
 
+
+
 model = keras.models.Sequential([
-    keras.layers.GRU(20, return_sequences=True, input_shape=(7, 11)),
+    keras.layers.Conv1D(filters=40, kernel_size=6, activation="relu", input_shape=(7, 11)),
+    keras.layers.GRU(20, return_sequences=True),
+    keras.layers.GRU(20, return_sequences=True),
     keras.layers.GRU(20),
     keras.layers.Dense(1)
 ])
+
+
+# Este funciona
+# model = keras.models.Sequential([
+    # keras.layers.GRU(20, return_sequences=True, input_shape=(7, 11)),
+    # keras.layers.GRU(20, return_sequences=True),
+    # keras.layers.GRU(20),
+    # keras.layers.Dense(1)
+# ])
 
 
 
