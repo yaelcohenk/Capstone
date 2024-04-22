@@ -85,29 +85,42 @@ X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.
 
 
 
-model = keras.models.Sequential([
-    keras.layers.Conv1D(filters=40, kernel_size=6, activation="relu", input_shape=(7, 11)),
-    keras.layers.GRU(20, return_sequences=True),
-    keras.layers.GRU(20, return_sequences=True),
-    keras.layers.GRU(20),
-    keras.layers.Dense(1)
-])
 
 
-# Este funciona
+
+
+# Este modelo está mejor que el resto
 # model = keras.models.Sequential([
-    # keras.layers.GRU(20, return_sequences=True, input_shape=(7, 11)),
-    # keras.layers.GRU(20, return_sequences=True),
-    # keras.layers.GRU(20),
+    # keras.layers.Conv1D(filters=64, kernel_size=6, activation="relu", input_shape=(7, 11), padding="same"),
+    # keras.layers.Conv1D(filters=128, kernel_size=3, activation="relu", padding="same"),
+    # keras.layers.GRU(30, return_sequences=True),
+    # keras.layers.Dropout(0.2),
+    # keras.layers.GRU(30, return_sequences=True),
+    # keras.layers.Dropout(0.2),
+    # keras.layers.GRU(30),
     # keras.layers.Dense(1)
 # ])
 
 
+model = keras.models.Sequential([
+    keras.layers.Conv1D(filters=64, kernel_size=6, activation="relu", input_shape=(7, 11), padding="same"),
+    keras.layers.Conv1D(filters=128, kernel_size=3, activation="relu"),
+    keras.layers.GRU(60, return_sequences=True),
+    keras.layers.Dropout(0.2),
+    keras.layers.GRU(50, return_sequences=True),
+    keras.layers.Dropout(0.2),
+    keras.layers.GRU(40),
+    keras.layers.Dense(1)
+])
+
+
+
+
 
 model.compile(optimizer="adam", loss=MeanSquaredError(), metrics=[RootMeanSquaredError()])
-model.fit(X_train, y_train, epochs=10, validation_data=(X_test, y_test))
+model.fit(X_train, y_train, epochs=50, validation_data=(X_test, y_test))
 
-predictions = model.predict(X_test)
+predictions = model.predict(X_val)
 
 # predictions = model.evaluate(X_val, y_val)
 
@@ -118,7 +131,7 @@ print(predictions.shape, y_test.shape)
 
 
 predictions = scaler_values.inverse_transform(predictions.reshape(-1, 1)).flatten()
-real = scaler_values.inverse_transform(y_test.reshape(-1, 1)).flatten()
+real = scaler_values.inverse_transform(y_val.reshape(-1, 1)).flatten()
 
 # print(y_train_scaled.shape)
 data = pd.DataFrame({"predictions": predictions, "real": real})
@@ -131,53 +144,5 @@ plt.plot(data["real"], color="blue", label="Valor Real")
 plt.legend()
 plt.show()
 
-
-
-# print(predictions.shape)
-# print()
-
-# print(predictions)
-
-# print(y_test)
-
-
-sys.exit()
-
-
-print(f"El tamaño de las predicciones son {predictions.shape}")
-
-# y_flatten_val = predictions.flatten()
-# print(y_val.shape, y_flatten_val.shape)
-y_pred = predictions[:, 0].squeeze()
-
-y_val = y_val.reshape(-1 , 1)
-y_pred = y_pred.reshape(-1, 1)
-
-# print(y_val.shape, y_pred.shape)
-
-# print(y_val, y_pred)
-
-y_val_inv_transform = scaler_values.inverse_transform(y_val)
-y_pred_inv_transform = scaler_values.inverse_transform(y_pred)
-
-
-print(y_val_inv_transform, y_pred_inv_transform)
-
-plt.plot(y_val_inv_transform, color = 'red', label = 'Real Stock Price')
-plt.plot(y_pred_inv_transform, color = 'blue', label = 'Predicted Stock Price')
-plt.title('Stock Price Prediction')
-plt.xlabel('Time')
-plt.ylabel('Google Stock Price')
-plt.legend()
-plt.show()
-
-
-
-sys.exit()
-predicciones_inv_trans = scaler_values.inverse_transform(predictions)
-y_validation_inv = scaler_values.inverse_transform(y_val)
-
-print(predicciones_inv_trans.shape)
-print(y_validation_inv.shape)
 
 
