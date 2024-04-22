@@ -9,11 +9,14 @@ import matplotlib as mpl
 from tensorflow import keras
 from parametros import PATH_VENTAS_PRODUCTOS_VIGENTES_NO_OUTLIERS_W_FEATURES
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
 
 from tensorflow.keras.losses import MeanSquaredError
 from tensorflow.keras.metrics import RootMeanSquaredError
 from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import LSTM
+from tensorflow.keras.layers import Dense, Dropout
 
 
 def plot_learning_curves(loss, val_loss):
@@ -38,6 +41,28 @@ def df_to_X_y(df, window_size=5):
     y.append(label)
   return np.array(X), np.array(y)
 
+def createXY(dataset, n_past):
+    dataX = []
+    dataY = []
+    
+    for i in range(n_past, len(dataset)):
+            dataX.append(dataset[i - n_past:i, 0:dataset.shape[1]])
+            dataY.append(dataset[i, 0])
+    return np.array(dataX), np.array(dataY)
+
+def df_to_X_y2(df, window_size):
+  df_as_np = df.to_numpy()
+  X = []
+  y = []
+  for i in range(len(df_as_np)-window_size):
+    row = [r for r in df_as_np[i:i+window_size]]
+    X.append(row)
+    label = df_as_np[i + window_size][0]
+    y.append(label)
+  return np.array(X), np.array(y)
+
+
+
 ventas_productos = pd.read_excel(PATH_VENTAS_PRODUCTOS_VIGENTES_NO_OUTLIERS_W_FEATURES)
 ventas_productos = ventas_productos[ventas_productos["Descripción"].isin(
     ["pro plan alimento seco para adulto razas medianas 15 kg"])]
@@ -46,6 +71,53 @@ ventas_productos.index = ventas_productos["Fecha"]
 ventas_productos.drop("Fecha", axis=1, inplace=True)
 ventas_productos.drop("Descripción", axis=1, inplace=True)
 
+
+print(ventas_productos)
+print(ventas_productos.columns)
+print(ventas_productos.info())
+
+scaler = StandardScaler()
+scaler = scaler.fit(ventas_productos)
+df_for_training_scaled = scaler.transform(ventas_productos)
+
+
+trainX = []
+trainY = []
+
+n_future = 1   # Number of days we want to look into the future based on the past days.
+n_past = 7  # Number of past days we want to use to predict the future.
+
+#Reformat input data into a shape: (n_samples x timesteps x n_features)
+#In my example, my df_for_training_scaled has a shape (12823, 5)
+#12823 refers to the number of data points and 5 refers to the columns (multi-variables).
+for i in range(n_past, len(df_for_training_scaled) - n_future +1):
+    trainX.append(df_for_training_scaled[i - n_past:i, 0:ventas_productos.shape[1]])
+    trainY.append(df_for_training_scaled[i + n_future - 1:i + n_future, 0])
+
+trainX, trainY = np.array(trainX), np.array(trainY)
+
+
+print(trainX.shape, trainY.shape)
+
+model = Sequential()
+model.add(LSTM(64, activation='relu', input_shape=(trainX.shape[1], trainX.shape[2]), return_sequences=True))
+model.add(LSTM(32, activation='relu', return_sequences=False))
+model.add(Dropout(0.2))
+model.add(Dense(trainY.shape[1]))
+
+model.compile(optimizer='adam', loss='mse')
+model.summary()
+
+
+# fit the model
+history = model.fit(trainX, trainY, epochs=5, batch_size=16, validation_split=0.1, verbose=1)
+
+plt.plot(history.history['loss'], label='Training loss')
+plt.plot(history.history['val_loss'], label='Validation loss')
+plt.legend()
+
+
+sys.exit()
 train, test = train_test_split(ventas_productos, test_size=0.2, random_state=1)
 
 # test, validation = train_test_split(test, test_size=0.25, random_state=1)
@@ -62,26 +134,10 @@ scaler = MinMaxScaler()
 df_for_training_scaled = scaler.fit_transform(train)
 df_for_testing_scaled= scaler.transform(test)
 
-def createXY(dataset, n_past):
-    dataX = []
-    dataY = []
-    
-    for i in range(n_past, len(dataset)):
-            dataX.append(dataset[i - n_past:i, 0:dataset.shape[1]])
-            dataY.append(dataset[i, 0])
-    return np.array(dataX), np.array(dataY)
 
 
-def df_to_X_y2(df, window_size):
-  df_as_np = df.to_numpy()
-  X = []
-  y = []
-  for i in range(len(df_as_np)-window_size):
-    row = [r for r in df_as_np[i:i+window_size]]
-    X.append(row)
-    label = df_as_np[i + window_size][0]
-    y.append(label)
-  return np.array(X), np.array(y)
+
+
 
 
 window_size = 5
