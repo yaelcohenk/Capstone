@@ -24,26 +24,30 @@ def xgboost_producto(dataframe_producto: pd.DataFrame,
                      nombre_producto: str = "",
                      random_state=42):
 
-    train,  test = train_test_split(dataframe_producto, test_size=0.25, random_state=random_state)
+    print(f"[INFO]: Va a empezar entrenamiento {nombre_producto}")
 
-    X_train, y_train = train[FEATURES], train[TARGET]
+    try:
+        train,  test = train_test_split(dataframe_producto, test_size=0.25, random_state=random_state)
+        X_train, y_train = train[FEATURES], train[TARGET]
 
-    X_test, y_test = test[FEATURES], test[TARGET]
+        X_test, y_test = test[FEATURES], test[TARGET]
 
-    # Aquí en teoría debería tener un set de validación
-    reg = xgb.XGBRegressor(n_estimators=1000, objective="reg:squarederror")
+        # Aquí en teoría debería tener un set de validación
+        reg = xgb.XGBRegressor(n_estimators=1000, objective="reg:squarederror")
 
-    reg.fit(X_train, y_train, eval_set=[
-            (X_train, y_train), (X_test, y_test)], verbose=100)
+        reg.fit(X_train, y_train, eval_set=[
+                (X_train, y_train), (X_test, y_test)], verbose=100)
 
 
-    predicciones = reg.predict(X_test)
-    mape = mean_absolute_percentage_error(y_test, predicciones)
-
+        predicciones = reg.predict(X_test)
+        mape = mean_absolute_percentage_error(y_test, predicciones)
+        return mape
+    except ValueError as e:
+        print(f"Ha ocurrido un error {e}")
+        return "ValueError"
 
     # Acá podría retornar todas las métricas de interés, el modelo de regresión, el nombre
     # etc..
-    return mape
 
 
 if __name__ == '__main__':
@@ -53,13 +57,14 @@ if __name__ == '__main__':
     ventas_productos.drop("Fecha", axis=1, inplace=True)
     productos = ventas_productos["Descripción"].unique().tolist()
 
-    productos = productos[:5] # Esto cambiarlo de ahí para ver toods los productos
+    # productos = productos[:10] # Esto cambiarlo de ahí para ver toods los productos
 
     lista_productos =[ventas_productos[ventas_productos["Descripción"].isin([i])] for i in productos]
-    # print(lista_productos)
+    
+    lista_final = list(zip(lista_productos, productos))
 
-    futures = [xgboost_producto.remote(i) for i in lista_productos]
-
+    futures = [xgboost_producto.remote(dataframe_prod, prod) for dataframe_prod, prod in lista_final]
+# 
     print(ray.get(futures))
 
     

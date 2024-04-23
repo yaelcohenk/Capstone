@@ -24,8 +24,7 @@ def holt_winter(venta_productos):
 
 
 if __name__ == '__main__':
-    ventas_productos = pd.read_excel(
-        PATH_VENTAS_PRODUCTOS_VIGENTES_NO_OUTLIERS_W_FEATURES)
+    ventas_productos = pd.read_excel(PATH_VENTAS_PRODUCTOS_VIGENTES_NO_OUTLIERS_W_FEATURES)
     ventas_productos.index = ventas_productos["Fecha"]
     ventas_productos.drop("Fecha", axis=1, inplace=True)
 

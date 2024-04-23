@@ -30,6 +30,8 @@ productos_unicos = ventas_productos["Descripción"].unique().tolist()
 
 contador = 0
 
+productos_unicos = ["pro plan alimento seco para adulto razas medianas 15 kg"]
+
 # Tengo que paralelizar esto
 for producto in productos_unicos:
     ventas_loop = ventas_productos[ventas_productos["Descripción"].isin([
@@ -76,6 +78,7 @@ for producto in productos_unicos:
     plt.ylabel('Cantidad')
     plt.title('Predicciones XGBoost: Comparación de Serie Original y Predicción')
     plt.legend()
+    plt.show()
 
     ruta = os.path.join("plots", "forecasts", "xgboost", f"xgboost_{producto}.png")
     try:
