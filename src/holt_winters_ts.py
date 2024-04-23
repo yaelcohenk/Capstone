@@ -8,17 +8,12 @@ import numpy as np
 
 import warnings
 # optuna.logging.set_verbosity(optuna.logging.WARNING)
-
-
 # warnings.filterwarnings("ignore", category=UserWarning)
 warnings.filterwarnings('ignore')
 
-
-ventas_productos = pd.read_excel(
-    PATH_VENTAS_PRODUCTOS_VIGENTES_NO_OUTLIERS_W_FEATURES)
+ventas_productos = pd.read_excel(PATH_VENTAS_PRODUCTOS_VIGENTES_NO_OUTLIERS_W_FEATURES)
 ventas_productos.index = ventas_productos["Fecha"]
-ventas_productos = ventas_productos[ventas_productos["Descripción"].isin(
-    ["pro plan alimento seco para adulto razas medianas 15 kg"])]
+ventas_productos = ventas_productos[ventas_productos["Descripción"].isin(["pro plan alimento seco para adulto razas medianas 15 kg"])]
 ventas_productos.drop("Descripción", axis=1, inplace=True)
 ventas_productos.drop("Fecha", axis=1, inplace=True)
 
@@ -75,8 +70,10 @@ def optimizar_parametros_holt_winters(trial, cantidades=ventas_productos):
     valores_absolutos = np.abs(ventas_estimadas - cantidades)
 
     mad = np.mean(valores_absolutos)
+    
     if np.isnan(mad):
         return float("inf")
+    
     return mad
 
 

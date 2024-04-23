@@ -40,6 +40,9 @@ def xgboost_producto(dataframe_producto: pd.DataFrame,
     predicciones = reg.predict(X_test)
     mape = mean_absolute_percentage_error(y_test, predicciones)
 
+
+    # Acá podría retornar todas las métricas de interés, el modelo de regresión, el nombre
+    # etc..
     return mape
 
 
@@ -48,10 +51,9 @@ if __name__ == '__main__':
     ventas_productos = pd.read_excel(PATH_VENTAS_PRODUCTOS_VIGENTES_NO_OUTLIERS_W_FEATURES)
     ventas_productos.index = ventas_productos["Fecha"]
     ventas_productos.drop("Fecha", axis=1, inplace=True)
-
     productos = ventas_productos["Descripción"].unique().tolist()
 
-    productos = productos[:5]
+    productos = productos[:5] # Esto cambiarlo de ahí para ver toods los productos
 
     lista_productos =[ventas_productos[ventas_productos["Descripción"].isin([i])] for i in productos]
     # print(lista_productos)
