@@ -74,83 +74,20 @@ for producto in productos_unicos:
     # Agregar etiquetas, título, leyenda, etc.
     plt.xlabel('Fecha')
     plt.ylabel('Cantidad')
-    plt.title('Comparación de Serie Original y Predicción')
+    plt.title('Predicciones XGBoost: Comparación de Serie Original y Predicción')
     plt.legend()
 
     ruta = os.path.join("plots", "forecasts", "xgboost", f"xgboost_{producto}.png")
     try:
         plt.savefig(ruta)
-    except:
+    
+    except ValueError:
         ruta = os.path.join("plots", "forecasts", f"xgboost_prod_{contador}.png")
         contador += 1
         plt.savefig(ruta)
+    
     finally:
         plt.close()
-
-sys.exit()
-
-
-ventas_prod = pd.read_excel(os.path.join(
-    "datos", "ventas_diarias_productos_vigentes_no_outliers.xlsx"))
-testeo = ventas_prod[ventas_prod["Descripción"].isin(
-    ["pro plan alimento seco para adulto razas medianas 15 kg"])]
-datos_forecasting = testeo[["Cantidad"]]
-datos_forecasting.index = testeo["Fecha"]
-
-
-datos_forecasting = apply_day_selling_differences(datos_forecasting)
-datos_forecasting = apply_fourier_transform(datos_forecasting)
-datos_forecasting = apply_trend_and_seasonal(datos_forecasting)
-datos_forecasting = create_features(datos_forecasting)
-
-
-train, test = train_test_split(
-    datos_forecasting, test_size=0.25, random_state=42)
-
-
-FEATURES = ['dayofyear', 'dayofweek', 'quarter', 'month', 'year', 'weekofyear', "diff_tiempo_venta", "fourier_transform",
-            "trend", "seasonal"]
-TARGET = "Cantidad"
-
-X_train = train[FEATURES]
-y_train = train[TARGET]
-
-X_test = test[FEATURES]
-y_test = test[TARGET]
-
-
-reg = xgb.XGBRegressor(n_estimators=1000, objective="reg:squarederror",
-                       eval_score=mean_absolute_percentage_error)
-
-reg.fit(X_train, y_train,
-        eval_set=[(X_train, y_train), (X_test, y_test)],
-        verbose=100)
-
-
-fi = pd.DataFrame(data=reg.feature_importances_,
-                  index=reg.feature_names_in_,
-                  columns=['importance'])
-fi.sort_values('importance').plot(kind='barh', title='Feature Importance')
-# plt.close()
-plt.show()
-plt.close()
-
-test["prediction"] = reg.predict(X_test)
-y_pred = test["prediction"]
-
-test['Cantidad'].plot(style='b', figsize=(10, 5), label='Original')
-
-# Trazar la serie de predicción en rojo
-test['prediction'].plot(style='r', figsize=(10, 5), label='Predicción')
-
-# Agregar etiquetas, título, leyenda, etc.
-plt.xlabel('Fecha')
-plt.ylabel('Cantidad')
-plt.title('Comparación de Serie Original y Predicción')
-plt.legend()
-
-# Mostrar el gráfico
-plt.show()
 
 
 # Construir intervalos de confianza empírico. Entrenar un mismo modelo hartas veces, para posterior

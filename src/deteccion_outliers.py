@@ -14,8 +14,6 @@ productos_vigentes = productos_vigentes["Descripción"].tolist()
 datos = pd.read_excel(os.path.join("datos", "ventas_diarias_productos.xlsx"))
 
 datos = datos[datos["Descripción"].isin(productos_vigentes)]
-
-
 lista_dataframes = list()
 
 print(f"El tamaño de los datos antes de quitar outliers es {datos.shape}")

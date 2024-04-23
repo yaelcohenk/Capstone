@@ -75,33 +75,6 @@ X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.
 # Tengo que dividir el x_train -> set entrenamiento, set testeo, set validación
 
 
-# model = keras.models.Sequential()
-# model.add(keras.layers.LSTM(
-    # units=50, activation="relu", return_sequences=True, input_shape=(7, 11)))
-# model.add(keras.layers.Dropout(0.2))
-# model.add(keras.layers.LSTM(units=50, return_sequences=True, activation="relu"))
-# model.add(keras.layers.Dropout(0.2))
-# model.add(keras.layers.Dense(1))
-
-
-
-
-
-
-
-# Este modelo está mejor que el resto
-# model = keras.models.Sequential([
-    # keras.layers.Conv1D(filters=64, kernel_size=6, activation="relu", input_shape=(7, 11), padding="same"),
-    # keras.layers.Conv1D(filters=128, kernel_size=3, activation="relu", padding="same"),
-    # keras.layers.GRU(30, return_sequences=True),
-    # keras.layers.Dropout(0.2),
-    # keras.layers.GRU(30, return_sequences=True),
-    # keras.layers.Dropout(0.2),
-    # keras.layers.GRU(30),
-    # keras.layers.Dense(1)
-# ])
-
-
 model = keras.models.Sequential([
     keras.layers.Conv1D(filters=64, kernel_size=6, activation="relu", input_shape=(7, 11), padding="same"),
     keras.layers.Conv1D(filters=128, kernel_size=3, activation="relu"),
@@ -115,17 +88,12 @@ model = keras.models.Sequential([
 
 
 
-
-
 model.compile(optimizer="adam", loss=MeanSquaredError(), metrics=[RootMeanSquaredError()])
 model.fit(X_train, y_train, epochs=50, validation_data=(X_test, y_test))
 
 predictions = model.predict(X_val)
 
 # predictions = model.evaluate(X_val, y_val)
-
-# print(f"Las predicciones son {predictions}")
-
 predictions = predictions.squeeze()
 print(predictions.shape, y_test.shape)
 
@@ -141,6 +109,7 @@ print(data)
 
 plt.plot(data["predictions"], color="red", label="Predicción")
 plt.plot(data["real"], color="blue", label="Valor Real")
+plt.title("Predicciones RNN en set de datos validación")
 plt.legend()
 plt.show()
 

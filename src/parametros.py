@@ -22,4 +22,20 @@ PATH_VENTAS_SEMANALES_PRODUCTOS_DATA = os.path.join("datos", "ventas_semanales_p
 
 
 
-PATH_VENTAS_PRODUCTOS_VIGENTES_NO_OUTLIERS_W_FEATURES = os.path.join("datos", "ventas_diarias_prod_vigentes_no_outliers_w_features.xlsx")
+PATH_VENTAS_PRODUCTOS_VIGENTES_NO_OUTLIERS_W_FEATURES = os.path.join("datos",
+                                                                      "ventas_diarias_prod_vigentes_no_outliers_w_features.xlsx")
+
+
+# Parámetros para XGBoost
+
+FEATURES = ['dayofyear',
+            'dayofweek',
+            'quarter',
+            'month',
+            'year',
+            'weekofyear',
+            "diff_tiempo_venta",
+            "fourier_transform",
+            "trend", "seasonal"]
+    
+TARGET = "Cantidad"
