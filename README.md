@@ -293,4 +293,14 @@ Ver en Kaggle: Store Sales - Time Series Forecasting
 
 [How to cluster images based on visual similarity](https://towardsdatascience.com/how-to-cluster-images-based-on-visual-similarity-cd6e7209fe34)
 
-[]()
+[Fourier Time Series](https://medium.com/@jcatankard_76170/forecasting-with-fourier-series-8196721e7a3a)
+
+[XGboost](https://www.analyticsvidhya.com/blog/2024/01/xgboost-for-time-series-forecasting/#:~:text=XGBoost%2C%20short%20for%20Extreme%20Gradient,create%20a%20strong%20predictive%20model.)
+
+[DeepAR](https://medium.com/@corymaklin/deepar-forecasting-algorithm-6555efa63444)
+
+[Time Series RNN](https://encord.com/blog/time-series-predictions-with-recurrent-neural-networks/)
+
+[Multivariate Time Series RNN](https://medium.com/@soubhikkhankary28/multivariate-time-series-forecasting-using-rnn-lstm-8d840f3f9aa7)
+
+[Multivariate Time Series RNN forecasting](https://medium.com/@soubhikkhankary28/multivariate-time-series-forecasting-using-rnn-lstm-8d840f3f9aa7)
