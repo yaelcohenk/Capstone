@@ -19,11 +19,6 @@ ventas_productos =ventas_productos[ventas_productos["Descripción"].isin(["pro p
 ventas_productos.drop("Descripción", axis=1, inplace=True)
 ventas_productos.drop("Fecha", axis=1, inplace=True)
 
-
-
-# print(ventas_productos.shape)
-
-
 # TENGO QUE CONSIDERAR UN SOLO PRODUCTO
 
 ventas_productos.dropna(inplace=True)
@@ -101,10 +96,13 @@ print(predictions.shape, y_test.shape)
 predictions = scaler_values.inverse_transform(predictions.reshape(-1, 1)).flatten()
 real = scaler_values.inverse_transform(y_val.reshape(-1, 1)).flatten()
 
+print(real)
+
 # print(y_train_scaled.shape)
 data = pd.DataFrame({"predictions": predictions, "real": real})
 
-print(data)
+# print(data)
+print(X_val.shape)
 
 
 plt.plot(data["predictions"], color="red", label="Predicción")

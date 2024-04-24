@@ -104,6 +104,8 @@ for producto in productos_unicos:
 
 
     data = pd.DataFrame({"prediction": prediction, "real": y_val})
+    print(data)
+
 
     # y_pred = test["prediction"]
     data['real'].plot(style='b', figsize=(10, 5), label='Original')
