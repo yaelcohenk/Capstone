@@ -19,6 +19,7 @@ from funciones.features import (create_features,
                                 apply_fourier_transform)
 
 from parametros import PATH_VENTAS_PRODUCTOS_VIGENTES_NO_OUTLIERS_W_FEATURES
+from sklearn.preprocessing import StandardScaler
 
 
 ventas_productos = pd.read_excel(PATH_VENTAS_PRODUCTOS_VIGENTES_NO_OUTLIERS_W_FEATURES)
@@ -40,7 +41,9 @@ for producto in productos_unicos:
     
 
     # Dividir mejor en train, validación y testing
-    train, test = train_test_split(ventas_loop, test_size=0.25, random_state=42)
+    # train, test = train_test_split(ventas_loop, test_size=0.2, random_state=42)
+
+    # test, validation = train_test_split(test, test_size=0.1, random_state=42)
 
     FEATURES = ['dayofyear',
                 'dayofweek',
@@ -54,11 +57,34 @@ for producto in productos_unicos:
     
     TARGET = "Cantidad"
 
-    X_train = train[FEATURES]
-    y_train = train[TARGET]
 
-    X_test = test[FEATURES]
-    y_test = test[TARGET]
+    X_train, y_train = ventas_loop[FEATURES], ventas_loop[TARGET]
+    
+    scaler_trainer = StandardScaler()
+    x_train_scaled = scaler_trainer.fit_transform(np.array(X_train))
+
+    scaler_values = StandardScaler()
+    y_train_scaled = scaler_values.fit_transform(np.array(y_train).reshape(-1, 1))
+
+
+
+
+    X_train, X_test, y_train, y_test = train_test_split(x_train_scaled, y_train_scaled,
+                                                    test_size=0.2,
+                                                    random_state=42)
+
+    X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.1, random_state=42)
+
+    # X_train, y_train = train[FEATURES], train[TARGET]
+    # y_train = train[TARGET]
+
+    # X_test, y_test = test[FEATURES], test[TARGET]
+    # y_test = test[TARGET]
+
+    # X_val, y_val = validation[FEATURES], validation[TARGET]
+
+
+
 
 
     reg = xgb.XGBRegressor(n_estimators=1000, objective="reg:squarederror")
@@ -68,10 +94,20 @@ for producto in productos_unicos:
         eval_set=[(X_train, y_train), (X_test, y_test)],
         verbose=100)
     
-    test["prediction"] = reg.predict(X_test)
-    y_pred = test["prediction"]
-    test['Cantidad'].plot(style='b', figsize=(10, 5), label='Original')
-    test['prediction'].plot(style='r', figsize=(10, 5), label='Predicción')
+    # test["prediction"] = reg.predict(X_val)
+
+
+    prediction = reg.predict(X_val).squeeze()
+
+    prediction = scaler_values.inverse_transform(prediction.reshape(-1, 1)).flatten()
+    y_val = scaler_values.inverse_transform(y_val.reshape(-1, 1)).flatten()
+
+
+    data = pd.DataFrame({"prediction": prediction, "real": y_val})
+
+    # y_pred = test["prediction"]
+    data['real'].plot(style='b', figsize=(10, 5), label='Original')
+    data['prediction'].plot(style='r', figsize=(10, 5), label='Predicción')
 
     # Agregar etiquetas, título, leyenda, etc.
     plt.xlabel('Fecha')

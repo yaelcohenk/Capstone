@@ -42,6 +42,7 @@ def xgboost_producto(dataframe_producto: pd.DataFrame,
         predicciones = reg.predict(X_test)
         mape = mean_absolute_percentage_error(y_test, predicciones)
         return mape
+    
     except ValueError as e:
         print(f"Ha ocurrido un error {e}")
         return "ValueError"
