@@ -4,8 +4,7 @@ import plotly.express as px
 import os
 
 
-ganancias_total_productos = pd.read_excel(
-    os.path.join("datos", "ganancias_total_productos.xlsx"))
+ganancias_total_productos = pd.read_excel(os.path.join("datos", "ganancias_total_productos.xlsx"))
 # print(ganancias_total_productos.head(75))
 
 ganancias_total_productos = ganancias_total_productos.head(75)

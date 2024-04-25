@@ -6,8 +6,7 @@ import sys
 datos = pd.read_excel(os.path.join("datos", "ventas_diarias_subgrupos.xlsx"))
 datos2 = pd.read_excel(os.path.join("datos", "ventas_diarias_productos.xlsx"))
 
-datos_ganancias = pd.read_excel(os.path.join(
-    "datos", "ganancias_total_productos.xlsx"))
+datos_ganancias = pd.read_excel(os.path.join("datos", "ganancias_total_productos.xlsx"))
 datos_ganancias = datos_ganancias.head(75)
 productos = datos_ganancias["description"]
 
@@ -32,8 +31,7 @@ datos = datos.sort_values(by=["Grupo"])
 
 # print(datos)
 # sys.exit()
-tabla_dinamica = datos.pivot_table(
-    index='Fecha', columns='Descripción', values='Cantidad', aggfunc='sum')
+tabla_dinamica = datos.pivot_table(index='Fecha', columns='Descripción', values='Cantidad', aggfunc='sum')
 
 
 
