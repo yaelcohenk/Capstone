@@ -21,6 +21,8 @@ ventas_diarias_prod_vigentes_no_outliers = pd.read_excel(os.path.join("datos", "
 
 productos_unicos = ventas_diarias_prod_vigentes_no_outliers["Descripción"].unique().tolist()
 
+# Depende si lo vemos por día. Hacerlo por día y por semana, depende del período de tiempo
+# que valores vamos a obtener o clasificaciones. Tirar algunos pronósticos productos y ver algunos KPI
 
 
 listas = list()

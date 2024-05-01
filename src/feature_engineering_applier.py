@@ -24,6 +24,9 @@ for producto in productos_vigentes:
     datos_forecast = apply_fourier_transform(datos_forecast)
     datos_forecast = apply_trend_and_seasonal(datos_forecast)
     datos_forecast = create_features(datos_forecast)
+
+    # Poner demanda acumulada quizás de los últimos x días, demanda de ayer, demanda de los últimos
+    # días
     lista_dataframes.append(datos_forecast)
 
 datos_final = pd.concat(lista_dataframes)
