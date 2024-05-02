@@ -51,65 +51,6 @@ diccionario_demandas = dict()
 for fecha, cantidad in zip(fechas_ventas, cantidad_ventas):
     diccionario_demandas[fecha] = cantidad
 
-# contador_dias_pasados = 0
-#
-# compras = dict()
-# ventas = 0
-# ordenes_realizadas = 0
-# quiebres_stock = 0
-# cantidad_comprada = 0
-# demanda_perdida = dict()
-#
-# inventario = {fecha_min - timedelta(days=1): 0}
-#
-# r, Q = 1, 7
-# print(inventario)
-#
-# for fecha in lista_fechas:
-    # demanda_fecha = diccionario_demandas.get(fecha, 0)
-#
-    # inventario[fecha] = inventario[fecha - timedelta(days=1)] + compras.get(fecha - timedelta(days=leadtime), 0)
-    # if inventario[fecha] < demanda_fecha:
-    # quiebres_stock += 1
-    # Esto es como considerar que vendimos todo lo que teníamos
-    # Esto hay que verlo bien y programarlo bien
-    # Si nos llegan unidades de demanda y tenemos 5, vendemos las 5?
-    # o solo vendemos si es que tenemos lo suficiente para venderles
-    # Tiene más sentido vender todo lo que teníamos y de ahí dejar el inventario en cero
-    # demanda_perdida[fecha] = demanda_fecha - inventario[fecha]
-    # ventas += (inventario[fecha])
-    # inventario[fecha] = 0
-    # else:
-    # ventas += demanda_fecha
-    # inventario[fecha] -= demanda_fecha
-    #
-    # if contador_dias_pasados % 7 == 0:
-    # print("REVISANDO FECHA")
-    # if inventario[fecha] < r:
-    # ordenes_realizadas += 1
-    # compras[fecha] = Q
-    # cantidad_comprada += Q
-#
-    # contador_dias_pasados += 1
-#
-#
-# ventas_clp = ventas * precio_venta
-# costo_comprar_clp = costo_compra * cantidad_comprada
-# costo_fijo_clp = ordenes_realizadas * costo_fijo_comprar
-# costo_almacenaje_clp = sum(inventario.get(fecha) * costo_almacenar for fecha in lista_fechas)
-# venta_perdida_clp = sum(demanda_perdida.values()) * (precio_venta - costo_compra)
-#
-# ganancias = ventas_clp - costo_comprar_clp - costo_fijo_clp - costo_almacenaje_clp - venta_perdida_clp
-#
-# print(f"[INFO]: Se vendieron en total de {ventas} unidades")
-# print(f"[INFO]: Se hicieron en total {ordenes_realizadas} compras")
-# print(f"[INFO]: Se tuvo un total de {quiebres_stock} quiebres de stock")
-# print(f"[INFO]: La demanda perdida suma un total de {sum(demanda_perdida.values())}")
-# print(f"[INFO]: Se compraron en total {cantidad_comprada} productos")
-# print(f"[INFO]: Las utilidades corresponden a {ganancias} CLP")
-#
-
-
 def caso_base_T_r_Q(
         demandas: dict,
         lista_fechas: list,
@@ -242,21 +183,13 @@ def caso_base_T_r_Q_optuna(trial,
     ventas_clp = ventas * precio_venta
     costo_comprar_clp = costo_compra * cantidad_comprada
     costo_fijo_clp = ordenes_realizadas * costo_fijo_comprar
-    costo_almacenaje_clp = sum(inventario.get(
-        fecha) * costo_almacenar for fecha in lista_fechas)
+    costo_almacenaje_clp = sum(inventario.get(fecha) * costo_almacenar for fecha in lista_fechas)
     venta_perdida_clp = sum(demanda_perdida.values()) * \
         (precio_venta - costo_compra)
 
     ganancias = ventas_clp - costo_comprar_clp - \
         costo_fijo_clp - costo_almacenaje_clp - venta_perdida_clp
 
-    # print(f"[INFO]: Se vendieron en total de {ventas} unidades")
-    # print(f"[INFO]: Se hicieron en total {ordenes_realizadas} compras")
-    # print(f"[INFO]: Se tuvo un total de {quiebres_stock} quiebres de stock")
-    # print(
-        # f"[INFO]: La demanda perdida suma un total de {sum(demanda_perdida.values())}")
-    # print(f"[INFO]: Se compraron en total {cantidad_comprada} productos")
-    # print(f"[INFO]: Las utilidades corresponden a {ganancias} CLP")
 
     return ganancias
 
