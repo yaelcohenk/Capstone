@@ -9,8 +9,7 @@ from parametros import PATH_VENTAS_PRODUCTOS_VIGENTES_NO_OUTLIERS
 datos = pd.read_excel(PATH_VENTAS_PRODUCTOS_VIGENTES_NO_OUTLIERS)
 datos = datos[["Descripción", "Fecha", "Cantidad"]]
 
-datos_ganancias = pd.read_excel(os.path.join(
-    "datos", "ganancias_total_productos.xlsx"))
+datos_ganancias = pd.read_excel(os.path.join("datos", "ganancias_total_productos.xlsx"))
 datos_ganancias = datos_ganancias.head(75)
 productos = datos_ganancias["description"]
 
