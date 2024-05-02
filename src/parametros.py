@@ -36,6 +36,8 @@ FEATURES = ['dayofyear',
             'weekofyear',
             "diff_tiempo_venta",
             "fourier_transform",
-            "trend", "seasonal"]
+            "trend",
+            "seasonal",
+            "ventas_fecha_anterior"]
     
 TARGET = "Cantidad"

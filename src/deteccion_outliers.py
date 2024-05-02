@@ -19,7 +19,6 @@ lista_dataframes = list()
 print(f"El tamaño de los datos antes de quitar outliers es {datos.shape}")
 
 for producto in productos_vigentes:
-
     producto_data = datos[datos["Descripción"].isin([producto])]
     isolation = IsolationForest()
     producto_data["ISO"] = isolation.fit_predict(producto_data["Cantidad"].values.reshape(-1, 1))

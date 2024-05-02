@@ -18,7 +18,6 @@ datos = datos[datos["Descripción"].isin(productos)]
 fecha_min = min(datos["Fecha"])
 fecha_max = max(datos["Fecha"])
 
-
 # Necesitamos tener todos los días entre medio, no solo los que registraron venta
 T = [fecha_min + timedelta(days=i)
      for i in range((fecha_max - fecha_min).days + 1)]
@@ -40,7 +39,7 @@ l = dict()          # Leadtime en días
 Vol = dict()        # Volumen utilizado
 
 
-datos_productos = pd.read_csv(os.path.join("datos", "data_items.csv"), sep=";")
+datos_productos = pd.read_excel(os.path.join("datos", "data_items_fillna.xlsx"))
 columnas = ["description",
             "unit_sale_price (CLP)",
             "cost (CLP)",
@@ -50,23 +49,6 @@ columnas = ["description",
             "cost_per_purchase"]
 
 datos_productos = datos_productos[datos_productos["description"].isin(J)]
-
-media_precio = datos_productos["unit_sale_price (CLP)"].mean()
-media_costo = datos_productos["cost (CLP)"].mean()
-media_costo_alm = datos_productos["storage_cost (CLP)"].mean()
-media_leadtime = datos_productos["leadtime (days)"].mean()
-media_vol = datos_productos["size_m3"].mean()
-media_cost_compra = datos_productos["cost_per_purchase"].mean()
-
-# Esto lo tengo que pasar a otro archivo. Esto no hay que hacerlo aquí, se mezcla la lógica
-datos_productos["unit_sale_price (CLP)"].fillna(media_precio, inplace=True)
-datos_productos["cost (CLP)"].fillna(media_costo, inplace=True)
-datos_productos["storage_cost (CLP)"].fillna(media_costo_alm, inplace=True)
-datos_productos["leadtime (days)"].fillna(media_leadtime, inplace=True)
-datos_productos["size_m3"].fillna(media_vol, inplace=True)
-datos_productos["cost_per_purchase"].fillna(media_cost_compra, inplace=True)
-
-
 datos_productos = datos_productos[columnas].drop_duplicates().to_numpy()
 
 

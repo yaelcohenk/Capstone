@@ -71,3 +71,8 @@ def create_features(df):
             "fourier_transform", "trend", "seasonal", "Descripción"]]
 
     return X
+
+
+def agregar_demanda_fecha_anterior(df):
+    df["ventas_fecha_anterior"] = df["Cantidad"].shift(1)
+    return df

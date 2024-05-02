@@ -6,7 +6,8 @@ import sys
 from funciones.features import (create_features,
                                 apply_trend_and_seasonal,
                                 apply_fourier_transform,
-                                apply_day_selling_differences)
+                                apply_day_selling_differences,
+                                agregar_demanda_fecha_anterior)
 
 
 ventas_prod = pd.read_excel(os.path.join("datos", "ventas_diarias_productos_vigentes_no_outliers.xlsx"))
@@ -24,7 +25,7 @@ for producto in productos_vigentes:
     datos_forecast = apply_fourier_transform(datos_forecast)
     datos_forecast = apply_trend_and_seasonal(datos_forecast)
     datos_forecast = create_features(datos_forecast)
-
+    datos_forecast = agregar_demanda_fecha_anterior(datos_forecast)
     # Poner demanda acumulada quizás de los últimos x días, demanda de ayer, demanda de los últimos
     # días
     lista_dataframes.append(datos_forecast)

@@ -10,6 +10,11 @@ De los datos que nos interesan. En verdad esto de los outliers nos debería inte
 En verdad el resto de cosas no depende tanto de esto.
 
 
+## Orden de Ejecución de los Archivos
+
+
+
+
 
 ## Papers
 
