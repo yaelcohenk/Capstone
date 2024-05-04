@@ -5,13 +5,13 @@ import matplotlib.pyplot as plt
 import ray
 import sys
 import os
+import json
 
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import (mean_absolute_percentage_error,
                              root_mean_squared_error,
                              mean_absolute_error,
                              mean_squared_error)
-#  root_mean_squared_error)
 from sklearn.preprocessing import StandardScaler
 
 from parametros import (FEATURES,
@@ -23,7 +23,6 @@ from parametros import (FEATURES,
 # Preguntar si tenemos que ocupar distintas métricas y de ahí comparar
 # Opiniones de los modelos de pronóstico
 # Quizás aplicarle un optuna a lo del Regressor
-
 
 @ray.remote
 def xgboost_producto(dataframe_producto: pd.DataFrame,
@@ -118,17 +117,35 @@ if __name__ == '__main__':
     elementos = ray.get(futures)
 
     valores = list()
-    predicciones = list()
+    predicciones = dict()
 
     for elemento in elementos:
-        valores.append(elemento[:-2])
-        predicciones.append((elemento[0], elemento[-2], elemento[-1]))
+        nombre, *metricas, y_val, y_pred = elemento
+        
+        valores.append([nombre, *metricas])
+        predicciones[nombre] = [y_val.tolist(), y_pred.tolist()]
 
     dataframe = pd.DataFrame(valores)
     dataframe.columns = ["producto", "MAPE", "RMSE", "MAE", "MSE"]
     dataframe.set_index("producto", inplace=True)
-
     dataframe.to_excel(os.path.join("datos", "metricas_xgboost.xlsx"))
+
+
+    # print(predicciones)
+
+    contador = 0
+    diccionario_equivalencias_nombres = dict()
+    for nombre, values in predicciones.items():
+        dataframe = pd.DataFrame({"valor_real": values[0], "valor_prediccion": values[1]}) 
+        dataframe.to_excel(os.path.join("predicciones", "xgboost", f"producto_{contador}.xlsx"), index=False)
+        diccionario_equivalencias_nombres[contador] = nombre
+        contador += 1
+
+     
+    with open(os.path.join("predicciones", "xgboost", "mapeos.txt"), "w") as file:
+        json.dump(diccionario_equivalencias_nombres, file)
+
+
     sys.exit("[INFO]: EJECUCIÓN EXITOSA PARALLEL XGBOOST")
     for elemento in predicciones:
         dato_loop = pd.DataFrame({"prediction": elemento[1].tolist(), "real": elemento[2].tolist()})

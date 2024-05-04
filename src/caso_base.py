@@ -6,10 +6,8 @@ from datetime import timedelta
 from functools import partial
 
 
-datos_test_item = pd.read_excel(
-    os.path.join("datos", "data_items_fillna.xlsx"))
-datos_test_venta = pd.read_csv(
-    os.path.join("datos", "data_sales.csv"), sep=";")
+datos_test_item = pd.read_excel(os.path.join("datos", "data_items_fillna.xlsx"))
+datos_test_venta = pd.read_csv(os.path.join("datos", "data_sales.csv"), sep=";")
 
 articulo = "pro plan alimento seco para adulto razas medianas 15 kg"
 
@@ -204,7 +202,7 @@ objective = partial(caso_base_T_r_Q_optuna,
                     fecha_min=fecha_min,
                     nombre_prod=articulo)
 
-study.optimize(objective, n_trials=1000)
+study.optimize(objective, n_trials=100)
 best_params = study.best_params
 best_value = study.best_value
 print("Optimized parameters:", best_params)
