@@ -6,12 +6,8 @@ import statsmodels.api as sm
 import sys
 
 
-datos_diarios_grupos = pd.read_excel(
-    os.path.join("datos", "ventas_diarias_subgrupos.xlsx"))
-# datos_diarios_grupos.co
-# print(datos_diarios_grupos)
+datos_diarios_grupos = pd.read_excel(os.path.join("datos", "ventas_diarias_subgrupos.xlsx"))
 
-# sys.exit()
 datos_diarios_grupos.columns = ["Grupo", "Fecha", "Ventas"]
 
 lista_grupos_grandes = datos_diarios_grupos["Grupo"].unique()

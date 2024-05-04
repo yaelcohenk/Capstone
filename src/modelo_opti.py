@@ -93,4 +93,7 @@ model.addConstrs(y[j, T[0]] == 0 for j in J)  # Esto hay que cambiarlo creo
 model.setObjective(quicksum(v[j] * w[j, t] - c[j] * x[j, t] - CF[j] * z[j, t] - alpha[j]
                    * y_plus[j, t] - (v[j] - c[j]) * y_minus[j, t] for j in J for t in T), GRB.MAXIMIZE)
 
+
+# Hay que poner la restricción de solo comprar cada 7 días
+
 model.optimize()

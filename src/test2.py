@@ -4,11 +4,7 @@ import calplot
 import matplotlib.pyplot as plt
 from funciones.plotting import graficar_heatmap_datos
 import seaborn as sns
-# ventas_diarias = pd.read_excel(os.path.join("datos", "ventas_diarias_productos.xlsx"))
-# print(len(ventas_diarias["Descripción"].unique()))
-# fecha_venta_max = ventas_diarias.groupby("Descripción").agg({"Fecha": "max"}).reset_index()
-# filtro_objetos_venta = fecha_venta_max[fecha_venta_max["Fecha"] >= "2023-12-1"]
-# print(filtro_objetos_venta)
+
 
 porcentajes_acumulados = pd.read_excel(
     os.path.join("datos", "ganancias_total_productos.xlsx"))

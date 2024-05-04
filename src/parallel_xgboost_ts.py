@@ -18,11 +18,6 @@ from parametros import (FEATURES,
                         TARGET,
                         PATH_VENTAS_PRODUCTOS_VIGENTES_NO_OUTLIERS_W_FEATURES)
 
-# Cada parte lo tengo que dividir en train, test, validación
-# Ver si me sirve escalar los datos antes de pasarselo al xgboost
-# Preguntar si tenemos que ocupar distintas métricas y de ahí comparar
-# Opiniones de los modelos de pronóstico
-# Quizás aplicarle un optuna a lo del Regressor
 
 @ray.remote
 def xgboost_producto(dataframe_producto: pd.DataFrame,
@@ -50,8 +45,8 @@ def xgboost_producto(dataframe_producto: pd.DataFrame,
         reg.fit(X_train, y_train, eval_set=[
                 (X_train, y_train), (X_test, y_test)], verbose=100)
 
-        X_val, y_val = validacion[FEATURES], validacion[TARGET]
-        X_val = scaler_trainer.transform(np.array(X_val))
+        X_val_1, y_val = validacion[FEATURES], validacion[TARGET]
+        X_val = scaler_trainer.transform(np.array(X_val_1))
         y_val = scaler_values.transform(np.array(y_val).reshape(-1, 1))
 
         # La validación la deberíamos hacer sobre los datos 2023-2024
@@ -72,7 +67,7 @@ def xgboost_producto(dataframe_producto: pd.DataFrame,
         mae = mean_absolute_error(y_val, prediction)
         mse = mean_squared_error(y_val, prediction)
 
-        return nombre_producto, mape, rmse, mae, mse, y_val, prediction
+        return nombre_producto, mape, rmse, mae, mse, y_val, prediction, X_val_1
 
         # Revisar el valor del MAPE si está en % o no. Mirar de manera crítica los indicadores
 
@@ -120,10 +115,10 @@ if __name__ == '__main__':
     predicciones = dict()
 
     for elemento in elementos:
-        nombre, *metricas, y_val, y_pred = elemento
+        nombre, *metricas, y_val, y_pred, covariables = elemento
         
         valores.append([nombre, *metricas])
-        predicciones[nombre] = [y_val.tolist(), y_pred.tolist()]
+        predicciones[nombre] = [y_val.tolist(), y_pred.tolist(), covariables.index]
 
     dataframe = pd.DataFrame(valores)
     dataframe.columns = ["producto", "MAPE", "RMSE", "MAE", "MSE"]
@@ -131,13 +126,14 @@ if __name__ == '__main__':
     dataframe.to_excel(os.path.join("datos", "metricas_xgboost.xlsx"))
 
 
-    # print(predicciones)
+
 
     contador = 0
     diccionario_equivalencias_nombres = dict()
     for nombre, values in predicciones.items():
-        dataframe = pd.DataFrame({"valor_real": values[0], "valor_prediccion": values[1]}) 
-        dataframe.to_excel(os.path.join("predicciones", "xgboost", f"producto_{contador}.xlsx"), index=False)
+        dataframe = pd.DataFrame({"valor_real": values[0], "valor_prediccion": values[1]})
+        dataframe.set_index(values[2], inplace=True) 
+        dataframe.to_excel(os.path.join("predicciones", "xgboost", f"producto_{contador}.xlsx"))
         diccionario_equivalencias_nombres[contador] = nombre
         contador += 1
 

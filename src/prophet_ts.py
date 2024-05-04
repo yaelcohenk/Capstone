@@ -10,14 +10,6 @@ datos_forecasting = testeo[["Fecha", "Cantidad"]]
 
 datos_forecasting.columns = ["ds", "y"]
 
-
-# print(datos_forecasting)
-# datos_forecasting["z_score"] = (datos_forecasting["y"] - datos_forecasting["y"].mean()) / datos_forecasting["y"].std()
-
-# print(datos_forecasting)
-
-# datos_forecasting = datos_forecasting[(datos_forecasting["z_score"] < 3) & (datos_forecasting["z_score"] > -3)]
-# print(datos_forecasting)
 model = prophet.Prophet()
 model.fit(datos_forecasting)
 
