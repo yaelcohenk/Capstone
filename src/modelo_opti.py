@@ -14,6 +14,12 @@ datos_ganancias = datos_ganancias.head(75)
 productos = datos_ganancias["description"]
 
 datos = datos[datos["Descripción"].isin(productos)]
+datos = datos[datos["Fecha"].dt.year >= 2023]
+
+
+# print(datos)
+
+# sys.exit("EXIT")
 
 fecha_min = min(datos["Fecha"])
 fecha_max = max(datos["Fecha"])
@@ -24,6 +30,7 @@ T = [fecha_min + timedelta(days=i)
 
 
 J = datos["Descripción"].unique().tolist()
+
 D = dict()
 
 datos_lista = datos.to_numpy()
@@ -65,6 +72,10 @@ for prod in datos_productos:
 Vmax = 120
 
 model = Model()
+
+model.setParam("TimeLimit", 30)
+
+
 x = model.addVars(J, T, name="x")
 y = model.addVars(J, T, name="y", lb=-GRB.INFINITY)
 y_plus = model.addVars(J, T, name="y+")
@@ -90,10 +101,42 @@ model.addConstrs(y[j, t] == y[j, t - timedelta(days=1)] - w[j, t] +
 
 model.addConstrs(y[j, T[0]] == 0 for j in J)  # Esto hay que cambiarlo creo
 
+
+# Hay que poner la restricción de solo comprar cada 7 días
+model.addConstrs(z[j, t] == 0 for j in J for indice_t, t in enumerate(T) if indice_t % 7 != 0)
+
+
 model.setObjective(quicksum(v[j] * w[j, t] - c[j] * x[j, t] - CF[j] * z[j, t] - alpha[j]
                    * y_plus[j, t] - (v[j] - c[j]) * y_minus[j, t] for j in J for t in T), GRB.MAXIMIZE)
 
 
-# Hay que poner la restricción de solo comprar cada 7 días
 
 model.optimize()
+
+cantidad_quiebres_stock = 0
+unidades_quebradas = 0
+
+
+for valor in y_minus.values():
+    if valor.X != 0:
+        cantidad_quiebres_stock += 1
+        unidades_quebradas += valor.X
+
+
+
+productos_vendidos = 0
+for valor in w.values():
+    productos_vendidos += valor.X
+
+
+print(f"Considerando todos los productos, hubo un total de {cantidad_quiebres_stock} quiebres de stock")
+print(f"Hubo un quiebre de stock por un total de {unidades_quebradas} de stock")
+print(f"Se vendieron un total de {productos_vendidos} de producto")
+
+
+# 1) Ventas totales unidades
+# 2) Total de órdenes realizadas
+# 3) Total de quiebres de stock
+# 4) Cantidad de demanda perdida total
+# 5) Cantidad de productos comprados
+# 6) Utilidades

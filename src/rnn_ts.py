@@ -12,8 +12,7 @@ from tensorflow.keras.losses import MeanSquaredError
 from tensorflow.keras.metrics import RootMeanSquaredError
 
 
-ventas_productos = pd.read_excel(
-    PATH_VENTAS_PRODUCTOS_VIGENTES_NO_OUTLIERS_W_FEATURES)
+ventas_productos = pd.read_excel(PATH_VENTAS_PRODUCTOS_VIGENTES_NO_OUTLIERS_W_FEATURES)
 ventas_productos.index = ventas_productos["Fecha"]
 ventas_productos =ventas_productos[ventas_productos["Descripción"].isin(["pro plan alimento seco para adulto razas medianas 15 kg"])]
 ventas_productos.drop("Descripción", axis=1, inplace=True)
@@ -22,16 +21,14 @@ ventas_productos.drop("Fecha", axis=1, inplace=True)
 # TENGO QUE CONSIDERAR UN SOLO PRODUCTO
 
 ventas_productos.dropna(inplace=True)
-# print(ventas_productos.shape)
 
-columnas_covariables = [
-    columna for columna in ventas_productos.columns if columna != "Cantidad"]
+columnas_covariables = [columna for columna in ventas_productos.columns if columna != "Cantidad"]
 
 x_train_covariates = ventas_productos[columnas_covariables]
 y_train_value = ventas_productos[["Cantidad"]]
 
 
-print(f"INFO: {y_train_value.shape}")
+# print(f"INFO: {y_train_value.shape}")
 
 
 scaler_trainer = StandardScaler()
