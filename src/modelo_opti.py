@@ -1,6 +1,11 @@
 import pandas as pd
 import os
 import sys
+import matplotlib.pyplot as plt
+import seaborn as sns
+import os
+import json
+
 
 from datetime import timedelta
 from gurobipy import Model, GRB, quicksum
@@ -113,6 +118,9 @@ model.setObjective(quicksum(v[j] * w[j, t] - c[j] * x[j, t] - CF[j] * z[j, t] - 
 
 model.optimize()
 
+
+# Quizás todo esto de abajo lo tengo que pasar a algunas otras funciones cuando pueda para que quede más bonito
+
 cantidad_quiebres_stock = 0
 unidades_quebradas = 0
 
@@ -129,10 +137,79 @@ for valor in w.values():
     productos_vendidos += valor.X
 
 
+ordenes_de_compra = 0
+
+for valor in z.values():
+    ordenes_de_compra += valor.X
+
+productos_comprados = 0
+
+for valor in x.values():
+    productos_comprados += valor.X
+
+print(f"Se vendieron un total de {productos_vendidos} de producto")
+print(f"En total se realizaron {ordenes_de_compra} ordenes de compra")
 print(f"Considerando todos los productos, hubo un total de {cantidad_quiebres_stock} quiebres de stock")
 print(f"Hubo un quiebre de stock por un total de {unidades_quebradas} de stock")
-print(f"Se vendieron un total de {productos_vendidos} de producto")
+print(f"Se compraron un total de {productos_comprados} productos")
 
+print(f"Las utilidades corresponden a {model.ObjVal} CLP")
+
+
+
+tiempo = []
+inventario = []
+
+inventario_producto = dict()
+
+
+for t in T:
+    inventario_t = 0
+    
+    for j in J:
+        inventario_t += y[j, t].X
+
+    tiempo.append(t)
+    inventario.append(inventario_t)
+
+
+for j in J:
+    inventario_producto_tiempo = list()
+
+    for t in T:
+        inventario_producto_tiempo.append(y[j, t].X)
+
+    inventario_producto[j] = inventario_producto_tiempo
+
+    
+
+
+sns.lineplot(x=tiempo,y=inventario)
+plt.xlabel("Fechas")
+plt.ylabel("Cantidad de inventario (unidades)")
+plt.title(f"Inventario a través del tiempo del sistema")
+plt.savefig(os.path.join("politicas_graficos", "inventario", "modelo_opti", f"inventario_sistema.png"))
+plt.close()
+
+
+
+contador = 0
+mapeo_graficos = dict()
+
+for producto, inventario_prod in inventario_producto.items():
+    sns.lineplot(x=tiempo, y=inventario_prod)
+    plt.xlabel("Fechas")
+    plt.ylabel("Cantidad de inventario (unidades)")
+    plt.title(f"Inventario a través del tiempo para {producto}")
+    plt.savefig(os.path.join("politicas_graficos", "inventario", "modelo_opti", f"prod_{contador}.png"))
+    plt.close()
+
+    mapeo_graficos[contador] = producto
+    contador += 1
+
+
+with open(os.path.join("politicas_graficos", "inventario", "mapeos.txt"), "w") as file:
+    json.dump(mapeo_graficos, file)
 
 # 1) Ventas totales unidades
 # 2) Total de órdenes realizadas
