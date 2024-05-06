@@ -183,7 +183,7 @@ for j in J:
 
     
 
-
+plt.figure(figsize=(16, 6))
 sns.lineplot(x=tiempo,y=inventario)
 plt.xlabel("Fechas")
 plt.ylabel("Cantidad de inventario (unidades)")
@@ -197,6 +197,7 @@ contador = 0
 mapeo_graficos = dict()
 
 for producto, inventario_prod in inventario_producto.items():
+    plt.figure(figsize=(16, 6))
     sns.lineplot(x=tiempo, y=inventario_prod)
     plt.xlabel("Fechas")
     plt.ylabel("Cantidad de inventario (unidades)")
