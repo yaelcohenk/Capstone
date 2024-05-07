@@ -50,7 +50,6 @@ def rnn(dataframe_producto: pd.DataFrame, nombre_producto: str):
     model = keras.models.Sequential([
         keras.layers.Conv1D(filters=64, kernel_size=6,
                             activation="relu", input_shape=(1, 12), padding="same"),
-        keras.layers.Conv1D(filters=128, kernel_size=3, activation="relu"),
         keras.layers.GRU(60, return_sequences=True),
         keras.layers.Dropout(0.2),
         keras.layers.GRU(50, return_sequences=True),
@@ -79,17 +78,21 @@ def rnn(dataframe_producto: pd.DataFrame, nombre_producto: str):
     predictions = model.predict(X_val)
     predictions = predictions.squeeze()
 
+    print(validacion.shape)
+    print(X_val, Y_val)
+    print(Y_val.shape, X_val.shape)
 
     predictions = scaler_values.inverse_transform(predictions.reshape(-1, 1)).flatten()
     real = scaler_values.inverse_transform(Y_val.reshape(-1, 1)).flatten()
 
-    # print(y_train_scaled.shape)
-    # data = pd.DataFrame({"predictions": predictions, "real": real})
-
-    print(predictions)
-    print(real)
+    data = pd.DataFrame({"predictions": predictions, "real": real})
 
 
+    return data, nombre_producto
+    # print(predictions)
+    # print(real)
+# 
+# 
     # plt.plot(data["predictions"], color="red", label="Predicción")
     # plt.plot(data["real"], color="blue", label="Valor Real")
     # plt.title("Predicciones RNN en set de datos validación")
@@ -99,14 +102,12 @@ def rnn(dataframe_producto: pd.DataFrame, nombre_producto: str):
 
 
 if __name__ == '__main__':
-    ventas_productos = pd.read_excel(
-        PATH_VENTAS_PRODUCTOS_VIGENTES_NO_OUTLIERS_W_FEATURES)
+    ventas_productos = pd.read_excel(PATH_VENTAS_PRODUCTOS_VIGENTES_NO_OUTLIERS_W_FEATURES)
     ventas_productos.set_index("Fecha", inplace=True)
 
     productos = ventas_productos["Descripción"].unique().tolist()[:1]
 
-    lista_productos = [
-        ventas_productos[ventas_productos["Descripción"].isin([i])] for i in productos]
+    lista_productos = [ventas_productos[ventas_productos["Descripción"].isin([i])] for i in productos]
     lista_final = list(zip(lista_productos, productos))
 
     for dataframe, producto in lista_final:
