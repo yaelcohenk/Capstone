@@ -10,4 +10,5 @@ def parametros_producto(datos_producto: pd.DataFrame):
     item_id = datos_producto["item_id"].to_numpy()[0]
     nombre_prod = datos_producto["description"].to_numpy()[0]
 
+    ids_asociados = datos_producto["item_id"].tolist()
     return precio_venta, costo_compra, costo_almacenar, leadtime, volumen, costo_fijo_comprar, item_id, nombre_prod
