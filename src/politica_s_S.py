@@ -72,8 +72,8 @@ for fecha, cantidad in zip(fechas_ventas, cantidad_ventas):
 
 # Hay que tener en cuenta el tema del volumen
 def caso_base_T_r_Q(demandas: dict, lista_fechas: list, fecha_min, nombre_prod, T=7, Vmax=10,
-                    r=1,
-                    Q=1):
+                    s=1,
+                    S=1):
 
     contador_dias_pasados = 0
     compras = dict()
@@ -83,35 +83,44 @@ def caso_base_T_r_Q(demandas: dict, lista_fechas: list, fecha_min, nombre_prod, 
     cantidad_comprada = 0
     demanda_perdida = dict()
 
-    inventario = {fecha_min - timedelta(days=1): 0}
-
+    inventario_fechas = {fecha_min - timedelta(days=1): 0}
+    lista_fechas_compras = list()
     for fecha in lista_fechas:
         demanda_fecha = diccionario_demandas.get(fecha, 0)
 
-        inventario[fecha] = inventario[fecha -
-                                       timedelta(days=1)] + compras.get(fecha - timedelta(days=leadtime), 0)
+        inventario = inventario_fechas[fecha -
+                                       timedelta(days=1)] + compras.get(fecha, 0)
 
-        if inventario[fecha] < demanda_fecha:
+        # print(f"Al inicio del día {fecha} el inventario era {inventario}")
+        # print(f"El inventario el día de ayer era {inventario_fechas[fecha - timedelta(days=1)]} y hoy llegaron {compras.get(fecha, 0)} productos")
+        if inventario < demanda_fecha:
             quiebres_stock += 1
-            demanda_perdida[fecha] = demanda_fecha - inventario[fecha]
-            ventas += (inventario[fecha])
-            inventario[fecha] = 0
+            demanda_perdida[fecha] = demanda_fecha - inventario
+            ventas += (inventario)
+            inventario = 0
         else:
             ventas += demanda_fecha
-            inventario[fecha] -= demanda_fecha
+            inventario -= demanda_fecha
 
         if contador_dias_pasados % T == 0:
-            if inventario[fecha] < r:
+            if inventario < s:
                 ordenes_realizadas += 1
-                compras[fecha] = Q
-                cantidad_comprada += Q
+                cantidad_comprar = (S - inventario)
+                # print(f"La cantidad a comprar el día {fecha} y que llegará el {fecha + timedelta(days=leadtime)} es de {cantidad_comprar}\n")
+                lista_fechas_compras.append(fecha)
+                compras[fecha + timedelta(days=leadtime)] = cantidad_comprar
+                cantidad_comprada += cantidad_comprar
 
         contador_dias_pasados += 1
+        inventario_fechas[fecha] = inventario
+        # print(f"Al final del día {fecha}")
+        # print(f"El inventario el día {fecha} es de {inventario}, este día llegaron {compras.get(fecha, 0)} productos comprados y la demanda fue de {demanda_fecha}\n")
+
 
     ventas_clp = ventas * precio_venta
     costo_comprar_clp = costo_compra * cantidad_comprada
     costo_fijo_clp = ordenes_realizadas * costo_fijo_comprar
-    costo_almacenaje_clp = sum(inventario.get(
+    costo_almacenaje_clp = sum(inventario_fechas.get(
         fecha) * costo_almacenar for fecha in lista_fechas)
     venta_perdida_clp = sum(demanda_perdida.values()) * \
         (precio_venta - costo_compra)
@@ -127,7 +136,7 @@ def caso_base_T_r_Q(demandas: dict, lista_fechas: list, fecha_min, nombre_prod, 
     print(f"[INFO]: Se compraron en total {cantidad_comprada} productos")
     print(f"[INFO]: Las utilidades corresponden a {ganancias} CLP")
 
-    return ganancias, lista_fechas, list(inventario.values())[1:]
+    return ganancias, lista_fechas, list(inventario_fechas.values())[1:], compras, lista_fechas_compras
 
 
 def caso_base_T_r_Q_optuna(trial,
@@ -141,8 +150,8 @@ def caso_base_T_r_Q_optuna(trial,
     # hacer heurística para ver producto e ir comprando, como según un ranking
     # Nunca nos dará si llenamos la bodega si política está bien calibrada
 
-    r = trial.suggest_int('r', 1, 30)
-    Q = trial.suggest_int('Q', 1, 30)
+    s = trial.suggest_int('s', 1, 30)
+    S = trial.suggest_int('S', s, 30)
 
     contador_dias_pasados = 0
     compras = dict()
@@ -152,48 +161,40 @@ def caso_base_T_r_Q_optuna(trial,
     cantidad_comprada = 0
     demanda_perdida = dict()
 
-    inventario = {fecha_min - timedelta(days=1): 0}
-
+    inventario_fechas = {fecha_min - timedelta(days=1): 0}
     for fecha in lista_fechas:
         demanda_fecha = diccionario_demandas.get(fecha, 0)
 
-        inventario[fecha] = inventario[fecha -
-                                       timedelta(days=1)] + compras.get(fecha - timedelta(days=leadtime), 0)
+        inventario = inventario_fechas[fecha -
+                                       timedelta(days=1)] + compras.get(fecha, 0)
 
-        constraint_volumen = inventario[fecha] * volumen - Vmax
-        trial.set_user_attr("constraint", constraint_volumen)
-        if inventario[fecha] < demanda_fecha:
+        # print(f"Al inicio del día {fecha} el inventario era {inventario}")
+        # print(f"El inventario el día de ayer era {inventario_fechas[fecha - timedelta(days=1)]} y hoy llegaron {compras.get(fecha, 0)} productos")
+        if inventario < demanda_fecha:
             quiebres_stock += 1
-
-            # Ponerlo como supuesto. Comprar todo lo que hay es razonable
-
-            # No tenemos info quiebre stock histórico. Para nuestro análisis si tiene sentido
-            # que lo calculemos. En la realidad es difícil registrarlo con ese nivel de detalle
-
-            # Esto es como considerar que vendimos todo lo que teníamos
-            # Esto hay que verlo bien y programarlo bien
-            # Si nos llegan unidades de demanda y tenemos 5, vendemos las 5?
-            # o solo vendemos si es que tenemos lo suficiente para venderles
-            # Tiene más sentido vender todo lo que teníamos y de ahí dejar el inventario en cero
-            demanda_perdida[fecha] = demanda_fecha - inventario[fecha]
-            ventas += (inventario[fecha])
-            inventario[fecha] = 0
+            demanda_perdida[fecha] = demanda_fecha - inventario
+            ventas += (inventario)
+            inventario = 0
         else:
             ventas += demanda_fecha
-            inventario[fecha] -= demanda_fecha
+            inventario -= demanda_fecha
 
         if contador_dias_pasados % T == 0:
-            if inventario[fecha] < r:
+            if inventario < s:
                 ordenes_realizadas += 1
-                compras[fecha] = Q
-                cantidad_comprada += Q
+                cantidad_comprar = (S - inventario)
+                # print(f"La cantidad a comprar el día {fecha} y que llegará el {fecha + timedelta(days=leadtime)} es de {cantidad_comprar}\n")
+
+                compras[fecha + timedelta(days=leadtime)] = cantidad_comprar
+                cantidad_comprada += cantidad_comprar
 
         contador_dias_pasados += 1
+        inventario_fechas[fecha] = inventario
 
     ventas_clp = ventas * precio_venta
     costo_comprar_clp = costo_compra * cantidad_comprada
     costo_fijo_clp = ordenes_realizadas * costo_fijo_comprar
-    costo_almacenaje_clp = sum(inventario.get(
+    costo_almacenaje_clp = sum(inventario_fechas.get(
         fecha) * costo_almacenar for fecha in lista_fechas)
     venta_perdida_clp = sum(demanda_perdida.values()) * \
         (precio_venta - costo_compra)
@@ -202,22 +203,6 @@ def caso_base_T_r_Q_optuna(trial,
         costo_fijo_clp - costo_almacenaje_clp - venta_perdida_clp
 
     return ganancias
-
-    # Quizás le podemos poner un ponderador a la venta perdida. La función va a afectar mucho
-    # la calibración de la política. Estaría bueno para la entrega explicar bien lo de optuna
-    # Regla general: No correr algo que no se entiende que hace.
-    # Infinitas políticas en un espacio de dos dimensiones. Podemos poner distintas gráficos
-    # de la política, graficar la f.o en base a estos parámetros. Armar una superficie que optuna
-    # Aportaría mucho valor a la presentación, metodología de calibración
-
-    # E3: Análisis de sensibilidad parámetros que no podemos controlar que involucra decisiones externas
-    # Como tamaño de bodega por ejemplo.
-
-    # Graficar evolución del nivel de inventario estaría bueno
-    # Es muy indicativo de la dinámica del sistema. Ver cuando llegan las compras y cuando
-    # se hacen las compras. Indicarlo con puntito, flecha, debería verse distinto en productos
-    # con demanda distinta y leadtime distinto
-
 
 study = optuna.create_study(direction="maximize")
 objective = partial(caso_base_T_r_Q_optuna,
@@ -235,31 +220,32 @@ print("Optimized function value:", best_value)
 
 print(f"[INFO]: Para {best_params} se obtiene")
 
-ganancias, fechas, inventario_caso = caso_base_T_r_Q(demandas=diccionario_demandas,
+ganancias, fechas, inventario_caso, compras, fechas_compras = caso_base_T_r_Q(demandas=diccionario_demandas,
                                                 lista_fechas=lista_fechas,
                                                 fecha_min=fecha_min,
                                                 nombre_prod=articulo,
-                                                r=best_params["r"],
-                                                Q=best_params["Q"])
+                                                s=best_params["s"],
+                                                S=best_params["S"])
 
 
-# fig_pareto = optuna.visualization.plot_pareto_front(study)
-# fig_pareto.show()
 
-fig_contour = optuna.visualization.plot_contour(study, params=["r", "Q"])
+
+
+fig_contour = optuna.visualization.plot_contour(study, params=["s", "S"])
 fig_contour.show()
 
+# print(fechas)
 
-plt.figure(figsize=(16, 6))
+
+plt.figure(figsize=(20, 6))
 sns.lineplot(x=fechas,y=inventario_caso)
 plt.xlabel("Fechas")
 plt.ylabel("Cantidad de inventario (unidades)")
 plt.title(f"Inventario a través del producto")
+
+
+# Como que con lo de abajo igual se ve medio feo, pero preguntarle al profe
+for compra in fechas_compras:
+    plt.axvline(x=compra, color = 'r')
+
 plt.show()
-# plt.savefig(os.path.join("politicas_graficos", "inventario", "modelo_opti", f"inventario_sistema.png"))
-# plt.close()
-#  Profundizar
-#  Vio harto trabajo el profe, orden, supimos juntar.
-#
-#  - Cuantos productos usar
-#  - Como comparar
