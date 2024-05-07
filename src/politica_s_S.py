@@ -241,11 +241,11 @@ plt.figure(figsize=(20, 6))
 sns.lineplot(x=fechas,y=inventario_caso)
 plt.xlabel("Fechas")
 plt.ylabel("Cantidad de inventario (unidades)")
-plt.title(f"Inventario a través del producto")
+plt.title(f"Inventario a través timempo del producto X")
 
 
 # Como que con lo de abajo igual se ve medio feo, pero preguntarle al profe
-for compra in fechas_compras:
-    plt.axvline(x=compra, color = 'r')
+# for compra in fechas_compras:
+    # plt.axvline(x=compra, color = 'r')
 
-plt.show()
+# plt.show()
