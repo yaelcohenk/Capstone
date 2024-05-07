@@ -1,6 +1,7 @@
 import pandas as pd
 import os
 import optuna
+import sys
 
 from datetime import timedelta
 from functools import partial
@@ -8,12 +9,25 @@ from functools import partial
 
 datos_test_item = pd.read_excel(os.path.join("datos", "data_items_fillna.xlsx"))
 datos_test_venta = pd.read_csv(os.path.join("datos", "data_sales.csv"), sep=";")
+datos_test_venta["date"] = pd.to_datetime(datos_test_venta["date"])
+# print(datos_test_venta)
 
+datos_2023_2024 = datos_test_venta[datos_test_venta["date"].dt.year >= 2023]
+# fecha_min = min(datos_2023_2024["date"])
+fecha_max = max(datos_2023_2024["date"])
+# Fecha en formato Year, mes, dia
+print(f"Fecha más pequeña: {fecha_min}, tipo {type(fecha_min)}")
+print(f"Fecha más alta: {fecha_max}")
+
+fecha_2023_inicio = pd.Timestamp(year=2023, month=1, day=1) # Esta tendría que ser la fecha mínima
+print(fecha_2023_inicio)
+
+sys.exit()
 articulo = "pro plan alimento seco para adulto razas medianas 15 kg"
 
 datos_test_item = datos_test_item[datos_test_item["description"].isin([
                                                                       articulo])]
-
+# Pasar todo esto a funciones
 precio_venta = datos_test_item["unit_sale_price (CLP)"].to_numpy()[0]
 costo_compra = datos_test_item["cost (CLP)"].to_numpy()[0]
 costo_almacenar = datos_test_item["storage_cost (CLP)"].to_numpy()[0]
@@ -31,14 +45,14 @@ datos_ventas = datos_ventas[["item_id", "date", "quantity"]]
 datos_ventas["date"] = pd.to_datetime(datos_ventas["date"])
 
 
-datos_ventas = datos_ventas[datos_ventas["date"].dt.year > 2023]
+datos_ventas = datos_ventas[datos_ventas["date"].dt.year >= 2023]
 
 
 # Acá en verdad hay que filtrar los datos y ocupar solo los datos del 2023 para adelante
 # por como se separaron los datos en el training
 
-fecha_min = min(datos_ventas["date"])
-fecha_max = max(datos_ventas["date"])
+# fecha_min = min(datos_ventas["date"]) # Más que la fecha del producto, debería ser la fecha de la primera venta registrada
+# fecha_max = max(datos_ventas["date"]) # Lo mismo acá. Eso o tengo que definir de antemano la primera fecha del año y buscar la última de 2024 que se haya vendido
 
 
 lista_fechas = [fecha_min + timedelta(days=i)
@@ -54,8 +68,8 @@ for fecha, cantidad in zip(fechas_ventas, cantidad_ventas):
 
 # Hay que tener en cuenta el tema del volumen
 def caso_base_T_r_Q(demandas: dict, lista_fechas: list, fecha_min, nombre_prod, T=7, Vmax=10,
-        r=1,
-        Q=1):
+                    r=1,
+                    Q=1):
 
     contador_dias_pasados = 0
     compras = dict()
@@ -93,19 +107,23 @@ def caso_base_T_r_Q(demandas: dict, lista_fechas: list, fecha_min, nombre_prod, 
     ventas_clp = ventas * precio_venta
     costo_comprar_clp = costo_compra * cantidad_comprada
     costo_fijo_clp = ordenes_realizadas * costo_fijo_comprar
-    costo_almacenaje_clp = sum(inventario.get(fecha) * costo_almacenar for fecha in lista_fechas)
-    venta_perdida_clp = sum(demanda_perdida.values()) * (precio_venta - costo_compra)
+    costo_almacenaje_clp = sum(inventario.get(
+        fecha) * costo_almacenar for fecha in lista_fechas)
+    venta_perdida_clp = sum(demanda_perdida.values()) * \
+        (precio_venta - costo_compra)
 
-    ganancias = ventas_clp - costo_comprar_clp - costo_fijo_clp - costo_almacenaje_clp - venta_perdida_clp
+    ganancias = ventas_clp - costo_comprar_clp - \
+        costo_fijo_clp - costo_almacenaje_clp - venta_perdida_clp
 
     print(f"[INFO]: Se vendieron en total de {ventas} unidades")
     print(f"[INFO]: Se hicieron en total {ordenes_realizadas} compras")
     print(f"[INFO]: Se tuvo un total de {quiebres_stock} quiebres de stock")
-    print(f"[INFO]: La demanda perdida suma un total de {sum(demanda_perdida.values())}")
+    print(
+        f"[INFO]: La demanda perdida suma un total de {sum(demanda_perdida.values())}")
     print(f"[INFO]: Se compraron en total {cantidad_comprada} productos")
     print(f"[INFO]: Las utilidades corresponden a {ganancias} CLP")
 
-    return ganancias
+    return ganancias, lista_fechas, inventario
 
 
 def caso_base_T_r_Q_optuna(trial,
@@ -115,7 +133,6 @@ def caso_base_T_r_Q_optuna(trial,
                            nombre_prod,
                            T=7,
                            Vmax=10):
-
 
     # hacer heurística para ver producto e ir comprando, como según un ranking
     # Nunca nos dará si llenamos la bodega si política está bien calibrada
@@ -148,7 +165,6 @@ def caso_base_T_r_Q_optuna(trial,
 
             # No tenemos info quiebre stock histórico. Para nuestro análisis si tiene sentido
             # que lo calculemos. En la realidad es difícil registrarlo con ese nivel de detalle
-            
 
             # Esto es como considerar que vendimos todo lo que teníamos
             # Esto hay que verlo bien y programarlo bien
@@ -173,10 +189,13 @@ def caso_base_T_r_Q_optuna(trial,
     ventas_clp = ventas * precio_venta
     costo_comprar_clp = costo_compra * cantidad_comprada
     costo_fijo_clp = ordenes_realizadas * costo_fijo_comprar
-    costo_almacenaje_clp = sum(inventario.get(fecha) * costo_almacenar for fecha in lista_fechas)
-    venta_perdida_clp = sum(demanda_perdida.values()) * (precio_venta - costo_compra)
+    costo_almacenaje_clp = sum(inventario.get(
+        fecha) * costo_almacenar for fecha in lista_fechas)
+    venta_perdida_clp = sum(demanda_perdida.values()) * \
+        (precio_venta - costo_compra)
 
-    ganancias = ventas_clp - costo_comprar_clp - costo_fijo_clp - costo_almacenaje_clp - venta_perdida_clp
+    ganancias = ventas_clp - costo_comprar_clp - \
+        costo_fijo_clp - costo_almacenaje_clp - venta_perdida_clp
 
     return ganancias
 
@@ -195,6 +214,7 @@ def caso_base_T_r_Q_optuna(trial,
     # se hacen las compras. Indicarlo con puntito, flecha, debería verse distinto en productos
     # con demanda distinta y leadtime distinto
 
+
 study = optuna.create_study(direction="maximize")
 objective = partial(caso_base_T_r_Q_optuna,
                     demandas=diccionario_demandas,
@@ -211,16 +231,16 @@ print("Optimized function value:", best_value)
 
 print(f"[INFO]: Para {best_params} se obtiene")
 
-caso_base_T_r_Q(demandas=diccionario_demandas,
-                lista_fechas=lista_fechas,
-                fecha_min=fecha_min,
-                nombre_prod=articulo,
-                r=best_params["r"],
-                Q=best_params["Q"])
+ganancias, fechas, inventario = caso_base_T_r_Q(demandas=diccionario_demandas,
+                                                lista_fechas=lista_fechas,
+                                                fecha_min=fecha_min,
+                                                nombre_prod=articulo,
+                                                r=best_params["r"],
+                                                Q=best_params["Q"])
 
 
 #  Profundizar
 #  Vio harto trabajo el profe, orden, supimos juntar.
-#  
+#
 #  - Cuantos productos usar
 #  - Como comparar
