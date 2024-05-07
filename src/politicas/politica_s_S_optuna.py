@@ -89,10 +89,10 @@ def politica_T_s_S_optuna(demandas: dict, lista_fechas: list, fecha_min, nombre_
                         costo_compra=costo_compra,
                         costo_almacenar=costo_almacenar)
     
-    study.optimize(objective, n_trials=100)
+    study.optimize(objective, n_trials=500)
     best_params = study.best_params
 
-    ganancias, fechas, inventario_caso, compras, fechas_compras = politica_T_s_S(diccionario_demandas=demandas,
+    ganancias, *others, ventas, ordenes_realizadas, quiebres_stock, demanda_perdida, cantidad_comprada = politica_T_s_S(diccionario_demandas=demandas,
                                                                              lista_fechas=lista_fechas,
                                                                              fecha_min=fecha_min,
                                                                              nombre_prod="",
@@ -104,4 +104,4 @@ def politica_T_s_S_optuna(demandas: dict, lista_fechas: list, fecha_min, nombre_
                                                                              s=best_params["s"],
                                                                              S=best_params["S"])
 
-    return ganancias, inventario_caso, compras
+    return ganancias, nombre_prod, ventas, ordenes_realizadas, quiebres_stock, demanda_perdida, cantidad_comprada

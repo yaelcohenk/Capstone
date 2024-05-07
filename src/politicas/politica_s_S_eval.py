@@ -58,11 +58,14 @@ def politica_T_s_S(diccionario_demandas: dict,
 
     ganancias = ventas_clp - costo_comprar_clp - costo_fijo_clp - costo_almacenaje_clp - venta_perdida_clp
 
+    demanda_perdida = sum(demanda_perdida.values())
+
     print(f"[INFO]: Se vendieron en total de {ventas} unidades")
     print(f"[INFO]: Se hicieron en total {ordenes_realizadas} compras")
     print(f"[INFO]: Se tuvo un total de {quiebres_stock} quiebres de stock")
-    print(f"[INFO]: La demanda perdida suma un total de {sum(demanda_perdida.values())}")
+    print(f"[INFO]: La demanda perdida suma un total de {demanda_perdida}")
     print(f"[INFO]: Se compraron en total {cantidad_comprada} productos")
     print(f"[INFO]: Las utilidades corresponden a {ganancias} CLP")
 
-    return ganancias, lista_fechas, list(inventario_fechas.values())[1:], compras, lista_fechas_compras
+    return (ganancias, lista_fechas, list(inventario_fechas.values())[1:], compras, lista_fechas_compras,
+            ventas, ordenes_realizadas, quiebres_stock, demanda_perdida, cantidad_comprada)
