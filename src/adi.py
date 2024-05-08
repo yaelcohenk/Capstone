@@ -6,6 +6,8 @@ import matplotlib.pyplot as plt
 
 from funciones.adi_categorizacion import category
 
+from parametros import PATH_VENTAS_PRODUCTOS_VIGENTES_NO_OUTLIERS_W_FEATURES
+
 # Este se tiene que correr sin los outliers. ACTUALIZAR
 
 
@@ -17,7 +19,7 @@ pd.options.mode.chained_assignment = None  # default='warn'
 # ventas_diarias_prod = ventas_diarias_prod[ventas_diarias_prod["Descripción"].isin(productos_vigentes)]
 
 # productos_unicos = ventas_diarias_prod["Descripción"].unique().tolist()
-ventas_diarias_prod_vigentes_no_outliers = pd.read_excel(os.path.join("datos", "ventas_diarias_productos_vigentes_no_outliers.xlsx"))
+ventas_diarias_prod_vigentes_no_outliers = pd.read_excel(PATH_VENTAS_PRODUCTOS_VIGENTES_NO_OUTLIERS_W_FEATURES)
 
 productos_unicos = ventas_diarias_prod_vigentes_no_outliers["Descripción"].unique().tolist()
 

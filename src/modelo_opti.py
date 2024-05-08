@@ -107,10 +107,14 @@ unidades_quebradas = 0
 
 
 for valor in y_minus.values():
-    if valor.X != 0:
+    if valor.X > 0:
         cantidad_quiebres_stock += 1
         unidades_quebradas += valor.X
 
+print(f"Unidades de quiebre stock {unidades_quebradas}")
+print(f"Hubo un quiebre de stock en {cantidad_quiebres_stock} ocasiones")
+
+# sys.exit()
 
 
 productos_vendidos = 0
@@ -141,7 +145,6 @@ tiempo = []
 inventario = []
 
 inventario_producto = dict()
-
 
 for t in T:
     inventario_t = 0
