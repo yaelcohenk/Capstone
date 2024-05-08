@@ -68,13 +68,10 @@ def politica_T_s_S_optuna(demandas: dict, lista_fechas: list, fecha_min, nombre_
         ventas_clp = ventas * precio_venta
         costo_comprar_clp = costo_compra * cantidad_comprada
         costo_fijo_clp = ordenes_realizadas * costo_fijo_comprar
-        costo_almacenaje_clp = sum(inventario_fechas.get(
-            fecha) * costo_almacenar for fecha in lista_fechas)
-        venta_perdida_clp = sum(demanda_perdida.values()) * \
-            (precio_venta - costo_compra)
+        costo_almacenaje_clp = sum(inventario_fechas.get(fecha) * costo_almacenar for fecha in lista_fechas)
+        venta_perdida_clp = sum(demanda_perdida.values()) * (precio_venta - costo_compra)
 
-        ganancias = ventas_clp - costo_comprar_clp - \
-            costo_fijo_clp - costo_almacenaje_clp - venta_perdida_clp
+        ganancias = ventas_clp - costo_comprar_clp - costo_fijo_clp - costo_almacenaje_clp - venta_perdida_clp
 
         return ganancias
 
@@ -89,7 +86,7 @@ def politica_T_s_S_optuna(demandas: dict, lista_fechas: list, fecha_min, nombre_
                         costo_compra=costo_compra,
                         costo_almacenar=costo_almacenar)
     
-    study.optimize(objective, n_trials=500)
+    study.optimize(objective, n_trials=100) # Cambiar número de trials a un número menor quizás
     best_params = study.best_params
 
     ganancias, *others, ventas, ordenes_realizadas, quiebres_stock, demanda_perdida, cantidad_comprada = politica_T_s_S(diccionario_demandas=demandas,

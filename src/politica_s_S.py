@@ -7,6 +7,8 @@ import sys
 import matplotlib.pyplot as plt
 import seaborn as sns
 import ray
+import pickle
+
 
 from funciones.parametros_producto import parametros_producto
 from politicas.politica_s_S_eval import politica_T_s_S
@@ -21,7 +23,6 @@ if __name__ == '__main__':
     ray.init()
     datos_items = pd.read_excel(os.path.join("datos", "data_items_fillna.xlsx")) # Tenemos la información de los productos
     datos_ventas = pd.read_excel(PATH_VENTAS_PRODUCTOS_VIGENTES_NO_OUTLIERS_W_FEATURES)
-
 
     datos_ventas = datos_ventas[["Fecha", "Cantidad", "Descripción"]]
     datos_ventas = datos_ventas[datos_ventas["Fecha"].dt.year >= 2023]
@@ -57,9 +58,15 @@ if __name__ == '__main__':
 
         fechas_ventas_producto_y_demanda[prod] = diccionario_demandas
 
-
     lista_ejecucion_paralelo = list()
 
+
+    # print(parametros_producto_modelo)
+
+    with open("diccionario_params_productos.pkl", "wb") as f:
+        pickle.dump(parametros_producto_modelo, f)
+
+    # sys.exit()
 
     for producto in productos:
         parametros = parametros_producto_modelo[producto]

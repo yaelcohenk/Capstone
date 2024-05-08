@@ -5,35 +5,21 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import os
 import json
-
+import pickle
 
 from datetime import timedelta
 from gurobipy import Model, GRB, quicksum
-from parametros import PATH_VENTAS_PRODUCTOS_VIGENTES_NO_OUTLIERS
+from parametros import PATH_VENTAS_PRODUCTOS_VIGENTES_NO_OUTLIERS_W_FEATURES
 
-datos = pd.read_excel(PATH_VENTAS_PRODUCTOS_VIGENTES_NO_OUTLIERS)
+datos = pd.read_excel(PATH_VENTAS_PRODUCTOS_VIGENTES_NO_OUTLIERS_W_FEATURES)
 datos = datos[["Descripción", "Fecha", "Cantidad"]]
 
-datos_ganancias = pd.read_excel(os.path.join("datos", "ganancias_total_productos.xlsx"))
-datos_ganancias = datos_ganancias.head(75)
-productos = datos_ganancias["description"]
-
-datos = datos[datos["Descripción"].isin(productos)]
 datos = datos[datos["Fecha"].dt.year >= 2023]
 
-
-# print(datos)
-
-# sys.exit("EXIT")
-
-fecha_min = min(datos["Fecha"])
+fecha_min = pd.Timestamp(year=2023, month=1, day=1)
 fecha_max = max(datos["Fecha"])
 
-# Necesitamos tener todos los días entre medio, no solo los que registraron venta
-T = [fecha_min + timedelta(days=i)
-     for i in range((fecha_max - fecha_min).days + 1)]
-
-
+T = [fecha_min + timedelta(days=i) for i in range((fecha_max - fecha_min).days + 1)]
 J = datos["Descripción"].unique().tolist()
 
 D = dict()
@@ -50,35 +36,24 @@ alpha = dict()      # Costo almacenamiento
 l = dict()          # Leadtime en días
 Vol = dict()        # Volumen utilizado
 
-
-datos_productos = pd.read_excel(os.path.join("datos", "data_items_fillna.xlsx"))
-columnas = ["description",
-            "unit_sale_price (CLP)",
-            "cost (CLP)",
-            "storage_cost (CLP)",
-            "leadtime (days)",
-            "size_m3",
-            "cost_per_purchase"]
-
-datos_productos = datos_productos[datos_productos["description"].isin(J)]
-datos_productos = datos_productos[columnas].drop_duplicates().to_numpy()
+with open("diccionario_params_productos.pkl", "rb") as f:
+    diccionario_prods_params = pickle.load(f)
 
 
-for prod in datos_productos:
-    descripcion, precio_venta, costo, almacenamiento_precio, leadtime, vol, costo_fijo = prod
-    v[descripcion] = precio_venta
-    c[descripcion] = costo
-    CF[descripcion] = costo_fijo
-    alpha[descripcion] = almacenamiento_precio
-    l[descripcion] = leadtime
-    Vol[descripcion] = vol
+for producto, valores in diccionario_prods_params.items():
+    precio_venta, costo_compra, costo_almacenar, leadtime, volumen, costo_fijo_comprar = valores
+    v[producto] = precio_venta
+    c[producto] = costo_compra
+    CF[producto] = costo_fijo_comprar
+    alpha[producto] = costo_almacenar
+    l[producto] = leadtime
+    Vol[producto] = volumen
+
 
 
 Vmax = 120
-
 model = Model()
-
-model.setParam("TimeLimit", 30)
+model.setParam("TimeLimit", 60)
 
 
 x = model.addVars(J, T, name="x")
@@ -111,6 +86,7 @@ model.addConstrs(y[j, T[0]] == 0 for j in J)  # Esto hay que cambiarlo creo
 model.addConstrs(z[j, t] == 0 for j in J for indice_t, t in enumerate(T) if indice_t % 7 != 0)
 
 
+# Ver si la función objetivo es realmente la misma, da distinto esto a la política t, s, S
 model.setObjective(quicksum(v[j] * w[j, t] - c[j] * x[j, t] - CF[j] * z[j, t] - alpha[j]
                    * y_plus[j, t] - (v[j] - c[j]) * y_minus[j, t] for j in J for t in T), GRB.MAXIMIZE)
 
@@ -118,6 +94,11 @@ model.setObjective(quicksum(v[j] * w[j, t] - c[j] * x[j, t] - CF[j] * z[j, t] - 
 
 model.optimize()
 
+
+# Quizás no comprar si viene un producto en camino
+# esto No aporta valor mostrar para dos productos que tienen patrón parecido. Si son dos productos muy distintos, ahí si aporta valor
+# Explicar como se hizo la calibración, a que llegamos, probar distintas configuraciones
+# Cuanto se demora todo
 
 # Quizás todo esto de abajo lo tengo que pasar a algunas otras funciones cuando pueda para que quede más bonito
 
@@ -156,7 +137,7 @@ print(f"Se compraron un total de {productos_comprados} productos")
 print(f"Las utilidades corresponden a {model.ObjVal} CLP")
 
 
-
+sys.exit()
 tiempo = []
 inventario = []
 
