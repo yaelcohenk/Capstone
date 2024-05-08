@@ -8,7 +8,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import ray
 import pickle
-
+import json
+import numpy as np
 
 from funciones.parametros_producto import parametros_producto
 from politicas.politica_s_S_eval import politica_T_s_S
@@ -84,14 +85,18 @@ if __name__ == '__main__':
     demanda_perdida_total = 0
     cantidad_comprada_total = 0
 
+    inventarios_productos = dict()
+
     for elementos in resultados:
-        utilidad, nombre, ventas, ordenes_realizadas, quiebres_stock, demanda_perdida, cantidad_comprada = elementos        
+        utilidad, nombre, ventas, ordenes_realizadas, quiebres_stock, demanda_perdida, cantidad_comprada, inv = elementos        
         utilidad_total += utilidad
         ventas_totales += ventas
         ordenes_realizadas_total += ordenes_realizadas
         quiebres_stock_total += quiebres_stock
         demanda_perdida_total += demanda_perdida
         cantidad_comprada_total += cantidad_comprada
+
+        inventarios_productos[nombre] = inv
 
 
     print(f"La empresa dentro de todo el período registró utilidad por {utilidad_total} CLP")
@@ -101,6 +106,41 @@ if __name__ == '__main__':
     print(f"La demanda perdida total alcanza el valor de {demanda_perdida_total} unidades")
     print(f"En total se compraron {cantidad_comprada_total} productos")
 
+    mapeo_graficos = dict()
+    contador = 0
+
+    # inventarios_ = dict()
+
+    for producto, inventario in inventarios_productos.items():
+        plt.figure(figsize=(16, 6))
+        sns.lineplot(x=lista_fechas, y=list(inventario.values())[1:])
+        plt.xlabel("Fechas")
+        plt.ylabel("Cantidad de inventario (unidades)")
+        plt.title(f"Inventario a través del tiempo para {producto}")
+        plt.savefig(os.path.join("politicas_graficos", "inventario", "t_s_S", f"prod_{contador}.png"))
+        plt.close()
+
+        mapeo_graficos[contador] = producto
+        contador += 1
+
         # print(f"Para el producto {producto} se obtuvo lo siguiente {elementos}")
+    with open(os.path.join("politicas_graficos", "inventario", "t_s_S", "mapeos.txt"), "w") as file:
+        json.dump(mapeo_graficos, file)
 
 
+    inventario_sistema = np.zeros(shape=len(lista_fechas))
+
+    # si esto no me funciona, uso reduce
+    for inventario_prod in inventarios_productos.values():
+        inventario_valores = list(inventario_prod.values())[1:]
+        numpy_inv = np.array(inventario_valores)
+        inventario_sistema =  inventario_sistema.astype(int) + numpy_inv.astype(int)
+
+    plt.figure(figsize=(16, 6))
+    sns.lineplot(x=lista_fechas, y=inventario_sistema)
+    plt.xlabel("Fechas")
+    plt.ylabel("Cantidad de inventario (unidades)")
+    plt.title(f"Inventario a través del tiempo para el sistema")
+    plt.savefig(os.path.join("politicas_graficos", "inventario", "t_s_S", f"inventario_sistema.png"))
+    plt.close()
+    

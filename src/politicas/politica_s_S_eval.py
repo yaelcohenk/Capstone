@@ -68,4 +68,4 @@ def politica_T_s_S(diccionario_demandas: dict,
     # print(f"[INFO]: Las utilidades corresponden a {ganancias} CLP")
 
     return (ganancias, lista_fechas, list(inventario_fechas.values())[1:], compras, lista_fechas_compras,
-            ventas, ordenes_realizadas, quiebres_stock, demanda_perdida, cantidad_comprada)
+            ventas, ordenes_realizadas, quiebres_stock, demanda_perdida, cantidad_comprada, inventario_fechas)

@@ -53,7 +53,7 @@ for producto, valores in diccionario_prods_params.items():
 
 Vmax = 120
 model = Model()
-model.setParam("TimeLimit", 60)
+model.setParam("TimeLimit", 60 * 5)
 
 
 x = model.addVars(J, T, name="x")
@@ -137,7 +137,6 @@ print(f"Se compraron un total de {productos_comprados} productos")
 print(f"Las utilidades corresponden a {model.ObjVal} CLP")
 
 
-sys.exit()
 tiempo = []
 inventario = []
 
@@ -190,7 +189,7 @@ for producto, inventario_prod in inventario_producto.items():
     contador += 1
 
 
-with open(os.path.join("politicas_graficos", "inventario", "mapeos.txt"), "w") as file:
+with open(os.path.join("politicas_graficos", "inventario", "modelo_opti", "mapeos.txt"), "w") as file:
     json.dump(mapeo_graficos, file)
 
 # 1) Ventas totales unidades
