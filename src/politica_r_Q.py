@@ -110,12 +110,13 @@ if __name__ == '__main__':
     contador = 0
 
     for producto, inventario in inventarios_productos.items():
+        # print(producto, inventario)
         plt.figure(figsize=(16, 6))
         sns.lineplot(x=lista_fechas, y=list(inventario.values())[1:])
         plt.xlabel("Fechas")
         plt.ylabel("Cantidad de inventario (unidades)")
         plt.title(f"Inventario a través del tiempo para {producto}")
-        plt.savefig(os.path.join("politicas_graficos", "inventario", "t_s_S", f"prod_{contador}.png"))
+        plt.savefig(os.path.join("politicas_graficos", "inventario", "t_r_Q", f"prod_{contador}.png"))
         plt.close()
 
         mapeo_graficos[contador] = producto
