@@ -87,14 +87,18 @@ if __name__ == '__main__':
 
     inventarios_productos = dict()
 
+    lista_graficos = []
+
     for elementos in resultados:
-        utilidad, nombre, ventas, ordenes_realizadas, quiebres_stock, demanda_perdida, cantidad_comprada, inv = elementos        
+        utilidad, nombre, ventas, ordenes_realizadas, quiebres_stock, demanda_perdida, cantidad_comprada, inv, plot = elementos        
         utilidad_total += utilidad
         ventas_totales += ventas
         ordenes_realizadas_total += ordenes_realizadas
         quiebres_stock_total += quiebres_stock
         demanda_perdida_total += demanda_perdida
         cantidad_comprada_total += cantidad_comprada
+
+        lista_graficos.append(plot)
 
         inventarios_productos[nombre] = inv
 
@@ -119,6 +123,8 @@ if __name__ == '__main__':
         plt.title(f"Inventario a través del tiempo para {producto}")
         plt.savefig(os.path.join("politicas_graficos", "inventario", "t_s_S", f"prod_{contador}.png"))
         plt.close()
+        grafico = lista_graficos[contador]
+        grafico.write_html(os.path.join("politicas_graficos", "optuna", "t_s_S", f"prod_{contador}.html"))
 
         mapeo_graficos[contador] = producto
         contador += 1

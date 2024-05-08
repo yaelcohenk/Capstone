@@ -86,9 +86,10 @@ if __name__ == '__main__':
     cantidad_comprada_total = 0
 
     inventarios_productos = dict()
+    plots_graficos = list()
 
     for elementos in resultados:
-        utilidad, nombre, ventas, ordenes_realizadas, quiebres_stock, demanda_perdida, cantidad_comprada, inv = elementos        
+        utilidad, nombre, ventas, ordenes_realizadas, quiebres_stock, demanda_perdida, cantidad_comprada, inv, plot = elementos        
         utilidad_total += utilidad
         ventas_totales += ventas
         ordenes_realizadas_total += ordenes_realizadas
@@ -98,6 +99,8 @@ if __name__ == '__main__':
 
         inventarios_productos[nombre] = inv
 
+        plots_graficos.append(plot)
+
 
     print(f"La empresa dentro de todo el período registró utilidad por {utilidad_total} CLP")
     print(f"Se vendieron un total de {ventas_totales} productos")
@@ -105,6 +108,9 @@ if __name__ == '__main__':
     print(f"Hubo quiebres de stock en {quiebres_stock_total} veces")
     print(f"La demanda perdida total alcanza el valor de {demanda_perdida_total} unidades")
     print(f"En total se compraron {cantidad_comprada_total} productos")
+
+    
+
 
     mapeo_graficos = dict()
     contador = 0
@@ -119,6 +125,9 @@ if __name__ == '__main__':
         plt.savefig(os.path.join("politicas_graficos", "inventario", "t_r_Q", f"prod_{contador}.png"))
         plt.close()
 
+
+        grafico = plots_graficos[contador]
+        grafico.write_html(os.path.join("politicas_graficos", "optuna", "t_r_Q", f"prod_{contador}.html"))
         mapeo_graficos[contador] = producto
         contador += 1
 
