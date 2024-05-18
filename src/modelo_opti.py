@@ -53,7 +53,7 @@ for producto, valores in diccionario_prods_params.items():
 
 Vmax = 120
 model = Model()
-model.setParam("TimeLimit", 60 * 5)
+# model.setParam("TimeLimit", 60 * 5)
 
 
 x = model.addVars(J, T, name="x")

@@ -19,8 +19,7 @@ for grupo in lista_grupos_grandes:
         datos_diarios_accesorios = datos_diarios_accesorios.set_index("Fecha")
         datos_diarios_accesorios = datos_diarios_accesorios["Ventas"]
 
-        decomposition = sm.tsa.seasonal_decompose(
-            datos_diarios_accesorios, period=7)
+        decomposition = sm.tsa.seasonal_decompose(datos_diarios_accesorios, period=7)
         fig = decomposition.plot()
         fig.set_size_inches((16, 9))
         fig.suptitle(
