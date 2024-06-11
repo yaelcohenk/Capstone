@@ -7,7 +7,6 @@ import matplotlib.pyplot as plt
 import sys
 import logging
 import os
-import json
 
 from parametros import (PATH_VENTAS_PRODUCTOS_VIGENTES_NO_OUTLIERS_W_FEATURES)
 from statsmodels.tsa.holtwinters import ExponentialSmoothing
@@ -105,6 +104,7 @@ if __name__ == '__main__':
     elementos = ray.get(futures)
 
     dataframes = list()
+
     valores = list()
     for elemento in elementos:
         predicciones, valor_real, fechas, nombre = elemento
@@ -113,30 +113,23 @@ if __name__ == '__main__':
             rmse = root_mean_squared_error(valor_real, predicciones)
             mae = mean_absolute_error(valor_real, predicciones)
             mse = mean_squared_error(valor_real, predicciones)
-            valores.append((nombre, mape, rmse, mae, mse))
-
-            dataframe_loop = pd.DataFrame({"predicciones": predicciones, "real": valor_real})
-            dataframes.append((dataframe_loop, nombre))
-
-
+            errores=[]
+            suma=0
+            for i in range( len(predicciones)):
+                error=valor_real[i]-predicciones[i]
+                suma+=error
+                errores.append(error)
+            MAD_prophet=np.mean(np.abs(errores))
+            if MAD_prophet!=0:
+                tracking_signal=suma/MAD_prophet
+            else:
+                tracking_signal = np.nan
+            valores.append((nombre, mape, rmse, mae, mse,tracking_signal))
         else:
-            valores.append((nombre, float("inf"), float("inf"), float("inf"), float("inf")))
+            valores.append((nombre, float("inf"), float("inf"), float("inf"), float("inf"), 0))
 
 
     dataframe = pd.DataFrame(valores)
-    dataframe.columns = ["producto", "MAPE", "RMSE", "MAE", "MSE"]
+    dataframe.columns = ["producto", "MAPE", "RMSE", "MAE", "MSE", "tracking_signal"]
     dataframe.set_index("producto", inplace=True)
     dataframe.to_excel(os.path.join("datos", "metricas_holt_winters.xlsx"))
-
-
-    contador = 0
-    mapeo_nombres = dict()
-
-    for data, nombre in dataframes:
-        data.to_excel(os.path.join("predicciones", "holt_winters", f"producto_{contador}.xlsx"))
-        
-        mapeo_nombres[contador] = nombre
-        contador += 1
-
-    with open(os.path.join("predicciones", "holt_winters", "mapeos.txt"), "w") as file:
-        json.dump(mapeo_nombres, file)

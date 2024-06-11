@@ -53,15 +53,54 @@ def xgboost_producto(dataframe_producto: pd.DataFrame,
         prediction = reg.predict(X_val).squeeze()
         prediction = scaler_values.inverse_transform(prediction.reshape(-1, 1)).flatten()
         y_val = scaler_values.inverse_transform(y_val.reshape(-1, 1)).flatten()
+        errores=[]
+        suma=0
+        for i in range( len(prediction)):
+            error=y_val[i]-prediction[i]
+            suma+=error
+            errores.append(error)
+        MAD_prophet=np.mean(np.abs(errores))
+        if MAD_prophet!=0:
+            tracking_signal=suma/MAD_prophet
+        else:
+            tracking_signal = np.nan
 
+        # Cualquier modelo con información estable un modelo lo va a captar bien
+        # Ver como presentamos esos productos con demanda constante
+
+        # Para productos con error 0, podríamos generar una política mucho mejor que todo
+        # el resto. No podemos confirmarlo, pero si inferirlo, sería valioso tener esa información
+        #
+
+        # Acá abajo puedo poner más métricas
         mape = mean_absolute_percentage_error(y_val, prediction)
         rmse = root_mean_squared_error(y_val, prediction)
         mae = mean_absolute_error(y_val, prediction)
         mse = mean_squared_error(y_val, prediction)
 
-        return nombre_producto, mape, rmse, mae, mse, y_val, prediction, X_val_1
+        return nombre_producto, mape, rmse, mae, mse,tracking_signal, y_val, prediction, X_val_1
 
-    
+        # Revisar el valor del MAPE si está en % o no. Mirar de manera crítica los indicadores
+
+        # Ver que es un cliente fiel, hacer propuesta que puede ser arbitraria pero no random
+        # Puede ser razonable en esta industria que compre todos los meses. Depende como se 
+        # dividen los clientes entre si. Podríamos hacer un clustering, análisis de patrones de compra
+
+
+        # Podríamos tomar hasta 10 productos, tiene que quedar claro que vamos a hacer con el resto
+        # Obtener resultados preliminares para un grupo de los productos
+
+        # Se espera tener un prototipo funcional para versión simplificada del problema. No tomar el universo
+        # completo, sino tomar un grupo de todo eso. Es válido hacerlo para un grupo, no para todos
+
+        # Si dejamos productos de lado, es porque el beneficio que se obtiene es más bajo que el costo.
+        # Si tenemos productos que aportan poquita plata y son parecidos a otros productos que implementé política
+        # y tenemos el resto automatizado, podemos intentar implementarlo, ya que sería rápido
+
+        # Habría que calcular cuanto % de ganancias está en esos 300 productos.
+
+        # Puede ser un argumento dejar los datos fuera, ya que el pronóstico puede ser tan malo
+        # que no nos sirve.
 
     except ValueError as e:
         print(f"Ha ocurrido un error {e}")
@@ -93,7 +132,7 @@ if __name__ == '__main__':
         predicciones[nombre] = [y_val.tolist(), y_pred.tolist(), covariables.index]
 
     dataframe = pd.DataFrame(valores)
-    dataframe.columns = ["producto", "MAPE", "RMSE", "MAE", "MSE"]
+    dataframe.columns = ["producto", "MAPE", "RMSE", "MAE", "MSE", "Tracking Signal"]
     dataframe.set_index("producto", inplace=True)
     dataframe.to_excel(os.path.join("datos", "metricas_xgboost.xlsx"))
 

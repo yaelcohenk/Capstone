@@ -4,6 +4,7 @@ import os
 import prophet
 import ray
 import json
+import numpy as np
 
 from parametros import PATH_VENTAS_PRODUCTOS_VIGENTES_NO_OUTLIERS_W_FEATURES
 from sklearn.metrics import (mean_absolute_percentage_error,
@@ -39,9 +40,20 @@ def prophet_producto(dataframe_producto: pd.DataFrame, nombre_producto: str):
     rmse = root_mean_squared_error(valores_reales, predicciones)
     mae = mean_absolute_error(valores_reales, predicciones)
     mse = mean_squared_error(valores_reales, predicciones)
+    errores=[]
+    suma=0
+    for i in range( len(predicciones)):
+        error=valores_reales[i]-predicciones[i]
+        suma+=error
+        errores.append(error)
+    MAD_prophet=np.mean(np.abs(errores))
+    if MAD_prophet!=0:
+        tracking_signal=suma/MAD_prophet
+    else:
+        tracking_signal = np.nan
 
 
-    return nombre_producto, mape, rmse, mae, mse, datos
+    return nombre_producto, mape, rmse, mae, mse,tracking_signal, datos
 
 
 if __name__ == '__main__':
@@ -69,7 +81,7 @@ if __name__ == '__main__':
 
     
     dataframe = pd.DataFrame(valores)
-    dataframe.columns = ["producto", "MAPE", "RMSE", "MAE", "MSE"]
+    dataframe.columns = ["producto", "MAPE", "RMSE", "MAE", "MSE", "Tracking Signal"]
     dataframe.set_index("producto", inplace=True)
     dataframe.to_excel(os.path.join("datos", "metricas_prophet.xlsx"))
 

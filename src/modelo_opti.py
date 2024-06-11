@@ -53,7 +53,7 @@ for producto, valores in diccionario_prods_params.items():
 
 Vmax = 120
 model = Model()
-# model.setParam("TimeLimit", 60 * 5)
+model.setParam("TimeLimit", 60 * 5)
 
 
 x = model.addVars(J, T, name="x")
@@ -105,6 +105,15 @@ model.optimize()
 cantidad_quiebres_stock = 0
 unidades_quebradas = 0
 
+resultados_y_plus_alpha_lista = []
+costo_almacenaje_total = 0
+for j in J:
+    for t in T:
+        resultado = y_plus[j, t].X * alpha[j]
+        costo_almacenaje_total += resultado
+print(f"El costo de almacenaje total fue de {costo_almacenaje_total}")
+
+        
 
 for valor in y_minus.values():
     if valor.X > 0:
@@ -131,6 +140,27 @@ productos_comprados = 0
 
 for valor in x.values():
     productos_comprados += valor.X
+    
+costo_compra_clp=0
+for j in J:
+    cantidad_comprada=0
+    ordenes=0
+    for t in T:
+        cantidad_comprada += x[j,t].X
+        ordenes += z[j,t].X
+    costo_compra_clp+= cantidad_comprada * c[j]
+    costo_compra_clp+=ordenes*CF[j]
+    
+inventario_prom=0
+for j in J:
+    inventario=0
+    i=0
+    for t in T:
+        inventario+= y_plus[j,t].X
+        i+=1
+    inventario_prom+=inventario/i
+
+nivel_rotacion = costo_compra_clp/inventario_prom
 
 print(f"Se vendieron un total de {productos_vendidos} de producto")
 print(f"En total se realizaron {ordenes_de_compra} ordenes de compra")
@@ -139,6 +169,7 @@ print(f"Hubo un quiebre de stock por un total de {unidades_quebradas} de stock")
 print(f"Se compraron un total de {productos_comprados} productos")
 
 print(f"Las utilidades corresponden a {model.ObjVal} CLP")
+print(f"El nivel de rotación es de {nivel_rotacion}")
 
 
 tiempo = []
