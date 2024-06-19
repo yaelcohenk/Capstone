@@ -52,7 +52,7 @@ for producto, valores in diccionario_prods_params.items():
     Vol[producto] = volumen
 
 
-K = range(80)  # Número escenarios
+K = range(5)  # Número escenarios
 
 D_k = {}
 
@@ -61,7 +61,7 @@ for key, value in D.items():
 
     for k in K:
         nombre, t = key
-        D_k[nombre, t, k] = value + random.randint(-5, 5)
+        D_k[nombre, t, k] = max(0, value + random.randint(-2, 2))
 
 
 Vmax = 120
@@ -108,10 +108,13 @@ model.addConstrs(z[j, t] == 0 for j in J for indice_t,
 # model.setObjective(quicksum(v[j] * w[j, t, k] - c[j] * x[j, t] - CF[j] * z[j, t] - alpha[j]
 #    * y_plus[j, t] - (v[j] - c[j]) * y_minus[j, t] for j in J for t in T), GRB.MAXIMIZE)
 
-model.setObjective((1 / len(k)) * quicksum(v[j] * w[j, t, k] - alpha[j] * y_plus[j, t, k] - (
+model.setObjective((1 / len(K)) * quicksum(v[j] * w[j, t, k] - alpha[j] * y_plus[j, t, k] - (
     v[j] - c[j]) * y_minus[j, t, k] for j in J for t in T for k in K) - quicksum(c[j] * x[j, t] + CF[j] * z[j, t] for j in J for t in T), GRB.MAXIMIZE)
 
 
 model.optimize()
+
+# model.computeIIS()
+# model.write("model_infeasible.ilp")
 
 print(model.ObjVal)
