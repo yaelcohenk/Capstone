@@ -68,4 +68,4 @@ def politica_T_r_Q(diccionario_demandas: dict,
     demanda_perdida = sum(demanda_perdida.values())
 
     return (ganancias, lista_fechas, list(inventario_fechas.values())[1:], compras, lista_fechas_compras,
-            ventas, ordenes_realizadas, quiebres_stock, demanda_perdida, cantidad_comprada, inventario_fechas)
+            ventas, ordenes_realizadas, quiebres_stock, demanda_perdida, cantidad_comprada, inventario_fechas, costo_almacenaje_clp, costo_fijo_clp, costo_comprar_clp)

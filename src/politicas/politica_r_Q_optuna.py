@@ -96,8 +96,7 @@ def politica_T_r_Q_optuna(demandas: dict, lista_fechas: list, fecha_min, nombre_
     study.optimize(objective, n_trials=100) # Cambiar número de trials a un número menor quizás
     best_params = study.best_params
 
-    grafico_contour_plot = optuna.visualization.plot_contour(study, params=["r", "Q"])
-    ganancias, *others, ventas, ordenes_realizadas, quiebres_stock, demanda_perdida, cantidad_comprada, inv = politica_T_r_Q(diccionario_demandas=demandas,
+    ganancias, *others, ventas, ordenes_realizadas, quiebres_stock, demanda_perdida, cantidad_comprada, inv, costo_almacenaje_prod, costo_fijo_clp, costo_compra_clp = politica_T_r_Q(diccionario_demandas=demandas,
                                                                              lista_fechas=lista_fechas,
                                                                              fecha_min=fecha_min,
                                                                              nombre_prod="",
@@ -109,4 +108,5 @@ def politica_T_r_Q_optuna(demandas: dict, lista_fechas: list, fecha_min, nombre_
                                                                              r=best_params["r"],
                                                                              Q=best_params["Q"])
 
-    return ganancias, nombre_prod, ventas, ordenes_realizadas, quiebres_stock, demanda_perdida, cantidad_comprada, inv, grafico_contour_plot
+    return ganancias, nombre_prod, ventas, ordenes_realizadas, quiebres_stock, demanda_perdida, cantidad_comprada, inv, costo_almacenaje_prod, costo_fijo_clp, costo_compra_clp
+
