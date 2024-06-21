@@ -1,0 +1,12 @@
+Time limit reached
+Best objective 2.385185303238e+08, best bound 2.421561196022e+08, gap 1.5251%
+El costo de almacenaje total fue de 9368560.998098874
+Unidades de quiebre stock 316.0000000053836
+Hubo un quiebre de stock en 2719 ocasiones
+Se vendieron un total de 34370.99999999997 de producto
+En total se realizaron 6741.999999506361 ordenes de compra
+Considerando todos los productos, hubo un total de 2719 quiebres de stock
+Hubo un quiebre de stock por un total de 316.0000000053836 de stock
+Se compraron un total de 34200.00000000083 productos
+Las utilidades corresponden a 238518530.3238392 CLP
+El nivel de rotación es de 1920119.876288601

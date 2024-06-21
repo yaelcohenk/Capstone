@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import sys
 import logging
 import os
+import json
 
 from parametros import (PATH_VENTAS_PRODUCTOS_VIGENTES_NO_OUTLIERS_W_FEATURES)
 from statsmodels.tsa.holtwinters import ExponentialSmoothing
@@ -115,7 +116,13 @@ if __name__ == '__main__':
             mse = mean_squared_error(valor_real, predicciones)
             errores=[]
             suma=0
-            for i in range( len(predicciones)):
+
+            dataframe_loop = pd.DataFrame({"predicciones": predicciones, "real": valor_real})
+            dataframe_loop.index = fechas
+            dataframes.append((dataframe_loop, nombre))
+
+
+            for i in range(len(predicciones)):
                 error=valor_real[i]-predicciones[i]
                 suma+=error
                 errores.append(error)
@@ -133,3 +140,19 @@ if __name__ == '__main__':
     dataframe.columns = ["producto", "MAPE", "RMSE", "MAE", "MSE", "tracking_signal"]
     dataframe.set_index("producto", inplace=True)
     dataframe.to_excel(os.path.join("datos", "metricas_holt_winters.xlsx"))
+
+
+    contador = 0
+    mapeo_nombres = dict()
+
+    for data, nombre in dataframes:
+        # print(data)
+
+
+        data.to_excel(os.path.join("predicciones", "holt_winters", f"producto_{contador}.xlsx"))
+        
+        mapeo_nombres[contador] = nombre
+        contador += 1
+
+    with open(os.path.join("predicciones", "holt_winters", "mapeos.txt"), "w") as file:
+        json.dump(mapeo_nombres, file)

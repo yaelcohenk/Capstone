@@ -44,5 +44,8 @@ dataset = pd.DataFrame(listas, columns=["Descripción", "ADI", "CV2", "Ventas_to
 dataset["categoria"] = dataset.apply(category, axis=1)
 
 
-print(dataset.categoria.value_counts())
+print(dataset)
+
+
+# print(dataset.categoria.value_counts())
 dataset.to_excel(os.path.join("datos", "adi_productos.xlsx"), index=False)

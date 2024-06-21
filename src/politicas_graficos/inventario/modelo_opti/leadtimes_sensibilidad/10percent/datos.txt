@@ -1,0 +1,13 @@
+Time limit reached
+Warning: max constraint violation (1.9970e-06) exceeds tolerance
+Best objective 2.389103483233e+08, best bound 2.426991340448e+08, gap 1.5859%
+El costo de almacenaje total fue de 9682667.996662226
+Unidades de quiebre stock 331.0
+Hubo un quiebre de stock en 574 ocasiones
+Se vendieron un total de 34525.0 de producto
+En total se realizaron 6681.00000000001 ordenes de compra
+Considerando todos los productos, hubo un total de 574 quiebres de stock
+Hubo un quiebre de stock por un total de 331.0 de stock
+Se compraron un total de 34350.0 productos
+Las utilidades corresponden a 238910348.3233377 CLP
+El nivel de rotación es de 1882680.0321126613

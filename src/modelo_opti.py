@@ -19,7 +19,8 @@ datos = datos[datos["Fecha"].dt.year >= 2023]
 fecha_min = pd.Timestamp(year=2023, month=1, day=1)
 fecha_max = max(datos["Fecha"])
 
-T = [fecha_min + timedelta(days=i) for i in range((fecha_max - fecha_min).days + 1)]
+T = [fecha_min + timedelta(days=i)
+     for i in range((fecha_max - fecha_min).days + 1)]
 J = datos["Descripción"].unique().tolist()
 
 D = dict()
@@ -46,9 +47,8 @@ for producto, valores in diccionario_prods_params.items():
     c[producto] = costo_compra
     CF[producto] = costo_fijo_comprar
     alpha[producto] = costo_almacenar
-    l[producto] = leadtime
+    l[producto] = int(leadtime * 1.70)
     Vol[producto] = volumen
-
 
 
 Vmax = 120
@@ -83,13 +83,13 @@ model.addConstrs(y[j, T[0]] == 0 for j in J)  # Esto hay que cambiarlo creo
 
 
 # Hay que poner la restricción de solo comprar cada 7 días
-model.addConstrs(z[j, t] == 0 for j in J for indice_t, t in enumerate(T) if indice_t % 7 != 0)
+model.addConstrs(z[j, t] == 0 for j in J for indice_t,
+                 t in enumerate(T) if indice_t % 7 != 0)
 
 
 # Ver si la función objetivo es realmente la misma, da distinto esto a la política t, s, S
 model.setObjective(quicksum(v[j] * w[j, t] - c[j] * x[j, t] - CF[j] * z[j, t] - alpha[j]
                    * y_plus[j, t] - (v[j] - c[j]) * y_minus[j, t] for j in J for t in T), GRB.MAXIMIZE)
-
 
 
 model.optimize()
@@ -113,7 +113,6 @@ for j in J:
         costo_almacenaje_total += resultado
 print(f"El costo de almacenaje total fue de {costo_almacenaje_total}")
 
-        
 
 for valor in y_minus.values():
     if valor.X > 0:
@@ -140,25 +139,25 @@ productos_comprados = 0
 
 for valor in x.values():
     productos_comprados += valor.X
-    
-costo_compra_clp=0
+
+costo_compra_clp = 0
 for j in J:
-    cantidad_comprada=0
-    ordenes=0
+    cantidad_comprada = 0
+    ordenes = 0
     for t in T:
-        cantidad_comprada += x[j,t].X
-        ordenes += z[j,t].X
-    costo_compra_clp+= cantidad_comprada * c[j]
-    costo_compra_clp+=ordenes*CF[j]
-    
-inventario_prom=0
+        cantidad_comprada += x[j, t].X
+        ordenes += z[j, t].X
+    costo_compra_clp += cantidad_comprada * c[j]
+    costo_compra_clp += ordenes*CF[j]
+
+inventario_prom = 0
 for j in J:
-    inventario=0
-    i=0
+    inventario = 0
+    i = 0
     for t in T:
-        inventario+= y_plus[j,t].X
-        i+=1
-    inventario_prom+=inventario/i
+        inventario += y_plus[j, t].X
+        i += 1
+    inventario_prom += inventario/i
 
 nivel_rotacion = costo_compra_clp/inventario_prom
 
@@ -167,7 +166,6 @@ print(f"En total se realizaron {ordenes_de_compra} ordenes de compra")
 print(f"Considerando todos los productos, hubo un total de {cantidad_quiebres_stock} quiebres de stock")
 print(f"Hubo un quiebre de stock por un total de {unidades_quebradas} de stock")
 print(f"Se compraron un total de {productos_comprados} productos")
-
 print(f"Las utilidades corresponden a {model.ObjVal} CLP")
 print(f"El nivel de rotación es de {nivel_rotacion}")
 
@@ -179,7 +177,7 @@ inventario_producto = dict()
 
 for t in T:
     inventario_t = 0
-    
+
     for j in J:
         inventario_t += y[j, t].X
 
@@ -195,16 +193,19 @@ for j in J:
 
     inventario_producto[j] = inventario_producto_tiempo
 
-    
 
 plt.figure(figsize=(16, 6))
-sns.lineplot(x=tiempo,y=inventario)
+sns.lineplot(x=tiempo, y=inventario)
 plt.xlabel("Fechas")
 plt.ylabel("Cantidad de inventario (unidades)")
 plt.title(f"Inventario a través del tiempo del sistema")
-plt.savefig(os.path.join("politicas_graficos", "inventario", "modelo_opti", f"inventario_sistema.png"))
+plt.savefig(os.path.join("politicas_graficos",
+                         "inventario",
+                         "modelo_opti",
+                         "leadtimes_sensibilidad",
+                         "70percent",
+                         f"inventario_sistema.png"))
 plt.close()
-
 
 
 contador = 0
@@ -216,14 +217,19 @@ for producto, inventario_prod in inventario_producto.items():
     plt.xlabel("Fechas")
     plt.ylabel("Cantidad de inventario (unidades)")
     plt.title(f"Inventario a través del tiempo para {producto}")
-    plt.savefig(os.path.join("politicas_graficos", "inventario", "modelo_opti", f"prod_{contador}.png"))
+    plt.savefig(os.path.join("politicas_graficos",
+                             "inventario",
+                             "modelo_opti",
+                             "leadtimes_sensibilidad",
+                             "70percent",
+                             f"prod_{contador}.png"))
     plt.close()
 
     mapeo_graficos[contador] = producto
     contador += 1
 
 
-with open(os.path.join("politicas_graficos", "inventario", "modelo_opti", "mapeos.txt"), "w") as file:
+with open(os.path.join("politicas_graficos", "inventario", "modelo_opti", "leadtimes_sensibilidad", "70percent", "mapeos.txt"), "w") as file:
     json.dump(mapeo_graficos, file)
 
 # 1) Ventas totales unidades
