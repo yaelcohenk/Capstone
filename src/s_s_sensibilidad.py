@@ -12,8 +12,8 @@ import json
 import numpy as np
 
 from funciones.parametros_producto import parametros_producto
-from politicas.politica_r_Q_eval import politica_T_r_Q
-from politicas.politica_r_Q_optuna import politica_T_r_Q_optuna, politica_T_r_Q_optuna_sensibilidad
+from politicas.politica_s_S_eval import politica_T_s_S
+from politicas.politica_s_S_optuna import politica_T_s_S_optuna, politica_T_s_S_optuna_sensibilidad
 from parametros import PATH_VENTAS_PRODUCTOS_VIGENTES_NO_OUTLIERS_W_FEATURES
 from funciones.calcular_cosas_politicas import calcular_metricas
 
@@ -64,22 +64,24 @@ if __name__ == '__main__':
 
     # print(parametros_producto_modelo)
 
-    # with open("diccionario_params_productos.pkl", "wb") as f:
-        # pickle.dump(parametros_producto_modelo, f)
+    with open("diccionario_params_productos.pkl", "wb") as f:
+        pickle.dump(parametros_producto_modelo, f)
 
     # sys.exit()
 
     for producto in productos:
         parametros = parametros_producto_modelo[producto]
         demandas = fechas_ventas_producto_y_demanda[producto]
-        leadtime = parametros[3]
 
+        leadtime = parametros[3]
         lista_leadtimes = [int(leadtime * 1.1), int(leadtime * 1.2), int(leadtime * 1.3)]
 
-        lista_ejecucion_paralelo.append(politica_T_r_Q_optuna_sensibilidad.remote(demandas, lista_fechas, fecha_min, producto, parametros, lista_leadtimes))
+
+        lista_ejecucion_paralelo.append(politica_T_s_S_optuna_sensibilidad.remote(demandas, lista_fechas, fecha_min, producto, parametros, lista_leadtimes))
 
 
     resultados = ray.get(lista_ejecucion_paralelo)
+
 
     resultados_0 = list()
     resultados_1 = list()
@@ -99,6 +101,7 @@ if __name__ == '__main__':
     calcular_metricas(resultados_2, lista_fechas, 30)
 
 
+
     sys.exit("AA")
 
     utilidad_total = 0
@@ -109,14 +112,11 @@ if __name__ == '__main__':
     cantidad_comprada_total = 0
     costo_alm_total = 0
     costo_productos_vendidos = 0
-    inventario_total = 0
     inventario_prom = 0
-    
 
     inventarios_productos = dict()
 
     for elementos in resultados:
-        costo = 0
         utilidad, nombre, ventas, ordenes_realizadas, quiebres_stock, demanda_perdida, cantidad_comprada, inv, costo_alm_prod, costo_fijo_clp, costo_compra_clp = elementos        
         utilidad_total += utilidad
         ventas_totales += ventas
@@ -125,6 +125,7 @@ if __name__ == '__main__':
         demanda_perdida_total += demanda_perdida
         cantidad_comprada_total += cantidad_comprada
         costo_alm_total += costo_alm_prod
+
         costo_productos_vendidos += costo_fijo_clp
         costo_productos_vendidos += costo_compra_clp
         
@@ -132,18 +133,15 @@ if __name__ == '__main__':
 
         inventarios_productos[nombre] = inv
         inventario_fechas=inventarios_productos[nombre]
-        i = 0
+        i=0
         cantidad=0
         for fecha in lista_fechas:
             cantidad += int(inventario_fechas[fecha])
             i+=1
     
-        inventario_prom += cantidad/i    
-        
-    
+        inventario_prom += cantidad/i 
+
     nivel_rotacion = costo_productos_vendidos/inventario_prom
-
-
     print(f"La empresa dentro de todo el período registró utilidad por {utilidad_total} CLP")
     print(f"Se vendieron un total de {ventas_totales} productos")
     print(f"Se emitieron {ordenes_realizadas_total} órdenes de compra")
@@ -153,31 +151,25 @@ if __name__ == '__main__':
     print(f"El costo de almacenaje total fue de {costo_alm_total}")
     print(f"El nivel de rotación es de {nivel_rotacion}")
 
-
-
-
-
-
-
-    sys.exit("EXIT")
     mapeo_graficos = dict()
     contador = 0
 
+    # inventarios_ = dict()
+
     for producto, inventario in inventarios_productos.items():
-        # print(producto, inventario)
         plt.figure(figsize=(16, 6))
         sns.lineplot(x=lista_fechas, y=list(inventario.values())[1:])
         plt.xlabel("Fechas")
         plt.ylabel("Cantidad de inventario (unidades)")
         plt.title(f"Inventario a través del tiempo para {producto}")
-        plt.savefig(os.path.join("politicas_graficos", "inventario", "t_r_Q", f"prod_{contador}.png"))
+        plt.savefig(os.path.join("politicas_graficos", "inventario", "t_s_S", f"prod_{contador}.png"))
         plt.close()
 
         mapeo_graficos[contador] = producto
         contador += 1
 
         # print(f"Para el producto {producto} se obtuvo lo siguiente {elementos}")
-    with open(os.path.join("politicas_graficos", "inventario", "t_r_Q", "mapeos.txt"), "w") as file:
+    with open(os.path.join("politicas_graficos", "inventario", "t_s_S", "mapeos.txt"), "w") as file:
         json.dump(mapeo_graficos, file)
 
 
@@ -194,6 +186,6 @@ if __name__ == '__main__':
     plt.xlabel("Fechas")
     plt.ylabel("Cantidad de inventario (unidades)")
     plt.title(f"Inventario a través del tiempo para el sistema")
-    plt.savefig(os.path.join("politicas_graficos", "inventario", "t_r_Q", f"inventario_sistema.png"))
+    plt.savefig(os.path.join("politicas_graficos", "inventario", "t_s_S", f"inventario_sistema.png"))
     plt.close()
     

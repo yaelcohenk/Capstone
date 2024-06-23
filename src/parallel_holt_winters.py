@@ -123,12 +123,12 @@ if __name__ == '__main__':
 
 
             for i in range(len(predicciones)):
-                error=valor_real[i]-predicciones[i]
-                suma+=error
+                error = valor_real[i] - predicciones[i]
+                suma += error
                 errores.append(error)
-            MAD_prophet=np.mean(np.abs(errores))
-            if MAD_prophet!=0:
-                tracking_signal=suma/MAD_prophet
+            MAD_prophet = np.mean(np.abs(errores))
+            if MAD_prophet != 0:
+                tracking_signal= suma / MAD_prophet
             else:
                 tracking_signal = np.nan
             valores.append((nombre, mape, rmse, mae, mse,tracking_signal))
@@ -146,8 +146,6 @@ if __name__ == '__main__':
     mapeo_nombres = dict()
 
     for data, nombre in dataframes:
-        # print(data)
-
 
         data.to_excel(os.path.join("predicciones", "holt_winters", f"producto_{contador}.xlsx"))
         
