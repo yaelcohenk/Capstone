@@ -5,6 +5,7 @@ import prophet
 import ray
 import json
 import numpy as np
+import random
 
 from parametros import PATH_VENTAS_PRODUCTOS_VIGENTES_NO_OUTLIERS_W_FEATURES
 from sklearn.metrics import (mean_absolute_percentage_error,
@@ -25,15 +26,42 @@ def prophet_producto(dataframe_producto: pd.DataFrame, nombre_producto: str):
     forecast = model.predict(fechas_futuras)
     predicciones = forecast["yhat"]
     valores_reales = datos_validacion["y"]
+    cota_superior= forecast["yhat_upper"]
+    cota_inferior= forecast["yhat_lower"]
+    cota_inferior=cota_inferior.values.tolist()
+    cota_superior=cota_superior.values.tolist()
+    
 
     lista_fechas = fechas_futuras["ds"].values
     predicciones = predicciones.values.tolist()
     valores_reales = valores_reales.values.tolist()
+    demanda_esc1=[]
+    demanda_esc2=[]
+    demanda_esc3=[]
+    for i in range( len(cota_inferior)):
+        prediccion= int(predicciones[i])
+        margen =(cota_superior[i] - cota_inferior[i])/2
+        margen= int(margen)
+        numero1= random.randint(-margen,margen)
+        demanda1= prediccion + numero1
+        numero2= random.randint(-margen,margen)
+        demanda2= prediccion + numero2
+        numero3= random.randint(-margen,margen)
+        demanda3= prediccion + numero3
+        if demanda1<0 or demanda1==1:
+            demanda1=0
+        if demanda2<0 or demanda2==1:
+            demanda2=0
+        if demanda3<0:
+            demanda3=0
+        demanda_esc1.append(demanda1)
+        demanda_esc2.append(demanda2)
+        demanda_esc3.append(demanda3)
+        
 
     predicciones = [int(i) for i in predicciones]
 
-    datos = pd.DataFrame({"predicciones": predicciones, "real": valores_reales})
-    datos.set_index(lista_fechas, inplace=True)
+    datos = pd.DataFrame({"Fecha":lista_fechas, "predicciones": predicciones, "real": valores_reales, "escenario1": demanda_esc1, "escenario2": demanda_esc2, "escenario3": demanda_esc3 })
 
 
     mape = mean_absolute_percentage_error(valores_reales, predicciones)

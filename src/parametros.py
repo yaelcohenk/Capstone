@@ -18,6 +18,11 @@ PATH_VENTAS_DIARIAS_PRODUCTOS_DATA = os.path.join("datos", "ventas_diarias_produ
 PATH_VENTAS_SEMANALES_GRUPO_DATA = os.path.join("datos", "ventas_semanales_grupos.xlsx")
 PATH_VENTAS_SEMANALES_SUBGRUPO_DATA = os.path.join("datos", "ventas_semanales_subgrupos.xlsx")
 PATH_VENTAS_SEMANALES_PRODUCTOS_DATA = os.path.join("datos", "ventas_semanales_productos.xlsx")
+PATH_ADI_PRODUCTOS = os.path.join("datos", "adi_productos.xlsx")
+PATH_METRICAS_CROSTON = os.path.join("datos", "metricas_croston.xlsx")
+PATH_METRICAS_XGBOOST = os.path.join("datos", "metricas_xgboost.xlsx")
+PATH_METRICAS_PROPHET = os.path.join("datos", "metricas_prophet.xlsx")
+PATH_METRICAS_HOLTWINTER = os.path.join("datos", "metricas_holt_winters.xlsx")
 
 
 

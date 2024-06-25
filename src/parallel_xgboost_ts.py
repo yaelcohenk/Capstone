@@ -6,6 +6,7 @@ import ray
 import sys
 import os
 import json
+import random
 
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import (mean_absolute_percentage_error,
@@ -53,6 +54,31 @@ def xgboost_producto(dataframe_producto: pd.DataFrame,
         prediction = reg.predict(X_val).squeeze()
         prediction = scaler_values.inverse_transform(prediction.reshape(-1, 1)).flatten()
         y_val = scaler_values.inverse_transform(y_val.reshape(-1, 1)).flatten()
+        demanda_esc1=[]
+        demanda_esc2=[]
+        demanda_esc3=[]
+        
+        for i in range (len(prediction)):
+            margen= abs(y_val[i]-prediction[i])
+            margen= int(margen)
+            numero1= random.randint(-margen, margen)
+            demanda1= int(prediction[i]) + numero1
+            numero2= random.randint(-margen, margen)
+            demanda2= int(prediction[i]) + numero2
+            numero3= random.randint(-margen, margen)
+            demanda3= int(prediction[i]) + numero3
+            if demanda1<0 :
+                demanda1=0
+            if demanda2<0 :
+                demanda2=0
+            if demanda3<0:
+                demanda3=0
+            demanda_esc1.append(demanda1)
+            demanda_esc2.append(demanda2)
+            demanda_esc3.append(demanda3)
+        print(demanda_esc1)
+        print(demanda_esc2)
+        print(demanda_esc3)
         errores=[]
         suma=0
         for i in range( len(prediction)):
@@ -78,7 +104,7 @@ def xgboost_producto(dataframe_producto: pd.DataFrame,
         mae = mean_absolute_error(y_val, prediction)
         mse = mean_squared_error(y_val, prediction)
 
-        return nombre_producto, mape, rmse, mae, mse,tracking_signal, y_val, prediction, X_val_1
+        return nombre_producto, mape, rmse, mae, mse,tracking_signal, y_val, prediction,demanda_esc1, demanda_esc2, demanda_esc3, X_val_1
 
         # Revisar el valor del MAPE si está en % o no. Mirar de manera crítica los indicadores
 
@@ -126,10 +152,10 @@ if __name__ == '__main__':
     predicciones = dict()
 
     for elemento in elementos:
-        nombre, *metricas, y_val, y_pred, covariables = elemento
+        nombre, *metricas, y_val, y_pred, demanda_esc1, demanda_esc2, demanda_esc3, covariables = elemento
         
         valores.append([nombre, *metricas])
-        predicciones[nombre] = [y_val.tolist(), y_pred.tolist(), covariables.index]
+        predicciones[nombre] = [y_val.tolist(), y_pred.tolist(), demanda_esc1, demanda_esc2, demanda_esc3, covariables.index]
 
     dataframe = pd.DataFrame(valores)
     dataframe.columns = ["producto", "MAPE", "RMSE", "MAE", "MSE", "Tracking Signal"]
@@ -142,8 +168,8 @@ if __name__ == '__main__':
     contador = 0
     diccionario_equivalencias_nombres = dict()
     for nombre, values in predicciones.items():
-        dataframe = pd.DataFrame({"valor_real": values[0], "valor_prediccion": values[1]})
-        dataframe.set_index(values[2], inplace=True) 
+        dataframe = pd.DataFrame({"real": values[0], "predicciones": values[1], "escenario1": values[2], "escenario2": values[3], "escenario3": values[4]})
+        dataframe.set_index(values[5], inplace=True) 
         dataframe.to_excel(os.path.join("predicciones", "xgboost", f"producto_{contador}.xlsx"))
         diccionario_equivalencias_nombres[contador] = nombre
         contador += 1

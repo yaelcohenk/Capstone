@@ -5,6 +5,7 @@ import prophet
 import ray
 import json
 import numpy as np
+import random
 
 from parametros import PATH_VENTAS_PRODUCTOS_VIGENTES_NO_OUTLIERS_W_FEATURES
 from sklearn.metrics import (mean_absolute_percentage_error,
@@ -40,9 +41,34 @@ def croston_producto(dataframe_producto: pd.DataFrame, nombre_producto: str):
     valores_reales = valores_reales.values.tolist()
 
     predicciones = [int(i) for i in predicciones]
+    demanda_esc1=[]
+    demanda_esc2=[]
+    demanda_esc3=[]
+    
+    for i in range (len(predicciones)):
+        margen= abs(valores_reales[i]-predicciones[i])
+        margen= int(margen)
+        numero1= random.randint(-margen, margen)
+        demanda1= int(predicciones[i]) + numero1
+        numero2= random.randint(-margen, margen)
+        demanda2= int(predicciones[i]) + numero2
+        numero3= random.randint(-margen, margen)
+        demanda3= int(predicciones[i]) + numero3
+        if demanda1<0 :
+            demanda1=0
+        if demanda2<0 :
+            demanda2=0
+        if demanda3<0:
+            demanda3=0
+        demanda_esc1.append(demanda1)
+        demanda_esc2.append(demanda2)
+        demanda_esc3.append(demanda3)
+    print(demanda_esc1)
+    print(demanda_esc2)
+    print(demanda_esc3)
 
-    datos = pd.DataFrame({"predicciones": predicciones, "real": valores_reales})
-    datos.set_index(lista_fechas, inplace=True)
+    datos = pd.DataFrame({"Fecha": lista_fechas,"predicciones": predicciones, "real": valores_reales, "escenario1": demanda_esc1, "escenario2": demanda_esc2, "escenario3": demanda_esc3})
+    
 
 
     mape = mean_absolute_percentage_error(valores_reales, predicciones)

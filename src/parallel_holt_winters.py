@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import sys
 import logging
 import os
+import random
 import json
 
 from parametros import (PATH_VENTAS_PRODUCTOS_VIGENTES_NO_OUTLIERS_W_FEATURES)
@@ -65,7 +66,7 @@ def holt_winters(dataframe_producto: pd.DataFrame, nombre_producto: str):
         valores = study.optimize(objective, n_trials=100)
 
     except ValueError as e:
-        return None, None, validacion.index, nombre_producto
+        return None, None, None, None, None, validacion.index, nombre_producto
     
     best_params = study.best_params
     try:
@@ -83,10 +84,44 @@ def holt_winters(dataframe_producto: pd.DataFrame, nombre_producto: str):
 
     # Con get_forecast también podemos obtener intervalos de confianza
     if predicciones is not None:
+        valores_reales= validacion["Cantidad"].tolist()
         predicciones = predicciones.forecast(steps=len(validacion))
-        return predicciones, validacion["Cantidad"].to_numpy(), validacion.index, nombre_producto
+        predicciones1=predicciones.tolist()
+        demanda_esc1=[]
+        demanda_esc2=[]
+        demanda_esc3=[]
+    
+        
+        for i in range (len(predicciones)):
+            margen= abs(valores_reales[i]-predicciones[i])
+            margen= int(margen)
+            numero1= random.randint(-margen, margen)
+            demanda1= int(predicciones[i]) + numero1
+            numero2= random.randint(-margen, margen)
+            demanda2= int(predicciones[i]) + numero2
+            numero3= random.randint(-margen, margen)
+            demanda3= int(predicciones[i]) + numero3
+            if demanda1<0 :
+                demanda1=0
+            if demanda2<0 :
+                demanda2=0
+            if demanda3<0:
+                demanda3=0
+            demanda_esc1.append(demanda1)
+            demanda_esc2.append(demanda2)
+            demanda_esc3.append(demanda3)
+        print(demanda_esc1)
+        print(demanda_esc2)
+        print(demanda_esc3)
+        
+            
+        
+        return predicciones, validacion["Cantidad"].to_numpy(), demanda_esc1, demanda_esc2, demanda_esc3, validacion.index, nombre_producto
     else:
-        return None, None, validacion.index, nombre_producto
+        demanda_esc1=[]
+        demanda_esc2=[]
+        demanda_esc3=[]
+        return None, None, demanda_esc1, demanda_esc2, demanda_esc3, validacion.index, nombre_producto
 
 
 if __name__ == '__main__':
@@ -108,7 +143,7 @@ if __name__ == '__main__':
 
     valores = list()
     for elemento in elementos:
-        predicciones, valor_real, fechas, nombre = elemento
+        predicciones, valor_real, demanda_esc1, demanda_esc2, demanda_esc3, fechas, nombre = elemento
         if predicciones is not None and valor_real is not None:
             mape = mean_absolute_percentage_error(valor_real, predicciones)
             rmse = root_mean_squared_error(valor_real, predicciones)
@@ -116,36 +151,29 @@ if __name__ == '__main__':
             mse = mean_squared_error(valor_real, predicciones)
             errores=[]
             suma=0
-
-            dataframe_loop = pd.DataFrame({"predicciones": predicciones, "real": valor_real})
-            dataframe_loop.index = fechas
-            dataframes.append((dataframe_loop, nombre))
-
-
-            for i in range(len(predicciones)):
-                error = valor_real[i] - predicciones[i]
-                suma += error
+            for i in range( len(predicciones)):
+                error=valor_real[i]-predicciones[i]
+                suma+=error
                 errores.append(error)
-            MAD_prophet = np.mean(np.abs(errores))
-            if MAD_prophet != 0:
-                tracking_signal= suma / MAD_prophet
+            MAD_prophet=np.mean(np.abs(errores))
+            if MAD_prophet!=0:
+                tracking_signal=suma/MAD_prophet
             else:
                 tracking_signal = np.nan
             valores.append((nombre, mape, rmse, mae, mse,tracking_signal))
         else:
-            valores.append((nombre, float("inf"), float("inf"), float("inf"), float("inf"), 0))
+            valores.append((nombre, float("inf"), float("inf"), float("inf"), float("inf"), -1000))
 
 
     dataframe = pd.DataFrame(valores)
     dataframe.columns = ["producto", "MAPE", "RMSE", "MAE", "MSE", "tracking_signal"]
     dataframe.set_index("producto", inplace=True)
     dataframe.to_excel(os.path.join("datos", "metricas_holt_winters.xlsx"))
-
-
     contador = 0
     mapeo_nombres = dict()
-
     for data, nombre in dataframes:
+        # print(data)
+
 
         data.to_excel(os.path.join("predicciones", "holt_winters", f"producto_{contador}.xlsx"))
         
