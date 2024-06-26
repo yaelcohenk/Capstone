@@ -93,7 +93,7 @@ def politica_T_r_Q_optuna(demandas: dict, lista_fechas: list, fecha_min, nombre_
                         costo_compra=costo_compra,
                         costo_almacenar=costo_almacenar)
     
-    study.optimize(objective, n_trials=100) # Cambiar número de trials a un número menor quizás
+    study.optimize(objective, n_trials=10) # Cambiar número de trials a un número menor quizás
     best_params = study.best_params
 
 
