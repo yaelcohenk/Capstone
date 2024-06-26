@@ -49,22 +49,42 @@ mapeos_holt_winters = rutas_modelos(modelos_holt_winters, mapeos_holt_winters)
 
 distribuciones = dict()
 
-def distribuciones_prod(mapeos, modelo, data_real, data_pred):
+def distribuciones_prod(mapeos, modelo, data_real, data_pred, graficar_errores=False):
     distribuciones = dict()
+    # errores_productos = dict()
+    contador = 0
     for key, value in mapeos.items():
         datos = pd.read_excel(os.path.join("predicciones", modelo, f"producto_{value}.xlsx"))
         datos["error"] = datos[data_real] - datos[data_pred]
+
 
         xmin = np.min(datos["error"])
         xmax = np.max(datos["error"])
         mu, std = norm.fit(datos["error"])
 
         distribuciones[key] = (mu, std)
+        if graficar_errores:
+            plt.figure(figsize=(10, 8))
+            sns.histplot(x=datos["error"], bins=30, kde=True)
+            # sns.displot(x=datos["error"], kde=True)
+            # sns.barplot(x=datos["error"])
+            plt.title(f"Histograma errores para {key}")
+            x = np.linspace(xmin, xmax, 100)
+            p = norm.pdf(x, mu, std)
+            # valores_normal = np.random.normal(mu, std, 1000)
+            # plt.plot(valores_normal, marker="o", linestyle="-")
+            # plt.plot(x, p, 'k', linewidth=2)
+            plt.savefig(os.path.join("errores", f"grafico_{contador}.png"))
+            contador += 1
+            plt.close()
+
+
+        # errores_productos[key] = datos["error"]
 
     return distribuciones
 
 distr_proph = distribuciones_prod(mapeos_prophet, "prophet", "real", "predicciones")
-distr_xgboost = distribuciones_prod(mapeos_xgboost, "xgboost", "valor_real", "valor_prediccion")
+distr_xgboost = distribuciones_prod(mapeos_xgboost, "xgboost", "valor_real", "valor_prediccion", graficar_errores=True)
 distr_croston = distribuciones_prod(mapeos_croston, "croston", "real", "predicciones")
 distr_holt_winters = distribuciones_prod(mapeos_holt_winters, "holt_winters", "real", "predicciones")
 
@@ -75,8 +95,11 @@ distrs.update(distr_croston)
 distrs.update(distr_holt_winters)
 
 
-print(len(distrs))
 
-with open("distrs.pkl", "wb") as f:
-        pickle.dump(distrs, f)
+
+
+# print(len(distrs))
+
+# with open("distrs.pkl", "wb") as f:
+        # pickle.dump(distrs, f)
 

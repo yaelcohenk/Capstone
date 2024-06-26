@@ -15,11 +15,13 @@ plt.boxplot([datos_s_s["utilidad_total"],
              datos_r_q["utilidad_total"],
              datos_dif], labels=["Datos (T, s, S)",
                                                    "Datos (T, r, Q)",
-                                                   "Diferencia entre política (T, r, Q) y (T, s, S)"])
+                                                   "Z"])
 
 plt.title("Utilidades distintos escenarios para las políticas de gestión de inventario")
 plt.ylabel("Utilidad total")
 
+plt.savefig("comparacion_utilidades.png")
+# plt.legend()
 
 plt.show()
 # datos
