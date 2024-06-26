@@ -7,6 +7,7 @@ import os
 import json
 import pickle
 import random
+import numpy as np
 
 from datetime import timedelta
 from gurobipy import Model, GRB, quicksum
@@ -52,21 +53,27 @@ for producto, valores in diccionario_prods_params.items():
     Vol[producto] = volumen
 
 
-K = range(5)  # Número escenarios
+K = range(30)  # Número escenarios
 
 D_k = {}
 
 
+with open("distrs.pkl", "rb") as file:
+    distrs = pickle.load(file)
+
+
 for key, value in D.items():
+    distr_producto = distrs[key[0]]
+    mu, std = distr_producto
 
     for k in K:
         nombre, t = key
-        D_k[nombre, t, k] = max(0, value + random.randint(-2, 2))
+        D_k[nombre, t, k] = max(0, value + np.random.normal(mu, std))
 
 
 Vmax = 120
 model = Model()
-model.setParam("TimeLimit", 60)
+model.setParam("TimeLimit", 60 * 10)
 
 
 x = model.addVars(J, T, name="x")
@@ -114,7 +121,35 @@ model.setObjective((1 / len(K)) * quicksum(v[j] * w[j, t, k] - alpha[j] * y_plus
 
 model.optimize()
 
-# model.computeIIS()
-# model.write("model_infeasible.ilp")
+
 
 print(model.ObjVal)
+
+
+productos_vendidos_promedio = np.mean(x.X for x in w.values())
+ordenes_compra_promedio = np.mean(x.X for x in z.values())
+cantidad_quiebres_stock_promedio = []
+unidades_quebradas_promedio = []
+
+
+for valor in y_minus.values():
+    if valor.X > 0:
+        cantidad_quiebres_stock_promedio.append(1)
+        unidades_quebradas_promedio.append(valor.X)
+
+
+cantidad_quiebres_stock_promedio = np.mean(cantidad_quiebres_stock_promedio)
+unidades_quebradas_promedio = np.mean(unidades_quebradas_promedio)
+productos_comprados_promedio = np.mean(x.X for x in x.values())
+utilidades = model.ObjVal
+
+print(f"Se vendieron un total de {productos_vendidos_promedio} productos en promedio de productos")
+print(f"En total se realizaron {ordenes_compra_promedio} ordenes de compra en promedio")
+print(f"Hubo un total de {cantidad_quiebres_stock_promedio} quiebres de stock en promedio")
+print(f"Se compraron un total de {productos_comprados_promedio} productos en promedio")
+print(f"Las utilidades corresponden a {utilidades} CLP")
+
+
+
+
+# cantidad_quiebres_stock_promedio = 

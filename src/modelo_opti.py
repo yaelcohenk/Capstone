@@ -47,7 +47,7 @@ for producto, valores in diccionario_prods_params.items():
     c[producto] = costo_compra
     CF[producto] = costo_fijo_comprar
     alpha[producto] = costo_almacenar
-    l[producto] = int(leadtime * 1.70)
+    l[producto] = int(leadtime * 1.20)
     Vol[producto] = volumen
 
 
