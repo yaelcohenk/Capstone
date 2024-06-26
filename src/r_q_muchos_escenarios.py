@@ -71,10 +71,12 @@ if __name__ == '__main__':
     with open("distrs.pkl", "rb") as file:
         distrs = pickle.load(file)
     # sys.exit()
+    # print(distrs)
+    # sys.exit()
 
 
 
-    k = 100
+    k = 1_000
     escenarios = list()
 
     for escenario in range(k):

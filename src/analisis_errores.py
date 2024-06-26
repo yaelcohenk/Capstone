@@ -15,12 +15,12 @@ datos_modelos = datos_modelos.to_numpy()
 modelos_croston = [producto for producto, pronostico in datos_modelos if pronostico == "croston"]
 modelos_prophet = [producto for producto, pronostico in datos_modelos if pronostico == "prophet"]
 modelos_xgboost = [producto for producto, pronostico in datos_modelos if pronostico == "xgboost"]
-
+modelos_holt_winters = [producto for producto, pronostico in datos_modelos if pronostico == "holt_winters"]
 
 mapeos_croston = os.path.join("predicciones", "croston", "mapeos.txt")
 mapeos_prophet = os.path.join("predicciones", "prophet", "mapeos.txt")
 mapeos_xgboost = os.path.join("predicciones", "xgboost", "mapeos.txt")
-
+mapeos_holt_winters = os.path.join("predicciones", "holt_winters", "mapeos.txt")
 
 def rutas_modelos(modelos, ruta):
 
@@ -37,14 +37,14 @@ def rutas_modelos(modelos, ruta):
 mapeos_xgboost = rutas_modelos(modelos_xgboost, mapeos_xgboost)
 mapeos_croston = rutas_modelos(modelos_croston, mapeos_croston)
 mapeos_prophet = rutas_modelos(modelos_prophet, mapeos_prophet)
+mapeos_holt_winters = rutas_modelos(modelos_holt_winters, mapeos_holt_winters)
 
-
-datos = pd.read_excel(os.path.join("predicciones", "prophet", "producto_151.xlsx"))
-datos["error"] = datos["real"] - datos["predicciones"]
-
-xmin = np.min(datos["error"])
-xmax = np.max(datos["error"])
-mu, std = norm.fit(datos["error"])
+# datos = pd.read_excel(os.path.join("predicciones", "prophet", "producto_151.xlsx"))
+# datos["error"] = datos["real"] - datos["predicciones"]
+# 
+# xmin = np.min(datos["error"])
+# xmax = np.max(datos["error"])
+# mu, std = norm.fit(datos["error"])
 
 
 distribuciones = dict()
@@ -66,12 +66,16 @@ def distribuciones_prod(mapeos, modelo, data_real, data_pred):
 distr_proph = distribuciones_prod(mapeos_prophet, "prophet", "real", "predicciones")
 distr_xgboost = distribuciones_prod(mapeos_xgboost, "xgboost", "valor_real", "valor_prediccion")
 distr_croston = distribuciones_prod(mapeos_croston, "croston", "real", "predicciones")
+distr_holt_winters = distribuciones_prod(mapeos_holt_winters, "holt_winters", "real", "predicciones")
 
 distrs = dict()
 distrs.update(distr_proph)
 distrs.update(distr_xgboost)
 distrs.update(distr_croston)
+distrs.update(distr_holt_winters)
 
+
+print(len(distrs))
 
 with open("distrs.pkl", "wb") as f:
         pickle.dump(distrs, f)
