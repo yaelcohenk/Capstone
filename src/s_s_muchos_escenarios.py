@@ -74,10 +74,9 @@ if __name__ == '__main__':
 
         # sys.exit()
     # sys.exit()
-    k = 
+    k = 100
     escenarios = list()
     
-
 
     for escenario in range(k):
         
@@ -105,6 +104,8 @@ if __name__ == '__main__':
     columns = ["utilidad_total", "ventas_totales", "ordenes_realizadas_total", "quiebres_stock_total",
                "demanda_perdida_total", "cantidad_comprada_total", "costo_alm_total", "nivel_rotacion"]
     dataframe_data = pd.DataFrame(columns=columns)
+    print("[INFO]: A punto de correr varios escenarios: ")
+
     for num_escenario, escenario in enumerate(escenarios):
         resultados = ray.get(escenario)
         print(f"Para el escenario {num_escenario} se tienen las siguientes métricas")
