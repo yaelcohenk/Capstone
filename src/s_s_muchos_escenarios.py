@@ -104,6 +104,7 @@ if __name__ == '__main__':
     columns = ["utilidad_total", "ventas_totales", "ordenes_realizadas_total", "quiebres_stock_total",
                "demanda_perdida_total", "cantidad_comprada_total", "costo_alm_total", "nivel_rotacion"]
     dataframe_data = pd.DataFrame(columns=columns)
+    
     print("[INFO]: A punto de correr varios escenarios: ")
 
     for num_escenario, escenario in enumerate(escenarios):
