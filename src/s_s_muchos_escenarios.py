@@ -119,13 +119,8 @@ if __name__ == '__main__':
         if num_escenario % 5 == 0:
             dataframe_data.to_excel("s_s_pronosticos_escenarios.xlsx")
 
-        # print("\n")
 
-
-        # print(resultados)
-
-
-    print(dataframe_data)
+        # print(dataframe_data)
 
     dataframe_data.to_excel("s_s_pronosticos_escenarios.xlsx")
 
