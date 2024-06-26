@@ -1,5 +1,6 @@
-def calcular_metricas(resultados, lista_fechas, porcentaje):
-    print(f"Para el aumento en {porcentaje}% leadtime las métricas son")
+def calcular_metricas(resultados, lista_fechas, porcentaje=0, leadtime_on=True):
+    if leadtime_on:
+        print(f"Para el aumento en {porcentaje}% leadtime las métricas son")
     utilidad_total = 0
     ventas_totales = 0
     ordenes_realizadas_total = 0
@@ -50,3 +51,5 @@ def calcular_metricas(resultados, lista_fechas, porcentaje):
     print(f"En total se compraron {cantidad_comprada_total} productos")
     print(f"El costo de almacenaje total fue de {costo_alm_total}")
     print(f"El nivel de rotación es de {nivel_rotacion}\n")
+
+    return utilidad_total, ventas_totales, ordenes_realizadas_total, quiebres_stock_total, demanda_perdida_total, cantidad_comprada_total, costo_alm_total, nivel_rotacion

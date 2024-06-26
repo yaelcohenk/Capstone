@@ -7,6 +7,7 @@ from datetime import timedelta
 from functools import partial
 from .politica_s_S_eval import politica_T_s_S
 
+optuna.logging.set_verbosity(optuna.logging.WARNING)
 
 @ray.remote
 def politica_T_s_S_optuna(demandas: dict, lista_fechas: list, fecha_min, nombre_prod, params_producto):
@@ -86,7 +87,7 @@ def politica_T_s_S_optuna(demandas: dict, lista_fechas: list, fecha_min, nombre_
                         costo_compra=costo_compra,
                         costo_almacenar=costo_almacenar)
     
-    study.optimize(objective, n_trials=100) # Cambiar número de trials a un número menor quizás
+    study.optimize(objective, n_trials=30) # Cambiar número de trials a un número menor quizás
     best_params = study.best_params
 
     ganancias, *others, ventas, ordenes_realizadas, quiebres_stock, demanda_perdida, cantidad_comprada, inv, costo_almacena_prod, costo_fijo_clp, costo_compra_clp = politica_T_s_S(diccionario_demandas=demandas,
