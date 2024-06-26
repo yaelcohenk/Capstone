@@ -21,7 +21,9 @@ optuna.logging.set_verbosity(optuna.logging.WARNING)
 optuna.logging.disable_propagation()
 
 if __name__ == '__main__':
-    ray.init(log_to_driver=False)
+    np.random.seed(2123)
+    ray.init(log_to_driver=True)
+
     datos_items = pd.read_excel(os.path.join("datos", "data_items_fillna.xlsx")) # Tenemos la información de los productos
     datos_ventas = pd.read_excel(PATH_VENTAS_PRODUCTOS_VIGENTES_NO_OUTLIERS_W_FEATURES)
 

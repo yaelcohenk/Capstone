@@ -21,7 +21,8 @@ optuna.logging.set_verbosity(optuna.logging.WARNING)
 
 
 if __name__ == '__main__':
-    ray.init(log_to_driver=False)
+    np.random.seed(2123)
+    ray.init(log_to_driver=True)
     datos_items = pd.read_excel(os.path.join("datos", "data_items_fillna.xlsx")) # Tenemos la información de los productos
     datos_ventas = pd.read_excel(PATH_VENTAS_PRODUCTOS_VIGENTES_NO_OUTLIERS_W_FEATURES)
 
@@ -67,18 +68,14 @@ if __name__ == '__main__':
     # with open("diccionario_params_productos.pkl", "wb") as f:
         # pickle.dump(parametros_producto_modelo, f)
 
-
     with open("distrs.pkl", "rb") as file:
         distrs = pickle.load(file)
-    # sys.exit()
-    # print(distrs)
-    # sys.exit()
+ 
 
 
-
-    k = 1_000
+    k = 100
     escenarios = list()
-
+    print("[INFO]: A punto entrar a loop")
     for escenario in range(k):
         valores_escenario_k = list()
 
@@ -117,15 +114,10 @@ if __name__ == '__main__':
 
         dataframe_data.loc[len(dataframe_data)] = valores_loop
         if num_escenario % 5 == 0:
-            dataframe_data.to_excel("s_s_pronosticos_escenarios.xlsx")
-
-        # print("\n")
+            dataframe_data.to_excel("r_q_pronosticos_escenarios.xlsx")
 
 
-        # print(resultados)
-
-
-    print(dataframe_data)
+        print(dataframe_data)
 
     dataframe_data.to_excel("r_q_pronosticos_escenarios.xlsx")
 

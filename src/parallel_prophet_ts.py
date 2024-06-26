@@ -6,6 +6,8 @@ import ray
 import json
 import numpy as np
 import random
+import scipy.stats as stats
+import matplotlib.pyplot as plt
 
 from parametros import PATH_VENTAS_PRODUCTOS_VIGENTES_NO_OUTLIERS_W_FEATURES
 from sklearn.metrics import (mean_absolute_percentage_error,
@@ -35,33 +37,12 @@ def prophet_producto(dataframe_producto: pd.DataFrame, nombre_producto: str):
     lista_fechas = fechas_futuras["ds"].values
     predicciones = predicciones.values.tolist()
     valores_reales = valores_reales.values.tolist()
-    demanda_esc1=[]
-    demanda_esc2=[]
-    demanda_esc3=[]
-    for i in range( len(cota_inferior)):
-        prediccion= int(predicciones[i])
-        margen =(cota_superior[i] - cota_inferior[i])/2
-        margen= int(margen)
-        numero1= random.randint(-margen,margen)
-        demanda1= prediccion + numero1
-        numero2= random.randint(-margen,margen)
-        demanda2= prediccion + numero2
-        numero3= random.randint(-margen,margen)
-        demanda3= prediccion + numero3
-        if demanda1<0 or demanda1==1:
-            demanda1=0
-        if demanda2<0 or demanda2==1:
-            demanda2=0
-        if demanda3<0:
-            demanda3=0
-        demanda_esc1.append(demanda1)
-        demanda_esc2.append(demanda2)
-        demanda_esc3.append(demanda3)
+    
         
 
     predicciones = [int(i) for i in predicciones]
 
-    datos = pd.DataFrame({"Fecha":lista_fechas, "predicciones": predicciones, "real": valores_reales, "escenario1": demanda_esc1, "escenario2": demanda_esc2, "escenario3": demanda_esc3 })
+    
 
 
     mape = mean_absolute_percentage_error(valores_reales, predicciones)
@@ -79,6 +60,35 @@ def prophet_producto(dataframe_producto: pd.DataFrame, nombre_producto: str):
         tracking_signal=suma/MAD_prophet
     else:
         tracking_signal = np.nan
+    
+
+    
+    params = stats.norm.fit(errores)
+    fig , ax = plt.subplots()
+    v , l , g = ax.hist(errores, bins=20, density = True)
+    
+
+    xmin, xmax = plt.xlim()
+    x = np.linspace(xmin, xmax, 100)
+    p = stats.norm.pdf(x, *params)
+    
+
+    num_escenarios = 30
+    data1= list()
+    esc=list()
+    
+    escenarios = np.zeros((len(predicciones), num_escenarios))
+    for i in range(num_escenarios):
+        errores_simulados = stats.norm.rvs(*params, size=len(predicciones))
+        escenarios[:, i] = np.round(valores_reales + errores_simulados)
+        escenarios[:, i][escenarios[:, i] < 0] = 0
+
+
+
+    datos= pd.DataFrame(escenarios, columns=[f'Periodo {i+1}' for i in range(num_escenarios)])
+    datos["Fecha"]=lista_fechas
+    datos["predicciones"]= predicciones
+    datos["real"]= valores_reales
 
 
     return nombre_producto, mape, rmse, mae, mse,tracking_signal, datos

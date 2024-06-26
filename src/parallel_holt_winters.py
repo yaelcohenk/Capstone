@@ -9,7 +9,7 @@ import logging
 import os
 import random
 import json
-
+import scipy.stats as stats
 from parametros import (PATH_VENTAS_PRODUCTOS_VIGENTES_NO_OUTLIERS_W_FEATURES)
 from statsmodels.tsa.holtwinters import ExponentialSmoothing
 from functools import partial
@@ -66,7 +66,7 @@ def holt_winters(dataframe_producto: pd.DataFrame, nombre_producto: str):
         valores = study.optimize(objective, n_trials=100)
 
     except ValueError as e:
-        return None, None, None, None, None, validacion.index, nombre_producto
+        return None, None, None, validacion.index, nombre_producto
     
     best_params = study.best_params
     try:
@@ -87,41 +87,50 @@ def holt_winters(dataframe_producto: pd.DataFrame, nombre_producto: str):
         valores_reales= validacion["Cantidad"].tolist()
         predicciones = predicciones.forecast(steps=len(validacion))
         predicciones1=predicciones.tolist()
+        errores=[]
+        suma=0
+        for i in range( len(predicciones)):
+            error=valores_reales[i]-predicciones[i]
+            suma+=error
+            errores.append(error)
         demanda_esc1=[]
         demanda_esc2=[]
         demanda_esc3=[]
     
         
-        for i in range (len(predicciones)):
-            margen= abs(valores_reales[i]-predicciones[i])
-            margen= int(margen)
-            numero1= random.randint(-margen, margen)
-            demanda1= int(predicciones[i]) + numero1
-            numero2= random.randint(-margen, margen)
-            demanda2= int(predicciones[i]) + numero2
-            numero3= random.randint(-margen, margen)
-            demanda3= int(predicciones[i]) + numero3
-            if demanda1<0 :
-                demanda1=0
-            if demanda2<0 :
-                demanda2=0
-            if demanda3<0:
-                demanda3=0
-            demanda_esc1.append(demanda1)
-            demanda_esc2.append(demanda2)
-            demanda_esc3.append(demanda3)
-        print(demanda_esc1)
-        print(demanda_esc2)
-        print(demanda_esc3)
+        params = stats.norm.fit(errores)
+        fig , ax = plt.subplots()
+        v , l , g = ax.hist(errores, bins=20, density = True)
+        
+
+        xmin, xmax = plt.xlim()
+        x = np.linspace(xmin, xmax, 100)
+        p = stats.norm.pdf(x, *params)
+        
+
+        num_escenarios = 30
+        data1= list()
+        esc=list()
+        
+        escenarios = np.zeros((len(predicciones), num_escenarios))
+        for i in range(num_escenarios):
+            errores_simulados = stats.norm.rvs(*params, size=len(predicciones))
+            escenarios[:, i] = np.round(valores_reales + errores_simulados)
+            escenarios[:, i][escenarios[:, i] < 0] = 0
+
+
+
+        data= pd.DataFrame(escenarios, columns=[f'Periodo {i+1}' for i in range(num_escenarios)])
+        data["predicciones"]= predicciones
+        data["real"]= valores_reales
+        
         
             
         
-        return predicciones, validacion["Cantidad"].to_numpy(), demanda_esc1, demanda_esc2, demanda_esc3, validacion.index, nombre_producto
+        return predicciones, validacion["Cantidad"].to_numpy(), data, validacion.index, nombre_producto
     else:
-        demanda_esc1=[]
-        demanda_esc2=[]
-        demanda_esc3=[]
-        return None, None, demanda_esc1, demanda_esc2, demanda_esc3, validacion.index, nombre_producto
+        data=list()
+        return None, None, data, validacion.index, nombre_producto
 
 
 if __name__ == '__main__':
@@ -140,10 +149,11 @@ if __name__ == '__main__':
     elementos = ray.get(futures)
 
     dataframes = list()
+    data_final = list()
 
     valores = list()
     for elemento in elementos:
-        predicciones, valor_real, demanda_esc1, demanda_esc2, demanda_esc3, fechas, nombre = elemento
+        predicciones, valor_real, data,  fechas, nombre = elemento
         if predicciones is not None and valor_real is not None:
             mape = mean_absolute_percentage_error(valor_real, predicciones)
             rmse = root_mean_squared_error(valor_real, predicciones)
@@ -160,7 +170,10 @@ if __name__ == '__main__':
                 tracking_signal=suma/MAD_prophet
             else:
                 tracking_signal = np.nan
+            
             valores.append((nombre, mape, rmse, mae, mse,tracking_signal))
+            data["Fecha"]= fechas
+            data_final.append((nombre, data))
         else:
             valores.append((nombre, float("inf"), float("inf"), float("inf"), float("inf"), -1000))
 
@@ -171,12 +184,9 @@ if __name__ == '__main__':
     dataframe.to_excel(os.path.join("datos", "metricas_holt_winters.xlsx"))
     contador = 0
     mapeo_nombres = dict()
-    for data, nombre in dataframes:
-        # print(data)
-
-
+    for nombre, data in data_final:
+    
         data.to_excel(os.path.join("predicciones", "holt_winters", f"producto_{contador}.xlsx"))
-        
         mapeo_nombres[contador] = nombre
         contador += 1
 
