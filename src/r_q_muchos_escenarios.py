@@ -44,6 +44,8 @@ if __name__ == '__main__':
 
     lista_fechas = [fecha_min + timedelta(days=i) for i in range((fecha_max - fecha_min).days + 1)]
     
+    # print(len(lista_fechas))
+    # sys.exit("SALIENDO")
     # Necesito este diccionario
     fechas_ventas_producto_y_demanda = dict()
 

@@ -5,8 +5,8 @@ import scipy.stats as stats
 import sys
 
 
-datos_s_s = pd.read_excel("s_s_pronosticos_escenarios.xlsx")
-datos_r_q = pd.read_excel("r_q_pronosticos_escenarios.xlsx")
+datos_s_s = pd.read_excel("r_q_pronosticos_escenarios.xlsx")
+datos_r_q = pd.read_excel("r_q_pronosticos_escenarios_tcero.xlsx")
 
 
 utilidad_s_s = datos_s_s["utilidad_total"].to_numpy()
