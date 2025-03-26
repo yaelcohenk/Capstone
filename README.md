@@ -1,20 +1,4 @@
-# Grupo Capstone - Gestión de Inventario
-
-## Cosas por hacer e ideas
-
-## Flujo lógico de las cosas
-
-- Antes de analizar los datos y todo eso, tenemos que quitar todos los outliers. Posterior a haber
-quitado los outliers, podemos empezar a analizar. En ese caso, tenemos que correr todo el resto de nuevo.
-De los datos que nos interesan. En verdad esto de los outliers nos debería interesar solo para el forecasting.
-En verdad el resto de cosas no depende tanto de esto.
-
-
-## Orden de Ejecución de los Archivos
-
-
-
-
+# Capstone 
 
 ## Papers
 
@@ -37,33 +21,22 @@ En verdad el resto de cosas no depende tanto de esto.
 []()
 []()
 
-### Dicho por profesor en la reunión 2
+### Data analysis
+- Perform data filtering. Check if there are values with very different magnitudes. Review the outliers and decide what to do with them.
+- Check if the data has negative values or nulls.
+- See how to segment the customers, group them. Also check if there are specific products that are being purchased.
+- Analyze whether the demand for each product is intermittent or not. There are different forecasting models for that.
+- Check for seasonality, i.e., if certain products sell more or less depending on the time of year. For example, analyze the weekly/monthly demand for medications, and be able to detect if, say, in June they sell more compared to the rest of the year — and then break that down by product.
+- You could analyze the profit percentage of each of the 49 subgroups on a monthly and weekly basis. Maybe you could do the same with the 3 larger groups — not sure if it’s worth doing it for each individual product.
+- Check for seasonality in the demand because if that’s the case, we’d need to carry out an analysis by season. See if it makes sense to create models by time segments.
+- Plot disaggregated data based on different time periods. Look at monthly, weekly, daily trends.
+- Pay attention to the trend. The idea is to build a forecasting model by week — the more accurate, the better. But do it daily. For accuracy, ideally it would be better to do it product by product.
+- Evaluate the importance of the contribution to profit for each product — either by time period or overall.
+- You could build a correlation matrix by year-month to see which products tend to be sold together.
 
+### Forecasting models
 
-
-### Análisis de datos
-
-- Hacer la filtración de datos. Ver si quizás hay datos con magnitudes muy distintas. Revisar los outliers y que hacer con ellos.
-- Ver si los datos tienen alguna pillería, como valores negativos o cosas así.
-- Ver como segmentar a los clientes, agruparlos. Ver también si hay ciertos productos que se compran en específico.
-- Ver si la demanda por producto es intermitente o no. Hay distintos modelos de pronóstico.
-- Ver si hay estacionareidad, si es que para cierta época ciertos productos se venden más o menos, cosas así.
-Por ejemplo, ver semanal/mensualmente la demanda de los medicamentos, ser capaz de que por ejemplo, quizás en junio
-se venden más respecto a todo el resto del año y de ahí desagregar por cada producto de medicamentos.
-- Podría hacer el análisis del porcentaje de ganancias de cada uno de los 49 subgrupos de manera mensual y semanal.
- Es decir, para cada una de las semanas y para cada uno de los meses. Quizás podría hacer lo mismo con los 3 grupos grandes, no sé si vale la pena hacerlo con cada uno de los productos
-- Ver si hay estacionariedad en las demandas porque en dicho caso, tendríamos que realizar un análisis por estación. Ver si tener modelos por tramos
-- Graficar cosas desagregadas según distintos periodos de tiempo. Por tendencia mensual, semanal, diaria
-- Fijarse en la tendencia, la idea es hacer el modelo de pronóstico de eso x semana, mientras más preciso mejor. Hacerlo por día nomás. Por precisión, idealmente sería mejor hacerlo producto a producto.
-- Ver la importancia de lo que aporta en ganancia cada producto. Ver si por período de tiempo, o del total
-- Podría hacer una matriz de correlaciones de forma año-mes, para ver que productos se venden en conjunto unos con otros
-
-
-
-
-### Modelos de pronóstico
-
-- Para los pronósticos se podría eventualmente intentar programar una RNN (LSTM).
+- Use RNN for forecasting (LSTM).
 - Autoregression (AR)
 - Moving Average (MA)
 - Autoregressive Moving Average (ARMA)
@@ -76,72 +49,51 @@ se venden más respecto a todo el resto del año y de ahí desagregar por cada p
 - Simple Exponential Smoothing (SES)
 - Holt Winter's Exponential Smoothing (HWES).
 
-### Validez estadística de los datos
+### Statistical validation of the data
 
-- No olvidar el test estadístico. Ajustar los datos a una distribución y tener en cuenta su valor 
-Chi-Cuadrado y el test de Kolmogorov-Smirnov. Luego se podría hacer lo mismo con cada uno de los 49
-subgrupos, para que esto sea más preciso. Hacerlo eventualmente con cada uno de los productos
-
-
-
-
-### Resolución del problema
-
+- Don’t forget the statistical tests. Fit the data to a distribution and consider the Chi-Square value and the Kolmogorov-Smirnov test. Then, the same could be done for each of the 49 subgroups to make the analysis more precise. Eventually, it could be done for each individual product as well.
 
 ### Tips
 
-- Una idea puede ser quizás agrupar los productos no tanto por temas de cantidad demandada, sino por el tipo
-de demanda al que se enfrentan. Esto para posteriormente elegir correctamente el modelo de pronóstico.
-- Categorizar la demanda, porque hay modelos que funcionan mejor que otros dependiendo del tipo de demanda.
-- Ver los modelos ABC y Pareto
-- Partir de lo más agregado a lo menos desagregado.
-- Revisar cada uno de los productos, revisar cuantas veces se ha vendido cada uno de ellos,
-si hay algunos que se dejaron de vender, cuando fue la última venta, ver si sacarlo si tiene pocos
-datos.
-- Se podría hacer un leadtime como variable aleatoria.
-- Para validar modelo de pronóstico, 75% datos para entrenar y 25% validar
-- Como presentar la información después, es importante eso.
-- Centrarse en como armar los modelos de pronóstico
-- Los KPI para la primera entrega van si o si, son las métricas de desempeño de la solución.
-- No es mala idea resolver el problema con OD, al menos en un sentido aproximado. Ver si podemos utilizar RL
-- Los KPI se asocian a la política de inventario, como una política es mejor que otra, bajo que criterios.
-- Una vez categorizados los productos lo que se puede hacer es buscar modelos de pronóstico por cada uno y ahí iterar para el que minimiza el error.
-- Se podría minimizar una ponderación entre el MASE, el MES Y EL R2, para elegir.
-- Estudiar como funcionan los modelos de pronóstico, ya que al final esos son los inputs para el modelo, es lo primero que se necesita para poder simular después.
+- One idea could be to group the products not by the quantity demanded, but by the type of demand they face. This would help in choosing the right forecasting model later on.
+- Categorize the demand, because some models work better than others depending on the demand type.
+- Look into ABC and Pareto models.
+- Start from the most aggregated level and move toward the more disaggregated.
+- Review each product, check how many times each one has been sold, if there are some that have stopped selling, when the last sale was — and consider removing them if there’s very little data.
+- Lead time could be modeled as a random variable.
+- To validate the forecasting model, use 75% of the data for training and 25% for validation.
+- Think about how to present the information — that's important.
+- Focus on how to build the forecasting models.
+- KPIs are mandatory for the first delivery; they’re the performance metrics of the solution.
+- It’s not a bad idea to try solving the problem with Operations Research (OR), at least approximately. Consider whether Reinforcement Learning (RL) can be used.
+- The KPIs are tied to the inventory policy — showing how one policy is better than another, under which criteria.
+- Once the products are categorized, you can find forecasting models for each category, and then iterate to find the one that minimizes the error.
+- You could minimize a weighted combination of MASE, MES, and R² to select the best model.
+- Study how forecasting models work — since they’re the input for the overall model, it’s the first thing needed before simulation.
+- See if we can have the forecasting models completed, validated, and with an optimization model ready for the first delivery.
+- For example, in the forecasting models we have error metrics to assess how accurate the forecast is — but those are not the KPIs.
+- Start testing the models and see which ones apply best to each type of demand.
+- Take one product from each category to use as a representative example, apply all the models to it, plot them all on a graph, and visually discard the ones that clearly don’t work and identify the ones that might be useful.
+- Find the data distribution — understand how the data is distributed, since that will be needed as input for the forecasting.
+- Maybe create a heatmap of sales volume and profits by product, subcategory, etc. Analyze product profitability.
+- You could analyze the profit percentage of each of the 49 subgroups on a monthly and weekly basis. That is, for each week and each month. Maybe do the same with the 3 larger groups — not sure if it’s worth doing for every single product.
+- Do an analysis of the current stock in terms of proportions.
+  
+## Professor tips
 
-
-
-
-- Ver si puedo llegar con los modelos de pronósticos hechos, validados y con un modelo de optimización para la primera entrega.
-Por ejemplo en los modelos de pronóstico nosotros tenemos métricas de error para ver que tan certero es el pronóstico, esos no son los KPI.
-
-
-
-Ir probando los modelos y ver cuales aplican más a cada tipo de demanda.
-- Pescar un producto de cada categoría para hacerlo representativo, y chantar todos los modelos en el gráfico y ver al ojo cuales se descartan si o si y cuales podrían ser útiles
-- Encontrar la distribución de los datos, saber como distribuyen, que al final lo necesitamos como datos de entrada para el pronóstico
-- Hacer un heatmap quizás del volumen de ventas y de las ganancias por cada producto, subcategoría y así. Ver la rentabilidad del producto
-
-- Podría hacer el análisis del porcentaje de ganancias de cada uno de los 49 subgrupos de manera mensual y semanal. Es decir, para cada una de las semanas y para cada uno de los meses. Quizás podría hacer lo mismo con los 3 grupos grandes, no sé si vale la pena hacerlo con cada uno de los productos
-- Hacer un análisis del stock que tienen hoy en día en términos de proporciones
-    
-## Cosas dichas por el profe
-
-- Sacarle foto al sistema, demanda global, por producto, por subcategoría, subsubcategoría si es que hay.
-- Ver si hay productos nuevos, productos que no se venden, productos obsoletos
-- Costo del producto es el precio del proveedor. El costo es por día de almacenaje.
-- El leadtime es el leadtime promedio en días, es el tiempo que pasa entre que yo pido el producto y cuando me llega.
-- Costo por pedido es como un costo fijo por el producto
-- 125 metros cubicos efectivos de la bodeg
-- No siempre está el id del cliente, si lo tenemos, puede que tratemos de clusterizar,
-ver relaciones entre productos de compra y clientes, tiene perros, gatos.
-- Referencias son para punto de partida, ir más allá, por lo menos triplicar lo que nos envió
-- Mostrar datos disponibles, hallazgos, saber como para donde va la cosa. Haber identificado que metodologías usar.
-Ver modelos y técnicas de pronóstico que podríamos utilizar, tener la película clara de entender bien el problema,
-como atacarlo, que metodologías tenemos.
+- Take a snapshot of the system: global demand, by product, by subcategory, and sub-subcategory if it exists.  
+- Check if there are new products, unsold products, obsolete products.  
+- The product cost is the supplier’s price. The holding cost is calculated per day of storage.  
+- Lead time is the average lead time in days — the time between when I order the product and when it arrives.  
+- Ordering cost is like a fixed cost per product.  
+- The warehouse has 125 cubic meters of effective storage space.  
+- The customer ID is not always available — if we have it, we might try to cluster and identify relationships between purchased products and customers (e.g., whether they have dogs, cats, etc.).  
+- References are just a starting point — aim to go beyond them, at least triple what we were given.  
+- Present the available data, findings, and show where things are heading. Be clear on what methodologies we’ll use.  
+Understand which forecasting models and techniques we could apply, and have a clear understanding of the problem, how to tackle it, and which methods we have at our disposal.
     
 
-## Librerías que pueden ser útiles
+## Useful libraries
 
 [Darts](https://unit8co.github.io/darts/)
 
@@ -161,73 +113,9 @@ como atacarlo, que metodologías tenemos.
 
 [Pytorch-Forecasting](https://pytorch-forecasting.readthedocs.io/en/stable/)
 
+## Links
 
-## Reunión profesor 16 abril
-
-- No podemos tener bola de cristal en el forecasting.
-- Separar datos en entrenamiento y testeo
-- Que productos consideramos
-
-
-- Caso base
-- Como proseguir
-- En que nos deberíamos fijar ahora
-- También podemos diseñar una política propia. Podemos cambiar una política
-- Tenemos ue hacer cuadrar la política con nuestro problema
-- Lo que no podemos hacer es asumir que el leadtime es cero
-- No es válido que nos olvidemos de una restricción o consideración intrínsica del problema. Ahí
-la política estaría definida frente a un problema diferente.
-- Si la demanda cambia, la política podría funcionar mal. Lo que no puedo hacer es hacer una compra
-y simular que el inventario me llegó al tiro.
-- Podríamos cada cierto tiempo recalibrar parámetros de política o no recalibrarla y quedarme con lo que hice hace
-6 meses.
-- Modelo de optimización se puede pensar como que se calcula política, input son datos y output son decisiones.
-Uno podría pensar que el modelo de optimización también sirve como una política. La política es como yo tomo
-decisiones con los datos que tengo en el momento. Política es super general, probabilidades, sin probabilidades
-podemos proponer políticas para resolver este problema.
-- Forecast probabilístico
-- XGBoost
-- Descartaría el profe los modelos neuronales. Agregarlo al informe. Modelo de regresión lineal múltiple.
-Le podemos meter feature engineering, para pasarsela a este modelo, podemos extraer muchas features que son relevantes
-que le pueden servir para entregar mejor predicción. Como por ejemplo, definir vector de features el día de la semana
-la semana del año, información sobre la tendencia, demanda acumulada, demanda del día anterior.
-Si tenemos productos que tienen patrones complejos e información que no nos dieron, la podemos identificar
-y pasarsela al modelo. Tomar modelos de pronóstico que ya identificamos, como baseline.
-- Paper de Sinthetos, de demanda intermitente. Como clasificar los productos por patrón de demanda. Mirar productos
-y separar productos por patrón de demanda. Explorar esto
-
-- Tratar de etiquetar productos que no se venden, tenerlo identificado y a partir de ahí uno puede
-sacar otras recomendaciones. Nosotros podemos definir nuestros criterios para determinar que productos están
-activos. Centrar en datos que le vamos a poder hacer pronóstico. Hacer un diagnóstico de que es lo que hay
-que hago, que stock tengo.
-
-- Tratar de agrupar a los clientes, ver como las políticas impactan a los distintos clientes. Sobre todo si tenemos
-clientes muy fieles y que queremos cuidar.
-
-- Podríamos tratar desde ya implementar algunas políticas. Definir, aterrizar cual va a ser nuestro caso base. Diagrama
-de como funciona nuestra política de caso base. Nuestra política, para tratar de definir como funciona todo.
-- Empezar a probar cosas, quizás algún subset de productos, tomar último año de observaciones. Simular políticas
-con proyecciones.
-
-- Buen punto de partida, tratar de evaluar nuestras políticas propuestas con demanda histórica. Que es lo que yo
-hubiera ejecutado, y que hubiera pasado. Ahora sería como replicar, ya que es determinístico. Ir registrando KPI,
-quiebres de stock y ver como nos fue con una política.
-
-- Tratar de ver lo antes posible, evaluar una política y ver indicadores de desempeño.
-- Ver la cota de inferior perfecta, es una cota de rendimiento de política considerando que tenemos
-toda la información futura. Si yo tuviera pronóstico perfecto, podríamos evaluar las políticas.
-Ver como el máximo jugo que le podemos sacar al producto.
-
-- Hartas cosas que podemos ver y profundizar. Hacer listado de cosas que podemos hacer, repartir pega y paralelizar.
-- KPI, cantidad de compras
-
-- Podríamos agregar el heatmap de las correlaciones. No es prioritario. Ponerle prioridad e interesante avanzar
-en modelos de pronóstico, tomarlos, implementarlos y evaluarlos. Como dividir los datos, como se evalúan los
-modelos, cuanto pronostican. Ver que quiero pronosticar. Tener ideas claras y ponerse a prototipar.
-
-## Links útiles
-
-Ver en Kaggle: Store Sales - Time Series Forecasting
+Kaggle: Store Sales - Time Series Forecasting
 
 [Darts Forecasting Deep Learning & Global Models](https://www.kaggle.com/code/ferdinandberr/darts-forecasting-deep-learning-global-models)
 
